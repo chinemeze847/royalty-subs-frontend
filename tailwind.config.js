@@ -12,7 +12,7 @@ module.exports = {
         'color-on-primary': colors.white,
         'color-surface': colors.white,
         'color-on-surface': colors.black,
-        'color-background': colors.gray['400'],
+        'color-background': colors.gray['200'],
         'color-error': colors.red['500'],
         'color-on-error': colors.white,
       }),

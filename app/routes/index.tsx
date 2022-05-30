@@ -1,11 +1,25 @@
 import { Link, NavLink } from "@remix-run/react";
 import { useState } from "react";
-import { IoCheckmark, IoClose, IoMenu } from "react-icons/io5";
+import type { IconType } from "react-icons";
+import { IoCall, IoCheckmark, IoClose, IoLocation, IoMail, IoMenu } from "react-icons/io5";
 
 const HeaderNavItem = ({ to, text }: { to: string; text: string }) => {
   return (
     <li>
-      <NavLink className="block p-dimen-sm lg:text-color-primary lg:font-bold" to={to}>{ text }</NavLink>
+      <NavLink 
+        to={to}
+        className="block p-dimen-sm lg:text-color-primary lg:font-bold" 
+      >
+        { text }
+      </NavLink>
+    </li>
+  );
+}
+
+const FooterNavItem = ({ to, text }: { to: string; text: string }) => {
+  return (
+    <li>
+      <Link className="block py-dimen-sm text-lg" to={to}>{ text }</Link>
     </li>
   );
 }
@@ -68,15 +82,53 @@ const ServiceItem = ({ src, alt, heading, body }: { src: string; alt: string; he
   );
 }
 
-const DataPricing = ({ src, alt, shadowColor }: { src: string; alt: string, shadowColor: string }) => {
+type ProductUnit = { price: number; name: string; duration: number };
+
+const DataPricingItem = ({ unit: { price, name, duration }, borderColor }: { unit: ProductUnit, borderColor: string }) => {
   return (
-    <li className="mt-16">
+    <li>
+      <div className={`py-dimen-sm flex justify-between font-bold border-b ${borderColor}`}>
+        <span>{ name }</span>
+        <span>NGN { price }</span>
+        <span>{ duration } days</span>
+      </div>
+    </li>
+  );
+}
+
+const DataPricing = (
+  { src, alt, shadowColor, unitBorderColor, units }: 
+  { src: string; alt: string, shadowColor: string; unitBorderColor: string; units: ProductUnit[] }
+) => {
+  return (
+    <li>
       <div className={`shadow p-dimen-md rounded-lg ${shadowColor}`}>
         <img 
           src={`/images/${src}`} 
           alt={alt} 
-          className={`w-40 h-40 rounded-lg -translate-y-1/2 mx-auto shadow ${shadowColor}`}
-          />
+          className={`w-40 h-40 rounded-lg mx-auto mb-dimen-md shadow ${shadowColor}`}
+        />
+        <ul>
+          {
+            units.map(item => (
+              <DataPricingItem unit={item} key={item.name} borderColor={unitBorderColor}  />
+            ))
+          }
+        </ul>
+      </div>
+    </li>
+  );
+}
+
+const ContactUsItem = ({ Icon, heading, body }: { Icon: IconType, heading: string; body: string }) => {
+  return (
+    <li>
+      <div className="flex gap-x-dimen-sm py-dimen-md items-start">
+        <Icon className="text-xl" />
+        <div>
+          <div className="font-bold">{ heading }</div>
+          <div>{ body }</div>
+        </div>
       </div>
     </li>
   );
@@ -88,7 +140,7 @@ export default function Index() {
 
   return (
     <>
-      <header className="py-dimen-md border">
+      <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10">
         <div className="container flex items-center gap-x-dimen-md">
           <h1 className="text-color-primary font-bold text-3xl">Royaltysubs</h1>
           <nav className="flex flex-grow justify-end bordler relative lg:justify-center">
@@ -121,9 +173,9 @@ export default function Index() {
                 lg:shadow-none
               `}
             >
-              <HeaderNavItem to="#" text="Home" />
+              <HeaderNavItem to="#home" text="Home" />
               <HeaderNavItem to="#about" text="About us" />
-              <HeaderNavItem to="#services" text="Our services" />
+              <HeaderNavItem to="#products" text="Our services" />
               <HeaderNavItem to="#pricing" text="Pricing" />
               <HeaderNavItem to="#login" text="Log in" />
               <HeaderNavItem to="#register" text="Register" />
@@ -131,12 +183,13 @@ export default function Index() {
           </nav>
         </div>
       </header>
-      <main>
+
+      <main className="pt-20">
         <div className="container">
-          <section className="py-dimen-lg lg:flex lg:gap-x-dimen-xxxl">
+          <section id="home" className="py-dimen-lg lg:flex lg:gap-x-dimen-xxxl">
             <div className="py-dimen-xxl lg:py-40">
               <h2 className="font-bold text-2xl mb-dimen-sm lg:text-3xl">Welcome to Royaltysubs</h2>
-              <div className="text-5xl mb-dimen-xxl lg:text-6xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
+              <div className="text-5xl mb-dimen-xxl xl:text-6xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
               <ul className="flex gap-x-dimen-sm">
                 <TopSectionLink to="/auth/login" text="Login" inverse />
                 <TopSectionLink to="/user/register" text="Register" />
@@ -176,7 +229,7 @@ export default function Index() {
             </div>
           </section>
 
-          <section className="py-dimen-lg">
+          <section id="products" className="py-dimen-lg">
             <Heading3 text="Our Services" />
             <ul className="lg:grid lg:grid-cols-3 lg:gap-x-dimen-md lg:items-stretch">
               <ServiceItem 
@@ -217,18 +270,86 @@ export default function Index() {
               />
             </ul>
           </section>
-
-          <section className="py-dimen-lg">
+          
+          <section id="pricing" className="py-dimen-lg">
             <Heading3 text="Data Pricing" />
-            <ul className="grid gap-dimen-md">
-              <DataPricing src="mtn.jpg" alt="MTN logo" shadowColor="shadow-yellow-500" />
-              <DataPricing src="airtel.png" alt="Airtel logo" shadowColor="shadow-red-500" />
-              <DataPricing src="glo.jpg" alt="GLO logo" shadowColor="shadow-green-500" />
-              <DataPricing src="9mobile.jpg" alt="9mobile logo" shadowColor="shadow-green-800" />
+            <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-4">
+              <DataPricing 
+                src="mtn.jpg" 
+                alt="MTN logo" 
+                shadowColor="shadow-yellow-500" 
+                unitBorderColor="border-yellow-500"
+                units={[
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                ]}
+              />
+              <DataPricing 
+                src="airtel.png" 
+                alt="Airtel logo" 
+                shadowColor="shadow-red-500" 
+                unitBorderColor="border-red-500"
+                units={[
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                ]}
+              />
+              <DataPricing 
+                src="glo.jpg" 
+                alt="GLO logo" 
+                shadowColor="shadow-green-500" 
+                unitBorderColor="border-green-500"
+                units={[
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                ]}
+              />
+              <DataPricing 
+                src="9mobile.jpg" 
+                alt="9mobile logo" 
+                shadowColor="shadow-green-800" 
+                unitBorderColor="border-green-800"
+                units={[
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                  { duration: 7, name: '100MB', price: 100 },
+                ]}
+              />
             </ul>
           </section>
         </div>
       </main>
+
+      <footer className="bg-color-background py-dimen-xxxl">
+        <div className="container flex gap-x-dimen-md justify-around">
+          <div>
+            <h5 className="font-bold uppercase">Resources</h5>
+            <ul>
+              <FooterNavItem to="#home" text="Home" />
+              <FooterNavItem to="#about" text="About us" />
+              <FooterNavItem to="#products" text="Our services" />
+              <FooterNavItem to="#pricing" text="Pricing" />
+              <FooterNavItem to="#login" text="Log in" />
+              <FooterNavItem to="#register" text="Register" />
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-bold uppercase">Contact us</h5>
+            <ul>
+              <ContactUsItem Icon={IoCall} heading="Phone number" body="08109260088" />
+              <ContactUsItem Icon={IoMail} heading="Email address" body="iykesamuel0@gmail.com" />
+              <ContactUsItem Icon={IoLocation} heading="Address" body="#56 Ojokwu street, Olodi Apapa, Lagos" />
+            </ul>
+          </div>
+        </div>
+      </footer>
     </>
   );
 }
