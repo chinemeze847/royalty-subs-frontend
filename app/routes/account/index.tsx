@@ -31,7 +31,7 @@ export default function Dashboard() {
             <div className="font-bold text-2xl">NGN 2,000,000.00</div>
           </div>
           <Link 
-            to="" 
+            to="fund-wallet" 
             className="w-fit mt-dimen-md block bg-color-primary shadow shadow-white p-dimen-md rounded-lg hover:shadow-lg"
           >
             Fund wallet

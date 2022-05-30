@@ -35,10 +35,10 @@ const NavItem = (
   );
 }
 
-const AccountLink = ({ to, text }: { to: string; text: string }) => {
+const AccountLink = ({ to, text, onClick }: { to: string; text: string; onClick: () => void }) => {
   return (
     <li>
-      <Link to={to} className="block px-dimen-sm py-dimen-xs">{ text }</Link>
+      <Link onClick={onClick} to={to} className="block px-dimen-sm py-dimen-xs">{ text }</Link>
     </li>
   );
 }
@@ -50,6 +50,8 @@ export default function Account() {
   const [showAccountNav, setShowAccountNav] = useState(false);
 
   const closeNav = () => setShowNav(false);
+
+  const closeAccountNav = () => setShowAccountNav(false);
 
   return (
     <>
@@ -86,9 +88,9 @@ export default function Account() {
                 ${showAccountNav ? 'max-h-96' : 'max-h-0'}
               `}
             >
-              <AccountLink to="" text="Profile" />
-              <AccountLink to="" text="Change password" />
-              <AccountLink to="" text="Log out" />
+              <AccountLink to="profile" text="Profile" onClick={closeAccountNav} />
+              <AccountLink to="change-password" text="Change password" onClick={closeAccountNav} />
+              <AccountLink to="logout" text="Log out" onClick={closeAccountNav} />
             </ul>
           </div>
         </div>
