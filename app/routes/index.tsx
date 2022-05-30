@@ -179,6 +179,7 @@ export default function Index() {
               <HeaderNavItem to="#pricing" text="Pricing" />
               <HeaderNavItem to="login" text="Log in" />
               <HeaderNavItem to="register" text="Register" />
+              <HeaderNavItem to="account" text="Account" />
             </ul>
           </nav>
         </div>
@@ -214,10 +215,8 @@ export default function Index() {
               />
               <div>
                 <p className="text-xl mt-dimen-md lg:mt-0">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
-                  Iure deserunt voluptas voluptatem velit neque doloribus natus delectus nisi nam inventore, 
-                  veritatis, sequi vel alias itaque culpa tenetur saepe suscipit! Dolorem.
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                  Royaltysubs is a platform that provides internet services with a touch of Royalty. 
+                  We provide best internet services using cutting edge technologies for the benefits of our clients.
                 </p>
                 <ul className="my-dimen-md">
                   <AboutUsItem text="We Are Automated" />

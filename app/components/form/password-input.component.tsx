@@ -34,5 +34,5 @@ export default forwardRef(function PasswordInputCmponent(
         </button>
       </div>
     </div>
-  )
+  );
 });
