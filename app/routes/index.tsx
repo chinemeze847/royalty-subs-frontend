@@ -68,6 +68,20 @@ const ServiceItem = ({ src, alt, heading, body }: { src: string; alt: string; he
   );
 }
 
+const DataPricing = ({ src, alt, shadowColor }: { src: string; alt: string, shadowColor: string }) => {
+  return (
+    <li className="mt-16">
+      <div className={`shadow p-dimen-md rounded-lg ${shadowColor}`}>
+        <img 
+          src={`/images/${src}`} 
+          alt={alt} 
+          className={`w-40 h-40 rounded-lg -translate-y-1/2 mx-auto shadow ${shadowColor}`}
+          />
+      </div>
+    </li>
+  );
+}
+
 export default function Index() {
 
   const [showNav, setShowNav] = useState(false);
@@ -206,6 +220,12 @@ export default function Index() {
 
           <section className="py-dimen-lg">
             <Heading3 text="Data Pricing" />
+            <ul className="grid gap-dimen-md">
+              <DataPricing src="mtn.jpg" alt="MTN logo" shadowColor="shadow-yellow-500" />
+              <DataPricing src="airtel.png" alt="Airtel logo" shadowColor="shadow-red-500" />
+              <DataPricing src="glo.jpg" alt="GLO logo" shadowColor="shadow-green-500" />
+              <DataPricing src="9mobile.jpg" alt="9mobile logo" shadowColor="shadow-green-800" />
+            </ul>
           </section>
         </div>
       </main>
