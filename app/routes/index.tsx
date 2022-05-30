@@ -19,7 +19,7 @@ const HeaderNavItem = ({ to, text }: { to: string; text: string }) => {
 const FooterNavItem = ({ to, text }: { to: string; text: string }) => {
   return (
     <li>
-      <Link className="block py-dimen-sm text-lg" to={to}>{ text }</Link>
+      <Link className="block py-dimen-sm" to={to}>{ text }</Link>
     </li>
   );
 }
@@ -177,8 +177,8 @@ export default function Index() {
               <HeaderNavItem to="#about" text="About us" />
               <HeaderNavItem to="#products" text="Our services" />
               <HeaderNavItem to="#pricing" text="Pricing" />
-              <HeaderNavItem to="#login" text="Log in" />
-              <HeaderNavItem to="#register" text="Register" />
+              <HeaderNavItem to="login" text="Log in" />
+              <HeaderNavItem to="register" text="Register" />
             </ul>
           </nav>
         </div>
@@ -191,8 +191,8 @@ export default function Index() {
               <h2 className="font-bold text-2xl mb-dimen-sm lg:text-3xl">Welcome to Royaltysubs</h2>
               <div className="text-5xl mb-dimen-xxl xl:text-6xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
               <ul className="flex gap-x-dimen-sm">
-                <TopSectionLink to="/auth/login" text="Login" inverse />
-                <TopSectionLink to="/user/register" text="Register" />
+                <TopSectionLink to="login" text="Login" inverse />
+                <TopSectionLink to="register" text="Register" />
               </ul>
             </div>
             <div className="py-dimen-md lg:-rotate-6 lg:py-16">
@@ -328,16 +328,16 @@ export default function Index() {
       </main>
 
       <footer className="bg-color-background py-dimen-xxxl">
-        <div className="container flex gap-x-dimen-md justify-around">
-          <div>
+        <div className="container md:flex md:gap-x-dimen-md justify-around">
+          <div className="mb-dimen-md">
             <h5 className="font-bold uppercase">Resources</h5>
             <ul>
               <FooterNavItem to="#home" text="Home" />
               <FooterNavItem to="#about" text="About us" />
               <FooterNavItem to="#products" text="Our services" />
               <FooterNavItem to="#pricing" text="Pricing" />
-              <FooterNavItem to="#login" text="Log in" />
-              <FooterNavItem to="#register" text="Register" />
+              <FooterNavItem to="login" text="Log in" />
+              <FooterNavItem to="register" text="Register" />
             </ul>
           </div>
           <div>
