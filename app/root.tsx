@@ -11,7 +11,7 @@ import styles from "./styles/tailwind.css";
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
-  title: "Royaltysubs",
+  title: "Royaltysubs - Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor",
   viewport: "width=device-width,initial-scale=1",
 });
 
