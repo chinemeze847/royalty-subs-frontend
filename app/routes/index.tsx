@@ -175,7 +175,7 @@ export default function Index() {
             >
               <HeaderNavItem to="#home" text="Home" />
               <HeaderNavItem to="#about" text="About us" />
-              <HeaderNavItem to="#products" text="Our services" />
+              <HeaderNavItem to="#products" text="Our products" />
               <HeaderNavItem to="#pricing" text="Pricing" />
               <HeaderNavItem to="login" text="Log in" />
               <HeaderNavItem to="register" text="Register" />
@@ -229,8 +229,8 @@ export default function Index() {
           </section>
 
           <section id="products" className="py-dimen-lg">
-            <Heading3 text="Our Services" />
-            <ul className="lg:grid lg:grid-cols-3 lg:gap-x-dimen-md lg:items-stretch">
+            <Heading3 text="Our Products" />
+            <ul className="md:grid md:grid-cols-2 md:gap-x-dimen-md md:items-stretch lg:grid-cols-4">
               <ServiceItem 
                 src="service-airtime.jpg"
                 alt="Airtime purchase"
@@ -249,24 +249,24 @@ export default function Index() {
                 heading="Cable Subscription"
                 body="Instantly activate cable subscription with favourable discount compare to others."
               />
-              <ServiceItem
+              {/* <ServiceItem
                 src="service-airtime-cash.jpg"
                 alt="Airtime To Cash swap"
                 heading="Airtime To Cash"
                 body="Convert your airtime easily to cash here with less charges."
-              />
+              /> */}
               <ServiceItem 
                 src="service-utility.jpg"
                 alt="Utility bills payment"
                 heading="Utility Bills Payment"
                 body="Because we understand your needs, we have made bill and utilities payment more convenient."
               />
-              <ServiceItem 
+              {/* <ServiceItem 
                 src="service-sms.jpg"
                 alt="Bulk SMS purchase"
                 heading="Bulk SMS"
                 body="Send your sms in bulk at convenient rates."
-              />
+              /> */}
             </ul>
           </section>
           
@@ -333,8 +333,9 @@ export default function Index() {
             <ul>
               <FooterNavItem to="#home" text="Home" />
               <FooterNavItem to="#about" text="About us" />
-              <FooterNavItem to="#products" text="Our services" />
+              <FooterNavItem to="#products" text="Our products" />
               <FooterNavItem to="#pricing" text="Pricing" />
+              <FooterNavItem to="terms" text="Terms of service" />
               <FooterNavItem to="login" text="Log in" />
               <FooterNavItem to="register" text="Register" />
             </ul>

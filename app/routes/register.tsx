@@ -49,7 +49,10 @@ export default function Register() {
 
         <div className="mb-dimen-sm">
           <input id="terms-input" type="checkbox" name="terms" className="mr-dimen-xs" />
-          <label htmlFor="terms-input">I Agree the terms and conditions.</label>
+          <label htmlFor="terms-input">
+            <span>I Agree the </span>
+            <Link to="/terms" className="text-color-primary">terms of service.</Link>
+          </label>
         </div>
 
         <SubmitButtonComponent text="Register" />
