@@ -20,4 +20,12 @@
     @apply my-dimen-lg rounded-lg overflow-x-auto p-dimen-sm shadow shadow-color-primary;
   }
 
+  .table-button {
+    @apply block w-fit text-color-on-primary py-dimen-xs px-dimen-lg font-bold rounded-lg bg-color-primary hover:bg-color-primary-variant;
+  }
+
+  .table-danger-button {
+    @apply block w-fit text-color-on-primary py-dimen-xs px-dimen-lg font-bold rounded-lg bg-color-error hover:bg-color-primary-variant;
+  }
+
 }

@@ -1,11 +1,16 @@
-import { IoCube, IoGrid, IoPerson } from "react-icons/io5";
+import { IoBulb, IoCall, IoCard, IoCube, IoGrid, IoPerson, IoTv, IoWifi } from "react-icons/io5";
 import type { AccountMenuItem, SideBarItem } from "~/components/utils/layout.component";
 import LayoutComponent from "~/components/utils/layout.component";
 
 const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Dashboard', to: '', Icon: IoGrid },
-  { text: 'Products', to: 'products', Icon: IoCube },
   { text: 'Users', to: 'users', Icon: IoPerson },
+  { text: 'Products', to: 'products', Icon: IoCube },
+  { text: 'Data', to: 'products/data', Icon: IoWifi },
+  { text: 'Airtime', to: 'products/airtime', Icon: IoCall },
+  { text: 'Electricity bill', to: 'products/electricity-bill', Icon: IoBulb },
+  { text: 'Cable subscription', to: 'products/cable-subcription', Icon: IoTv },
+  { text: 'Transactions', to: 'transactions', Icon: IoCard },
 ];
 
 const ACCOUNT_MENU_ITEMS: AccountMenuItem[] = [

@@ -10,7 +10,7 @@ const TransactionItem = () => {
       <td className="border p-dimen-xs">
         <Link 
           to="RYL_83JJDS883" 
-          className="block w-fit text-color-on-primary py-dimen-xs px-dimen-lg font-bold rounded-lg bg-color-primary hover:bg-color-primary-variant"
+          className="table-button"
         >
           View
         </Link>
