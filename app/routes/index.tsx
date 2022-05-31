@@ -192,7 +192,7 @@ export default function Index() {
           <section id="home" className="py-dimen-lg lg:flex lg:gap-x-dimen-xxxl">
             <div className="py-dimen-xxl lg:py-40">
               <h2 className="font-bold text-2xl mb-dimen-sm lg:text-3xl">Welcome to Royaltysubs</h2>
-              <div className="text-5xl mb-dimen-xxl xl:text-6xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
+              <div className="text-3xl mb-dimen-xxl xl:text-5xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
               <ul className="flex gap-x-dimen-sm">
                 <TopSectionLink to="login" text="Login" inverse />
                 <TopSectionLink to="register" text="Register" />
