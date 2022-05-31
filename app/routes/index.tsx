@@ -180,6 +180,7 @@ export default function Index() {
               <HeaderNavItem to="login" text="Log in" />
               <HeaderNavItem to="register" text="Register" />
               <HeaderNavItem to="account" text="Account" />
+              <HeaderNavItem to="admin" text="Admin" />
             </ul>
           </nav>
         </div>

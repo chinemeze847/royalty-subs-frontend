@@ -1,15 +1,11 @@
-import { IoBulb, IoCall, IoCard, IoGrid, IoPricetags, IoTv, IoWifi } from "react-icons/io5";
+import { IoCube, IoGrid, IoPerson } from "react-icons/io5";
 import type { AccountMenuItem, SideBarItem } from "~/components/utils/layout.component";
 import LayoutComponent from "~/components/utils/layout.component";
 
 const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Dashboard', to: '', Icon: IoGrid },
-  { text: 'Buy Data', to: 'buy-data', Icon: IoWifi },
-  { text: 'Buy Airtime', to: 'buy-airtime', Icon: IoCall },
-  { text: 'Electricity Payment', to: 'electricity-payment', Icon: IoBulb },
-  { text: 'Cable Payment', to: 'cable-payment', Icon: IoTv },
-  { text: 'Pricing', to: 'pricing', Icon: IoPricetags },
-  { text: 'Transactions', to: 'transactions', Icon: IoCard },
+  { text: 'Products', to: 'products', Icon: IoCube },
+  { text: 'Users', to: 'users', Icon: IoPerson },
 ];
 
 const ACCOUNT_MENU_ITEMS: AccountMenuItem[] = [
@@ -18,8 +14,7 @@ const ACCOUNT_MENU_ITEMS: AccountMenuItem[] = [
   { to: 'logout', text: 'Log out' },
 ]
 
-export default function Account() {
-
+export default function Admin() {
   return (
     <LayoutComponent 
       sideBarItems={SIDE_BAR_ITEMS} 
