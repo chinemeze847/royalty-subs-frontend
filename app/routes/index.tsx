@@ -8,7 +8,7 @@ const HeaderNavItem = ({ to, text }: { to: string; text: string }) => {
     <li>
       <NavLink 
         to={to}
-        className="block p-dimen-sm lg:text-color-primary lg:font-bold" 
+        className="block p-dimen-sm rounded-full lg:text-color-primary hover:bg-color-background lg:font-bold" 
       >
         { text }
       </NavLink>
@@ -19,7 +19,7 @@ const HeaderNavItem = ({ to, text }: { to: string; text: string }) => {
 const FooterNavItem = ({ to, text }: { to: string; text: string }) => {
   return (
     <li>
-      <Link className="block py-dimen-sm" to={to}>{ text }</Link>
+      <Link className="w-fit block py-dimen-sm hover:border-b-2 hover:border-color-primary" to={to}>{ text }</Link>
     </li>
   );
 }
@@ -71,7 +71,7 @@ const AboutUsItem = ({ text }: { text: string }) => {
 const ServiceItem = ({ src, alt, heading, body }: { src: string; alt: string; heading: string; body: string; }) => {
   return (
     <li className="mb-dimen-md">
-      <div className="shadow shadow-color-primary rounded-lg">
+      <div className="transition-transform shadow shadow-color-primary rounded-lg hover:scale-105">
         <img src={`/images/${src}`} alt={alt} className="w-full h-[20rem] rounded-tl-lg rounded-tr-lg" />
         <div className="p-dimen-md">
           <div className="font-bold">{ heading }</div>
@@ -97,12 +97,12 @@ const ProductPricingItem = ({ unit: { price, name, duration }, borderColor }: { 
 }
 
 const ProductPricing = (
-  { src, alt, shadowColor, unitBorderColor, units }: 
-  { src: string; alt: string, shadowColor: string; unitBorderColor: string; units: ProductUnit[] }
+  { src, alt, bgColor, shadowColor, unitBorderColor, units }: 
+  { src: string; alt: string, bgColor: string; shadowColor: string; unitBorderColor: string; units: ProductUnit[] }
 ) => {
   return (
     <li>
-      <div className={`shadow p-dimen-md rounded-lg ${shadowColor}`}>
+      <div className={`transition-colors duration-500 shadow p-dimen-md rounded-lg ${shadowColor} ${bgColor}`}>
         <img 
           src={`/images/${src}`} 
           alt={alt} 
@@ -144,7 +144,7 @@ export default function Index() {
         <div className="container flex items-center gap-x-dimen-md">
           <h1 className="text-color-primary font-bold text-3xl">Royaltysubs</h1>
           <nav className="flex flex-grow justify-end bordler relative lg:justify-center">
-            <button onClick={() => setShowNav(!showNav)} className="lg:hidden">
+            <button onClick={() => setShowNav(!showNav)} className="hover:bg-color-primary-variant lg:hidden">
               { 
                 showNav 
                   ? <IoClose className="text-4xl text-color-primary" /> 
@@ -198,7 +198,7 @@ export default function Index() {
                 <TopSectionLink to="register" text="Register" />
               </ul>
             </div>
-            <div className="py-dimen-md lg:-rotate-6 lg:py-16">
+            <div className="py-dimen-md lg:-rotate-6 lg:py-16 hover:rotate-0 transition-all duration-500">
               <img 
                 src="/images/index-1.jpg" 
                 alt="Man making a phone call" 
@@ -213,7 +213,7 @@ export default function Index() {
               <img 
                 alt="Light bulb" 
                 src="/images/index-2.jpg" 
-                className="block w-96 h-96 mx-auto rounded-full lg:rounded-lg lg:w-[100rem] lg:h-[30rem]" 
+                className="transition-all block w-96 h-96 mx-auto rounded-full hover:shadow-2xl hover:shadow-color-primary lg:w-[100rem] lg:h-[30rem]" 
               />
               <div>
                 <p className="text-xl mt-dimen-md lg:mt-0">
@@ -278,6 +278,7 @@ export default function Index() {
               <ProductPricing 
                 src="mtn.jpg" 
                 alt="MTN logo" 
+                bgColor="hover:bg-yellow-200"
                 shadowColor="shadow-yellow-500" 
                 unitBorderColor="border-yellow-500"
                 units={[
@@ -290,6 +291,7 @@ export default function Index() {
               <ProductPricing 
                 src="airtel.png" 
                 alt="Airtel logo" 
+                bgColor="hover:bg-red-200"
                 shadowColor="shadow-red-500" 
                 unitBorderColor="border-red-500"
                 units={[
@@ -302,6 +304,7 @@ export default function Index() {
               <ProductPricing 
                 src="glo.jpg" 
                 alt="GLO logo" 
+                bgColor="hover:bg-green-200"
                 shadowColor="shadow-green-500" 
                 unitBorderColor="border-green-500"
                 units={[
@@ -314,6 +317,7 @@ export default function Index() {
               <ProductPricing 
                 src="9mobile.jpg" 
                 alt="9mobile logo" 
+                bgColor="hover:bg-green-300"
                 shadowColor="shadow-green-800" 
                 unitBorderColor="border-green-800"
                 units={[
@@ -333,6 +337,7 @@ export default function Index() {
               <ProductPricing 
                 src="dstv.png" 
                 alt="DSTV logo" 
+                bgColor="hover:bg-blue-200"
                 shadowColor="shadow-blue-500" 
                 unitBorderColor="border-blue-500"
                 units={[
@@ -345,6 +350,7 @@ export default function Index() {
               <ProductPricing 
                 src="gotv.png" 
                 alt="GOTV logo" 
+                bgColor="hover:bg-green-200"
                 shadowColor="shadow-green-500" 
                 unitBorderColor="border-green-500"
                 units={[
@@ -357,6 +363,7 @@ export default function Index() {
               <ProductPricing 
                 src="startimes.jpg" 
                 alt="Startimes logo" 
+                bgColor="hover:bg-orange-200"
                 shadowColor="shadow-orange-500" 
                 unitBorderColor="border-orange-500"
                 units={[

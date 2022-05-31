@@ -4,6 +4,10 @@
 
 @layer components {
 
+  .auth-form {
+    @apply p-dimen-md rounded-lg shadow shadow-color-primary lg:w-96 lg:mx-auto;
+  }
+
   .account-form {
     @apply rounded-lg max-w-lg mx-auto lg:shadow lg:p-dimen-md;
   }

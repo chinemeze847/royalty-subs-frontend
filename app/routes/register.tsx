@@ -1,4 +1,5 @@
 import { Form, Link } from '@remix-run/react';
+import CheckboxComponent from '~/components/form/checkbox.component';
 import InputComponent from '~/components/form/input.component';
 import PasswordInputComponent from '~/components/form/password-input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
@@ -9,7 +10,7 @@ export default function Register() {
   return (
     <div className="container py-dimen-xxxl">
       
-      <Form className="p-dimen-md rounded-lg shadow shadow-color-primary lg:w-96 lg:mx-auto">
+      <Form className="auth-form">
 
         <AuthH1Component />
 
@@ -47,13 +48,12 @@ export default function Register() {
           name="password"
         />
 
-        <div className="mb-dimen-sm">
-          <input id="terms-input" type="checkbox" name="terms" className="mr-dimen-xs" />
-          <label htmlFor="terms-input">
-            <span>I Agree the </span>
-            <Link to="/terms" className="text-color-primary">terms of service.</Link>
-          </label>
-        </div>
+        <CheckboxComponent 
+          id="terms-input"
+          name="terms"
+          label="I Agree the"
+          labelLink={{ to: '/terms', text: 'terms of service.' }}
+        />
 
         <SubmitButtonComponent text="Register" />
 

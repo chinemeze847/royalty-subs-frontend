@@ -38,7 +38,7 @@ const NavItem = (
 const AccountLink = ({ to, text, onClick }: { to: string; text: string; onClick: () => void }) => {
   return (
     <li>
-      <Link onClick={onClick} to={to} className="block px-dimen-sm py-dimen-xs">{ text }</Link>
+      <Link onClick={onClick} to={to} className="block px-dimen-sm py-dimen-xs hover:bg-color-background">{ text }</Link>
     </li>
   );
 }
@@ -64,7 +64,7 @@ export default function LayoutComponent(
     <>
       <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10 lg:pl-64">
         <div className="container flex justify-between">
-          <button onClick={() => setShowNav(true)} className="lg:hidden">
+          <button onClick={() => setShowNav(true)} className="hover:bg-color-primary-variant lg:hidden">
             <IoMenu className="text-4xl text-color-primary" />
             <span className="sr-only">Menu</span>
           </button>
@@ -76,7 +76,7 @@ export default function LayoutComponent(
           <div className="relative flex-grow text-right">
             <button 
               onClick={() => setShowAccountNav(!showAccountNav)} 
-              className="border rounded-full border-color-primary p-dimen-xs"
+              className="border rounded-full border-color-primary p-dimen-xs hover:bg-color-primary-variant"
             >
               <IoPerson className="text-xl text-color-primary" />
               <span className="sr-only">Account</span>

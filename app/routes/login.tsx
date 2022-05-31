@@ -1,5 +1,4 @@
 import { Form, Link } from '@remix-run/react';
-import React from 'react';
 import InputComponent from '~/components/form/input.component';
 import PasswordInputComponent from '~/components/form/password-input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
@@ -10,7 +9,7 @@ export default function Login() {
   return (
     <div className="container py-dimen-xxxl">
       
-      <Form className="p-dimen-md rounded-lg shadow shadow-color-primary lg:w-96 lg:mx-auto">
+      <Form className="auth-form">
 
         <AuthH1Component />
 
@@ -30,7 +29,7 @@ export default function Login() {
         />
 
         <div className="mb-dimen-sm">
-          <Link to="#forgot-password" className="text-color-primary">Forgot password?</Link>
+          <Link to="/forgot-password" className="text-color-primary">Forgot password?</Link>
         </div>
 
         <SubmitButtonComponent text="Log in" />
