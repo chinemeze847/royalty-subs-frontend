@@ -11,7 +11,6 @@ const TabItem = ({ text, to }: { text: string; to: string; }) => {
           text-color-on-primary 
           py-dimen-xs px-dimen-lg 
           font-bold rounded-lg 
-          hover:text-color-primary
           ${
             isActive 
               ? 'bg-color-primary hover:text-color-primary-variant'
@@ -38,7 +37,7 @@ export default function Pricing() {
         <TabItem text="Cable" to="cable" />
       </ul>
 
-      <section className="my-dimen-lg rounded-lg overflow-x-auto p-dimen-sm shadow shadow-color-primary">
+      <section className="table-container">
         <Outlet />
       </section>
 

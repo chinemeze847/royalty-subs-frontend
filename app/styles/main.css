@@ -16,4 +16,8 @@
     @apply rounded-lg max-w-lg mx-auto py-dimen-xxxl lg:w-80 lg:shadow lg:px-dimen-md lg:mx-0;
   }
 
+  .table-container {
+    @apply my-dimen-lg rounded-lg overflow-x-auto p-dimen-sm shadow shadow-color-primary;
+  }
+
 }
