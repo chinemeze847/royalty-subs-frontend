@@ -1,6 +1,6 @@
-# Welcome to Remix!
+# Royaltysubs (Internet services)
 
-- [Remix Docs](https://remix.run/docs)
+- Built with [Remix](https://remix.run/docs)
 
 ## Development
 
