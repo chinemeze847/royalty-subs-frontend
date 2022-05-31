@@ -12,6 +12,7 @@ export default function DashboardCardComponent<T>(
         shadow 
         p-dimen-md 
         rounded-lg 
+        mb-dimen-md
         shadow-color-primary 
         ${flexGrow ? 'lg:flex-grow' : ''}
       `}
