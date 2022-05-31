@@ -2,6 +2,7 @@ import { Link } from "@remix-run/react";
 import type { IconType } from "react-icons";
 import { IoBulb, IoCall, IoCartOutline, IoTv, IoWifi } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
+import EmptyListComponent from "~/components/utils/empty-list.component";
 
 const ProductItem = ({ to, Icon, text }: { to: string, Icon: IconType, text: string }) => {
   return (
@@ -55,12 +56,7 @@ export default function Dashboard() {
           <div className="font-bold">Transactions</div>
           <ul>
             <li>
-              <div>
-                <IoCartOutline 
-                  className="text-9xl mx-auto my-dimen-md text-color-primary bg-color-primary-variant rounded-full" 
-                />
-                <div className="text-center font-bold">You have performed no transactions</div>
-              </div>
+              <EmptyListComponent Icon={IoCartOutline} text="You have performed no transactions" />
             </li>
           </ul>
         </div>
