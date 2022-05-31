@@ -10,7 +10,7 @@ export default function CablePayment() {
 
     <AccountH2Component text="Cable Payment" />
 
-    <Form className="flex-grow lg:shadow lg:p-dimen-md">
+    <Form className="account-form">
 
       <SelectComponent 
         id="cable-input"

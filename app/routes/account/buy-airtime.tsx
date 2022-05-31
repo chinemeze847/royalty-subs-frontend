@@ -10,7 +10,7 @@ export default function BuyAirtime() {
 
       <AccountH2Component text="Buy Airtime" />
 
-      <Form className="flex-grow lg:shadow lg:p-dimen-md">
+      <Form className="account-form">
 
         <SelectComponent 
           id="network-input"

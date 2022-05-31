@@ -2,3 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+
+  .account-form {
+    @apply rounded-lg max-w-lg mx-auto lg:shadow lg:p-dimen-md;
+  }
+
+  .account-form-2 {
+    @apply account-form lg:min-w-[32rem] lg:mx-0;
+  }
+
+  .account-form-2-right {
+    @apply rounded-lg max-w-lg mx-auto py-dimen-xxxl lg:w-80 lg:shadow lg:px-dimen-md lg:mx-0;
+  }
+
+}

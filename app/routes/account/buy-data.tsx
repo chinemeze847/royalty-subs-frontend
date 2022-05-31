@@ -21,9 +21,9 @@ export default function BuyData() {
 
       <AccountH2Component text="Buy Data" />
 
-      <section className="lg:flex lg:gap-x-dimen-lg">
+      <section className="lg:flex lg:gap-x-dimen-lg lg:justify-center">
 
-        <Form className="flex-grow lg:shadow lg:p-dimen-md">
+        <Form className="account-form-2">
 
           <SelectComponent 
             id="network-input"
@@ -69,7 +69,7 @@ export default function BuyData() {
           
         </Form>
 
-        <div className="py-dimen-xxxl lg:w-80 lg:shadow lg:px-dimen-md">
+        <div className="account-form-2-right">
           <h3 className="font-bold mb-dimen-md">Codes for Data Balance (SME)</h3>
           <ul>
             <CodeItem 

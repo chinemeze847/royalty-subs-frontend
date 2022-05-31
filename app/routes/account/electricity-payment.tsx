@@ -10,7 +10,7 @@ export default function ElectricityPayment() {
 
       <AccountH2Component text="Electricity Payment" />
 
-      <Form className="flex-grow lg:shadow lg:p-dimen-md">
+      <Form className="account-form">
 
         <SelectComponent 
           id="company-input"
