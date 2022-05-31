@@ -84,7 +84,7 @@ const ServiceItem = ({ src, alt, heading, body }: { src: string; alt: string; he
 
 type ProductUnit = { price: number; name: string; duration: number };
 
-const DataPricingItem = ({ unit: { price, name, duration }, borderColor }: { unit: ProductUnit, borderColor: string }) => {
+const ProductPricingItem = ({ unit: { price, name, duration }, borderColor }: { unit: ProductUnit, borderColor: string }) => {
   return (
     <li>
       <div className={`py-dimen-sm flex justify-between font-bold border-b ${borderColor}`}>
@@ -96,7 +96,7 @@ const DataPricingItem = ({ unit: { price, name, duration }, borderColor }: { uni
   );
 }
 
-const DataPricing = (
+const ProductPricing = (
   { src, alt, shadowColor, unitBorderColor, units }: 
   { src: string; alt: string, shadowColor: string; unitBorderColor: string; units: ProductUnit[] }
 ) => {
@@ -111,7 +111,7 @@ const DataPricing = (
         <ul>
           {
             units.map(item => (
-              <DataPricingItem unit={item} key={item.name} borderColor={unitBorderColor}  />
+              <ProductPricingItem unit={item} key={item.name} borderColor={unitBorderColor}  />
             ))
           }
         </ul>
@@ -185,8 +185,9 @@ export default function Index() {
         </div>
       </header>
 
-      <main className="pt-20">
+      <main className="py-20">
         <div className="container">
+
           <section id="home" className="py-dimen-lg lg:flex lg:gap-x-dimen-xxxl">
             <div className="py-dimen-xxl lg:py-40">
               <h2 className="font-bold text-2xl mb-dimen-sm lg:text-3xl">Welcome to Royaltysubs</h2>
@@ -205,7 +206,7 @@ export default function Index() {
             </div>
           </section>
 
-          <section id="about" className="py-dimen-lg">
+          <section id="about" className="py-dimen-xxxl">
             <Heading3 text="About us" />
             <div className="lg:flex lg:gap-x-dimen-lg lg:items-center">
               <img 
@@ -228,7 +229,7 @@ export default function Index() {
             </div>
           </section>
 
-          <section id="products" className="py-dimen-lg">
+          <section id="products" className="py-dimen-xxxl">
             <Heading3 text="Our Products" />
             <ul className="md:grid md:grid-cols-2 md:gap-x-dimen-md md:items-stretch lg:grid-cols-4">
               <ServiceItem 
@@ -249,18 +250,18 @@ export default function Index() {
                 heading="Cable Subscription"
                 body="Instantly activate cable subscription with favourable discount compare to others."
               />
-              {/* <ServiceItem
-                src="service-airtime-cash.jpg"
-                alt="Airtime To Cash swap"
-                heading="Airtime To Cash"
-                body="Convert your airtime easily to cash here with less charges."
-              /> */}
               <ServiceItem 
                 src="service-utility.jpg"
                 alt="Utility bills payment"
                 heading="Utility Bills Payment"
                 body="Because we understand your needs, we have made bill and utilities payment more convenient."
               />
+              {/* <ServiceItem
+                src="service-airtime-cash.jpg"
+                alt="Airtime To Cash swap"
+                heading="Airtime To Cash"
+                body="Convert your airtime easily to cash here with less charges."
+              /> */}
               {/* <ServiceItem 
                 src="service-sms.jpg"
                 alt="Bulk SMS purchase"
@@ -270,10 +271,10 @@ export default function Index() {
             </ul>
           </section>
           
-          <section id="pricing" className="py-dimen-lg">
+          <section id="pricing" className="py-dimen-xxxl">
             <Heading3 text="Data Pricing" />
             <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-4">
-              <DataPricing 
+              <ProductPricing 
                 src="mtn.jpg" 
                 alt="MTN logo" 
                 shadowColor="shadow-yellow-500" 
@@ -285,7 +286,7 @@ export default function Index() {
                   { duration: 7, name: '100MB', price: 100 },
                 ]}
               />
-              <DataPricing 
+              <ProductPricing 
                 src="airtel.png" 
                 alt="Airtel logo" 
                 shadowColor="shadow-red-500" 
@@ -297,7 +298,7 @@ export default function Index() {
                   { duration: 7, name: '100MB', price: 100 },
                 ]}
               />
-              <DataPricing 
+              <ProductPricing 
                 src="glo.jpg" 
                 alt="GLO logo" 
                 shadowColor="shadow-green-500" 
@@ -309,7 +310,7 @@ export default function Index() {
                   { duration: 7, name: '100MB', price: 100 },
                 ]}
               />
-              <DataPricing 
+              <ProductPricing 
                 src="9mobile.jpg" 
                 alt="9mobile logo" 
                 shadowColor="shadow-green-800" 
@@ -323,6 +324,50 @@ export default function Index() {
               />
             </ul>
           </section>
+          
+          <section className="py-dimen-xxxl">
+            <Heading3 text="Cable subscription Pricing" />
+            <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
+
+              <ProductPricing 
+                src="dstv.png" 
+                alt="DSTV logo" 
+                shadowColor="shadow-blue-500" 
+                unitBorderColor="border-blue-500"
+                units={[
+                  { duration: 7, name: 'Max', price: 100 },
+                  { duration: 7, name: 'Mini', price: 100 },
+                  { duration: 7, name: 'Premium', price: 100 },
+                ]}
+              />
+
+              <ProductPricing 
+                src="gotv.png" 
+                alt="GOTV logo" 
+                shadowColor="shadow-green-500" 
+                unitBorderColor="border-green-500"
+                units={[
+                  { duration: 7, name: 'Max', price: 100 },
+                  { duration: 7, name: 'Mini', price: 100 },
+                  { duration: 7, name: 'Premium', price: 100 },
+                ]}
+              />
+
+              <ProductPricing 
+                src="startimes.jpg" 
+                alt="Startimes logo" 
+                shadowColor="shadow-orange-500" 
+                unitBorderColor="border-orange-500"
+                units={[
+                  { duration: 7, name: 'Max', price: 100 },
+                  { duration: 7, name: 'Mini', price: 100 },
+                  { duration: 7, name: 'Premium', price: 100 },
+                ]}
+              />
+
+            </ul>
+          </section>
+
         </div>
       </main>
 
