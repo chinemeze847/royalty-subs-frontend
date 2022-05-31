@@ -3,7 +3,7 @@ const {
   createRequestHandler,
 } = require("@remix-run/netlify");
 
-const BUILD_DIR = path.join(process.cwd(), "netlify");
+const BUILD_DIR = path.join(process.cwd(), "public/bulid");
 
 function purgeRequireCache() {
   // purge require cache on requests for "server side HMR" this won't let
@@ -20,10 +20,10 @@ function purgeRequireCache() {
 
 exports.handler =
   process.env.NODE_ENV === "production"
-    ? createRequestHandler({ build: require("./build") })
+    ? createRequestHandler({ build: require("../../../public/build") })
     : (event, context) => {
         purgeRequireCache();
         return createRequestHandler({
-          build: require("./build"),
+          build: require("../../../public/build"),
         })(event, context);
       };
