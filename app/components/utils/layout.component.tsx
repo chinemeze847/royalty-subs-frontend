@@ -1,7 +1,8 @@
-import { Link, NavLink, Outlet } from "@remix-run/react";
+import { Link, NavLink, Outlet, useTransition } from "@remix-run/react";
 import { useState } from "react";
 import type { IconType } from "react-icons";
 import { IoClose, IoMenu, IoPerson } from "react-icons/io5";
+import TopLoaderComponent from "../loader/top-loader.component";
 
 const NavItem = (
   { to, Icon, text, onClick }: 
@@ -38,7 +39,13 @@ const NavItem = (
 const AccountLink = ({ to, text, onClick }: { to: string; text: string; onClick: () => void }) => {
   return (
     <li>
-      <Link onClick={onClick} to={to} className="block px-dimen-sm py-dimen-xs hover:bg-color-background">{ text }</Link>
+      <Link 
+        to={to} 
+        onClick={onClick} 
+        className="block px-dimen-sm py-dimen-xs hover:bg-color-background"
+      >
+        { text }
+      </Link>
     </li>
   );
 }
@@ -52,6 +59,8 @@ export default function LayoutComponent(
   { sideBarItems: SideBarItem[], accoutMenuItems: AccountMenuItem[] }
 ) {
 
+  const transition = useTransition();
+
   const [showNav, setShowNav] = useState(false);
 
   const [showAccountNav, setShowAccountNav] = useState(false);
@@ -62,8 +71,10 @@ export default function LayoutComponent(
 
   return (
     <>
-      <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10 lg:pl-64">
-        <div className="container flex justify-between">
+      <header className=" border-b fixed w-full left-0 top-0 bg-color-surface z-10 lg:pl-64">
+        { transition.state === 'loading' && <TopLoaderComponent /> }
+        
+        <div className="container py-dimen-md flex justify-between">
           <button onClick={() => setShowNav(true)} className="hover:bg-color-primary-variant lg:hidden">
             <IoMenu className="text-4xl text-color-primary" />
             <span className="sr-only">Menu</span>

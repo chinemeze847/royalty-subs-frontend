@@ -41,7 +41,7 @@ export default function Dashboard() {
           flexGrow={false}
           title="Products"
           empty={{ Icon: IoCubeOutline, text: 'There is no product' }}
-          renderItem={(item) => <ProductItem text={item.text} to={item.to} Icon={item.Icon} />}
+          renderItem={(item) => <ProductItem key={item.text} text={item.text} to={item.to} Icon={item.Icon} />}
         />
 
         <DashboardCardComponent 

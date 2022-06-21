@@ -1,147 +1,69 @@
-import { Link, NavLink } from "@remix-run/react";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { useLoaderData, useTransition } from "@remix-run/react";
 import { useState } from "react";
-import type { IconType } from "react-icons";
-import { IoCall, IoCheckmark, IoClose, IoLocation, IoMail, IoMenu } from "react-icons/io5";
+import { IoCall, IoClose, IoLocation, IoMail, IoMenu } from "react-icons/io5";
+import HomeHeaderNavItemComponent from "../components/header/home-header-nav-item.component";
+import TopLoaderComponent from "../components/loader/top-loader.component";
+import FooterNavItemComponent from "../components/footer/footer-nav-item.component";
+import ContactUsItemComponent from "../components/footer/contact-us-item.component";
+import TopSectionLinkComponent from "../components/home/top-section-link.component";
+import Heading3Component from "../components/home/heading-3.component";
+import AboutUsItemComponent from "../components/home/about-us-item.component";
+import ServiceItemComponent from "../components/home/service-item.component";
+import ProductPricingComponent from "../components/home/product-pricing.component";
+import ProductApiService from "../services/product-api.service";
+import type Product from "../models/product.model";
+import type Brand from "../models/brand.model";
 
-const HeaderNavItem = ({ to, text }: { to: string; text: string }) => {
-  return (
-    <li>
-      <NavLink 
-        to={to}
-        className="block p-dimen-sm rounded-full lg:text-color-primary hover:bg-color-background lg:font-bold" 
-      >
-        { text }
-      </NavLink>
-    </li>
+type LoaderData = {
+  product: Product;
+  brands: Brand[];
+}[];
+
+export const loader: LoaderFunction = async () => {
+  const data = await ProductApiService.read();
+
+  const units = await Promise.all(
+    data.data.map((item) => ProductApiService.readProductUnits(item.id))
   );
-}
 
-const FooterNavItem = ({ to, text }: { to: string; text: string }) => {
-  return (
-    <li>
-      <Link className="w-fit block py-dimen-sm hover:border-b-2 hover:border-color-primary" to={to}>{ text }</Link>
-    </li>
-  );
-}
+  const data2 = data.data.map((product, index) => {
+    const productUnits = units[index].data;
+    const brands: Brand[] = [];
 
-const TopSectionLink = ({ to, text, inverse = false }: { to: string; text: string; inverse?: boolean }) => {
-  return (
-    <li>
-      <Link 
-        to={to}
-        className={`
-          block 
-          border 
-          border-color-primary
-          p-dimen-sm 
-          rounded-lg 
-          hover:bg-color-primary-variant
-          ${ 
-            inverse 
-              ? 'text-color-primary'
-              : 'text-color-on-primary bg-color-primary'
-          }
-        `}
-      >
-        { text }
-      </Link>
-    </li>
-  );
-}
+    for(const unit of productUnits) {
+      let brandIndex = brands.findIndex((item) => item.id === unit.brandId);
+      if (brandIndex === -1) {
+        brands.push({ ...unit.brand, productUnits: [] });
+        brandIndex = brands.length - 1;
+      }
+      brands[brandIndex].productUnits.push(unit);
+    }
 
-const Heading3 = ({ text }: { text: string }) => {
-  return (
-    <h3 
-      className="w-fit font-bold text-color text-3xl text-color-primary mb-dimen-lg pb-dimen-xs px-dimen-md border-b-4 border-color-primary"
-    >
-      { text }
-    </h3>
-  );
-}
+    return { product, brands };
+  });
 
-const AboutUsItem = ({ text }: { text: string }) => {
-  return (
-    <li className="flex gap-x-dimen-sm items-center">
-      <IoCheckmark className="text-xl text-color-primary" />
-      <div>{ text }</div>
-    </li>
-  );
-}
-
-const ServiceItem = ({ src, alt, heading, body }: { src: string; alt: string; heading: string; body: string; }) => {
-  return (
-    <li className="mb-dimen-md">
-      <div className="transition-transform shadow shadow-color-primary rounded-lg hover:scale-105">
-        <img src={`/images/${src}`} alt={alt} className="w-full h-[20rem] rounded-tl-lg rounded-tr-lg" />
-        <div className="p-dimen-md">
-          <div className="font-bold">{ heading }</div>
-          <div>{ body }</div>
-        </div>
-      </div>
-    </li>
-  );
-}
-
-type ProductUnit = { price: number; name: string; duration: number };
-
-const ProductPricingItem = ({ unit: { price, name, duration }, borderColor }: { unit: ProductUnit, borderColor: string }) => {
-  return (
-    <li>
-      <div className={`py-dimen-sm flex justify-between font-bold border-b ${borderColor}`}>
-        <span>{ name }</span>
-        <span>NGN { price }</span>
-        <span>{ duration } days</span>
-      </div>
-    </li>
-  );
-}
-
-const ProductPricing = (
-  { src, alt, bgColor, shadowColor, unitBorderColor, units }: 
-  { src: string; alt: string, bgColor: string; shadowColor: string; unitBorderColor: string; units: ProductUnit[] }
-) => {
-  return (
-    <li>
-      <div className={`transition-colors duration-500 shadow p-dimen-md rounded-lg ${shadowColor} ${bgColor}`}>
-        <img 
-          src={`/images/${src}`} 
-          alt={alt} 
-          className={`w-40 h-40 rounded-lg mx-auto mb-dimen-md shadow ${shadowColor}`}
-        />
-        <ul>
-          {
-            units.map(item => (
-              <ProductPricingItem unit={item} key={item.name} borderColor={unitBorderColor}  />
-            ))
-          }
-        </ul>
-      </div>
-    </li>
-  );
-}
-
-const ContactUsItem = ({ Icon, heading, body }: { Icon: IconType, heading: string; body: string }) => {
-  return (
-    <li>
-      <div className="flex gap-x-dimen-sm py-dimen-md items-start">
-        <Icon className="text-xl" />
-        <div>
-          <div className="font-bold">{ heading }</div>
-          <div>{ body }</div>
-        </div>
-      </div>
-    </li>
-  );
-}
+  return json(data2);
+};
 
 export default function Index() {
+
+  const data = useLoaderData<LoaderData>();
+
+  const dataProduct = data.find((item) => item.product.id === 1);
+
+  const cableProduct = data.find((item) => item.product.id === 3);
+
+  const transition = useTransition();
 
   const [showNav, setShowNav] = useState(false);
 
   return (
     <>
-      <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10">
-        <div className="container flex items-center gap-x-dimen-md">
+      <header className="border-b fixed w-full left-0 top-0 bg-color-surface z-10">
+        { transition.state === 'loading' && <TopLoaderComponent /> }
+
+        <div className="py-dimen-md  container flex items-center gap-x-dimen-md">
           <h1 className="text-color-primary font-bold text-3xl">Royaltysubs</h1>
           <nav className="flex flex-grow justify-end bordler relative lg:justify-center">
             <button onClick={() => setShowNav(!showNav)} className="hover:bg-color-primary-variant lg:hidden">
@@ -173,14 +95,14 @@ export default function Index() {
                 lg:shadow-none
               `}
             >
-              <HeaderNavItem to="#home" text="Home" />
-              <HeaderNavItem to="#about" text="About us" />
-              <HeaderNavItem to="#products" text="Our products" />
-              <HeaderNavItem to="#pricing" text="Pricing" />
-              <HeaderNavItem to="login" text="Log in" />
-              <HeaderNavItem to="register" text="Register" />
-              <HeaderNavItem to="account" text="Account" />
-              <HeaderNavItem to="admin" text="Admin" />
+              <HomeHeaderNavItemComponent to="#home" text="Home" />
+              <HomeHeaderNavItemComponent to="#about" text="About us" />
+              <HomeHeaderNavItemComponent to="#products" text="Our products" />
+              <HomeHeaderNavItemComponent to="#pricing" text="Pricing" />
+              <HomeHeaderNavItemComponent to="login" text="Log in" />
+              <HomeHeaderNavItemComponent to="register" text="Register" />
+              <HomeHeaderNavItemComponent to="account" text="Account" />
+              <HomeHeaderNavItemComponent to="admin" text="Admin" />
             </ul>
           </nav>
         </div>
@@ -194,8 +116,8 @@ export default function Index() {
               <h2 className="font-bold text-2xl mb-dimen-sm lg:text-3xl">Welcome to Royaltysubs</h2>
               <div className="text-3xl mb-dimen-xxl xl:text-5xl">Your #1 Mobile Data, Cable Sub, Electric Bill, Airtime (VTU) vendor.</div>
               <ul className="flex gap-x-dimen-sm">
-                <TopSectionLink to="login" text="Login" inverse />
-                <TopSectionLink to="register" text="Register" />
+                <TopSectionLinkComponent to="login" text="Login" inverse />
+                <TopSectionLinkComponent to="register" text="Register" />
               </ul>
             </div>
             <div className="py-dimen-md lg:-rotate-6 lg:py-16 hover:rotate-0 transition-all duration-500">
@@ -208,7 +130,7 @@ export default function Index() {
           </section>
 
           <section id="about" className="py-dimen-xxxl">
-            <Heading3 text="About us" />
+            <Heading3Component text="About us" />
             <div className="lg:flex lg:gap-x-dimen-lg lg:items-center">
               <img 
                 alt="Light bulb" 
@@ -221,157 +143,83 @@ export default function Index() {
                   We provide best internet services using cutting edge technologies for the benefits of our clients.
                 </p>
                 <ul className="my-dimen-md">
-                  <AboutUsItem text="We Are Automated" />
-                  <AboutUsItem text="Customer Support" />
-                  <AboutUsItem text="We Are Reliable" />
-                  <AboutUsItem text="24/7 Support!" />
+                  <AboutUsItemComponent text="We Are Automated" />
+                  <AboutUsItemComponent text="Customer Support" />
+                  <AboutUsItemComponent text="We Are Reliable" />
+                  <AboutUsItemComponent text="24/7 Support!" />
                 </ul>
               </div>
             </div>
           </section>
 
           <section id="products" className="py-dimen-xxxl">
-            <Heading3 text="Our Products" />
+            <Heading3Component text="Our Products" />
             <ul className="md:grid md:grid-cols-2 md:gap-x-dimen-md md:items-stretch lg:grid-cols-4">
-              <ServiceItem 
+              <ServiceItemComponent 
                 src="service-airtime.jpg"
                 alt="Airtime purchase"
                 heading="Airtime TopUp"
                 body="Making an Online recharge has become very easy and safe on Royaltysubs."
               />
-              <ServiceItem 
+              <ServiceItemComponent 
                 src="service-data.jpg"
                 alt="Data purchase"
                 heading="Buy Data"
                 body="Purchase and enjoy our very low rate data plans for your internet browsing data bundle."
               />
-              <ServiceItem 
+              <ServiceItemComponent 
                 src="service-cable.jpg"
                 alt="Cable Subscription purchase"
                 heading="Cable Subscription"
                 body="Instantly activate cable subscription with favourable discount compare to others."
               />
-              <ServiceItem 
+              <ServiceItemComponent 
                 src="service-utility.jpg"
                 alt="Utility bills payment"
                 heading="Utility Bills Payment"
                 body="Because we understand your needs, we have made bill and utilities payment more convenient."
               />
-              {/* <ServiceItem
-                src="service-airtime-cash.jpg"
-                alt="Airtime To Cash swap"
-                heading="Airtime To Cash"
-                body="Convert your airtime easily to cash here with less charges."
-              /> */}
-              {/* <ServiceItem 
-                src="service-sms.jpg"
-                alt="Bulk SMS purchase"
-                heading="Bulk SMS"
-                body="Send your sms in bulk at convenient rates."
-              /> */}
             </ul>
           </section>
           
           <section id="pricing" className="py-dimen-xxxl">
-            <Heading3 text="Data Pricing" />
+            <Heading3Component text="Data Pricing" />
             <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-4">
-              <ProductPricing 
-                src="mtn.jpg" 
-                alt="MTN logo" 
-                bgColor="hover:bg-yellow-200"
-                shadowColor="shadow-yellow-500" 
-                unitBorderColor="border-yellow-500"
-                units={[
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                ]}
-              />
-              <ProductPricing 
-                src="airtel.png" 
-                alt="Airtel logo" 
-                bgColor="hover:bg-red-200"
-                shadowColor="shadow-red-500" 
-                unitBorderColor="border-red-500"
-                units={[
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                ]}
-              />
-              <ProductPricing 
-                src="glo.jpg" 
-                alt="GLO logo" 
-                bgColor="hover:bg-green-200"
-                shadowColor="shadow-green-500" 
-                unitBorderColor="border-green-500"
-                units={[
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                ]}
-              />
-              <ProductPricing 
-                src="9mobile.jpg" 
-                alt="9mobile logo" 
-                bgColor="hover:bg-green-300"
-                shadowColor="shadow-green-800" 
-                unitBorderColor="border-green-800"
-                units={[
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                  { duration: 7, name: '100MB', price: 100 },
-                ]}
-              />
+              {
+                dataProduct !== undefined &&
+                dataProduct.brands.map(item => (
+                  <ProductPricingComponent 
+                    key={item.id}
+                    src={item.photo.href}
+                    alt="MTN logo" 
+                    bgColor="hover:bg-yellow-200"
+                    shadowColor="shadow-yellow-500" 
+                    unitBorderColor="border-yellow-500"
+                    units={item.productUnits}
+                  />
+                ))
+              }
             </ul>
           </section>
           
           <section className="py-dimen-xxxl">
-            <Heading3 text="Cable subscription Pricing" />
+            <Heading3Component text="Cable subscription Pricing" />
             <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
 
-              <ProductPricing 
-                src="dstv.png" 
-                alt="DSTV logo" 
-                bgColor="hover:bg-blue-200"
-                shadowColor="shadow-blue-500" 
-                unitBorderColor="border-blue-500"
-                units={[
-                  { duration: 7, name: 'Max', price: 100 },
-                  { duration: 7, name: 'Mini', price: 100 },
-                  { duration: 7, name: 'Premium', price: 100 },
-                ]}
-              />
-
-              <ProductPricing 
-                src="gotv.png" 
-                alt="GOTV logo" 
-                bgColor="hover:bg-green-200"
-                shadowColor="shadow-green-500" 
-                unitBorderColor="border-green-500"
-                units={[
-                  { duration: 7, name: 'Max', price: 100 },
-                  { duration: 7, name: 'Mini', price: 100 },
-                  { duration: 7, name: 'Premium', price: 100 },
-                ]}
-              />
-
-              <ProductPricing 
-                src="startimes.jpg" 
-                alt="Startimes logo" 
-                bgColor="hover:bg-orange-200"
-                shadowColor="shadow-orange-500" 
-                unitBorderColor="border-orange-500"
-                units={[
-                  { duration: 7, name: 'Max', price: 100 },
-                  { duration: 7, name: 'Mini', price: 100 },
-                  { duration: 7, name: 'Premium', price: 100 },
-                ]}
-              />
+              {
+                cableProduct !== undefined &&
+                cableProduct.brands.map(item => (
+                  <ProductPricingComponent 
+                    key={item.id}
+                    src="dstv.png" 
+                    alt="DSTV logo" 
+                    bgColor="hover:bg-blue-200"
+                    shadowColor="shadow-blue-500" 
+                    unitBorderColor="border-blue-500"
+                    units={item.productUnits}
+                  />
+                ))
+              }
 
             </ul>
           </section>
@@ -384,21 +232,21 @@ export default function Index() {
           <div className="mb-dimen-md">
             <h5 className="font-bold uppercase">Resources</h5>
             <ul>
-              <FooterNavItem to="#home" text="Home" />
-              <FooterNavItem to="#about" text="About us" />
-              <FooterNavItem to="#products" text="Our products" />
-              <FooterNavItem to="#pricing" text="Pricing" />
-              <FooterNavItem to="terms" text="Terms of service" />
-              <FooterNavItem to="login" text="Log in" />
-              <FooterNavItem to="register" text="Register" />
+              <FooterNavItemComponent to="#home" text="Home" />
+              <FooterNavItemComponent to="#about" text="About us" />
+              <FooterNavItemComponent to="#products" text="Our products" />
+              <FooterNavItemComponent to="#pricing" text="Pricing" />
+              <FooterNavItemComponent to="terms" text="Terms of service" />
+              <FooterNavItemComponent to="login" text="Log in" />
+              <FooterNavItemComponent to="register" text="Register" />
             </ul>
           </div>
           <div>
             <h5 className="font-bold uppercase">Contact us</h5>
             <ul>
-              <ContactUsItem Icon={IoCall} heading="Phone number" body="08109260088" />
-              <ContactUsItem Icon={IoMail} heading="Email address" body="iykesamuel0@gmail.com" />
-              <ContactUsItem Icon={IoLocation} heading="Address" body="#56 Ojokwu street, Olodi Apapa, Lagos" />
+              <ContactUsItemComponent Icon={IoCall} heading="Phone number" body="08109260088" />
+              <ContactUsItemComponent Icon={IoMail} heading="Email address" body="iykesamuel0@gmail.com" />
+              <ContactUsItemComponent Icon={IoLocation} heading="Address" body="#56 Ojokwu street, Olodi Apapa, Lagos" />
             </ul>
           </div>
         </div>
