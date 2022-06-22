@@ -135,7 +135,7 @@ export default function Login() {
 
       </div>
 
-      <ToastContainer position={toast.POSITION.TOP_RIGHT} />
+      <ToastContainer />
     </main>
   );
 }

@@ -72,9 +72,9 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Register() {
-  const transition = useTransition();
-
   const data = useActionData();
+  
+  const transition = useTransition();
 
   const { errors } = useLoaderData<LoaderData>();
   

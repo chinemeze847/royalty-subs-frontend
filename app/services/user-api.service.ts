@@ -16,6 +16,17 @@ const UserApiService = {
     return { status: res.status, body };
   },
 
+  async update(
+    id: number | string,
+    form: { firstName?: string; lastName?: string; email?: string; phoneNumber?: string; },
+    accessToken: string
+  ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
+    console.log(form)
+    const res = await HttpService.putJson(this.getPath(id), form, accessToken);
+    const body = await res.json();
+    return { status: res.status, body };
+  },
+
   async readOne(id: number | string, accessToken: string): Promise<{ status: number; body: ResponseDto<User> }> {
     const res = await HttpService.get(this.getPath(id), accessToken);
     const body = await res.json();

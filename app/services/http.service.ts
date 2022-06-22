@@ -14,19 +14,32 @@ const HttpService = {
     });
   },
 
-  postJson(path: string, form: { [key: string]: any }, accessToken?: string) {
+  mutateJson(
+    path: string, 
+    method: string, 
+    form: { [key: string]: any }, 
+    accessToken?: string
+  ) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
     if (accessToken !== undefined) {
-      headers.append('Authorization', accessToken);
+      headers.append('Authorization', `Bearer ${accessToken}`);
     }
 
     return fetch(`${API_URL}${path}`, { 
+      method, 
       headers,
-      method: 'POST', 
       body: JSON.stringify(form),
     });
+  },
+
+  postJson(path: string, form: { [key: string]: any }, accessToken?: string) {
+    return this.mutateJson(path, 'POST', form, accessToken);
+  },
+
+  putJson(path: string, form: { [key: string]: any }, accessToken?: string) {
+    return this.mutateJson(path, 'PUT', form, accessToken);
   }
 };
 
