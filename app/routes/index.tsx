@@ -60,10 +60,10 @@ export default function Index() {
 
   return (
     <>
-      <header className="border-b fixed w-full left-0 top-0 bg-color-surface z-10">
-        { transition.state === 'loading' && <TopLoaderComponent /> }
-
-        <div className="py-dimen-md  container flex items-center gap-x-dimen-md">
+      { transition.state === 'loading' && <TopLoaderComponent /> }
+      
+      <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10">
+        <div className="container flex items-center gap-x-dimen-md">
           <h1 className="text-color-primary font-bold text-3xl">Royaltysubs</h1>
           <nav className="flex flex-grow justify-end bordler relative lg:justify-center">
             <button onClick={() => setShowNav(!showNav)} className="hover:bg-color-primary-variant lg:hidden">

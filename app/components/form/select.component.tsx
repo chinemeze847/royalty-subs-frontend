@@ -5,13 +5,14 @@ type Props = {
   label: string;
   name: string; 
   value?: string;
+  error?: string;
   required?: boolean;
   defaultText?: string;
   options: { value: string | number; text: string }[]
 }
 
 export default forwardRef(function SelectCmponent(
-  { id, label, name, options, required = true, value = '', defaultText = 'Choose one' }: Props, 
+  { id, label, name, options, error, required = true, value = '', defaultText = 'Choose one' }: Props, 
   ref: LegacyRef<HTMLSelectElement>
 ) {
   return (
@@ -32,6 +33,7 @@ export default forwardRef(function SelectCmponent(
           ))
         }
       </select>
+      <div className="text-color-error">{ error }</div>
     </div>
   );
 });

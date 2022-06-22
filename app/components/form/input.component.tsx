@@ -9,10 +9,11 @@ type Props = {
   step?: string;
   required?: boolean;
   disabled?: boolean;
+  error?: string;
 };
 
 export default forwardRef(function InputCmponent(
-  { id, label, name, required = true, step, value = '', type = 'text', disabled = false }: Props, 
+  { id, label, name, required = true, step, error, value = '', type = 'text', disabled = false }: Props, 
   ref: LegacyRef<HTMLInputElement>
 ) {
   return (
@@ -29,6 +30,7 @@ export default forwardRef(function InputCmponent(
         defaultValue={value}
         className="block w-full p-dimen-sm border border-color-primary rounded-lg outline-none disabled:bg-color-background" 
       />
+      <div className="text-color-error">{ error }</div>
     </div>
   );
 });

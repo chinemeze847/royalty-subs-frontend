@@ -31,5 +31,5 @@
   .table-danger-button {
     @apply block w-fit text-color-on-primary py-dimen-xs px-dimen-lg font-bold rounded-lg bg-color-error hover:bg-color-primary-variant;
   }
-
+  
 }

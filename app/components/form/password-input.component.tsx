@@ -7,10 +7,11 @@ type Props = {
   name: string; 
   value?: string;
   required?: boolean;
+  error?: string;
 }
 
 export default forwardRef(function PasswordInputCmponent(
-  { id, label, name, required = true, value = '' }: Props, 
+  { id, label, name, error, required = true, value = '' }: Props, 
   ref: LegacyRef<HTMLInputElement>
 ) {
 
@@ -33,6 +34,7 @@ export default forwardRef(function PasswordInputCmponent(
           { show ? <IoEyeOff className="text-xl" /> : <IoEye className="text-xl" /> }
         </button>
       </div>
+      <div className="text-color-error">{ error }</div>
     </div>
   );
 });

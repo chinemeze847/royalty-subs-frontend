@@ -5,12 +5,13 @@ type Props = {
   label: string;
   name: string; 
   value?: string;
+  error?: string;
   required?: boolean;
   disabled?: boolean;
 };
 
 export default forwardRef(function TextareaComponent(
-  { id, label, name, required = true, value = '', disabled = false }: Props, 
+  { id, label, name, error, required = true, value = '', disabled = false }: Props, 
   ref: LegacyRef<HTMLTextAreaElement>
 ) {
   return (
@@ -25,6 +26,7 @@ export default forwardRef(function TextareaComponent(
         defaultValue={value}
         className="block w-full p-dimen-sm border border-color-primary rounded-lg outline-none disabled:bg-color-background" 
       ></textarea>
+      <div className="text-color-error">{ error }</div>
     </div>
   );
 });

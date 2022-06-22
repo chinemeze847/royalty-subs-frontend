@@ -1,18 +1,20 @@
-import { API_URL } from "../constants";
+import HttpService from "~/services/http.service";
 import type ProductUnit from "../models/product-unit.model";
 import type Product from "../models/product.model";
 import type ResponseDto from "../models/response-dto.model";
 
-const API_URL_PATH = `${API_URL}products/`;
-
 const ProductApiService = {
+  getPath(path = '') {
+    return `products/${path}`;
+  },
+
   async read(): Promise<ResponseDto<Product[]>> {
-    const res = await fetch(API_URL_PATH);
+    const res = await HttpService.get(this.getPath());
     return res.json();
   },
 
   async readProductUnits(productId: number): Promise<ResponseDto<ProductUnit[]>> {
-    const res = await fetch(`${API_URL_PATH}${productId}/product-units`);
+    const res = await HttpService.get(this.getPath(`${productId}/product-units`));
     return res.json();
   },
 };

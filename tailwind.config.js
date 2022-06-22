@@ -27,6 +27,19 @@ module.exports = {
         'dimen-xxl': '1.75rem',
         'dimen-xxxl': '2rem',
       },
+
+      keyframes: {
+        'horizontal-loading': {
+          '0%': { width: '0%' },
+          '49%': { width: '100%', left: '0%' },
+          '50%': { left: '100%', width: '0' },
+          '100%': { left: '0%', width: '100%' }
+        },
+      },
+
+      animation: {
+        'horizontal-loader': 'horizontal-loading 3s ease-in-out infinite',
+      }
     },
   },
   plugins: [],
