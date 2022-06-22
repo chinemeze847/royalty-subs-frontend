@@ -21,8 +21,17 @@ const UserApiService = {
     form: { firstName?: string; lastName?: string; email?: string; phoneNumber?: string; },
     accessToken: string
   ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
-    console.log(form)
     const res = await HttpService.putJson(this.getPath(id), form, accessToken);
+    const body = await res.json();
+    return { status: res.status, body };
+  },
+
+  async updatePassword(
+    id: number | string,
+    form: { password?: string; newPassword?: string; },
+    accessToken: string
+  ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
+    const res = await HttpService.putJson(this.getPath(`${id}/password`), form, accessToken);
     const body = await res.json();
     return { status: res.status, body };
   },

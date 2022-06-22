@@ -1,5 +1,7 @@
 import { json, redirect, type ActionFunction, type LoaderFunction } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
+import { useEffect } from "react";
+import { ToastContainer, toast } from 'react-toastify';
 import InputComponent from "~/components/form/input.component";
 import SubmitButtonComponent from "~/components/form/submit-button.component";
 import AccountH2Component from "~/components/header/account-h2.component";
@@ -7,8 +9,6 @@ import type User from "~/models/user.model";
 import type ValidationError from "~/models/validation-error.model";
 import UserApiService from "~/services/user-api.service";
 import { commitSession, getSession } from "~/session.server";
-import { ToastContainer, toast } from 'react-toastify';
-import { useEffect } from "react";
 
 type LoaderData = {
   user: User;
@@ -47,7 +47,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   });
 }
 
-export const action: ActionFunction = async ({ request, context }) => {
+export const action: ActionFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
 
   const userId = session.get('userId');
