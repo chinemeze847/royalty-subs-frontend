@@ -1,5 +1,5 @@
 import { type ActionFunction, json, redirect, type LoaderFunction } from '@remix-run/node';
-import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
+import { Form, Link, useActionData, useLoaderData, useLocation, useTransition } from '@remix-run/react';
 import { useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import InputComponent from '~/components/form/input.component';
@@ -15,25 +15,19 @@ type LoaderData = {
   errors: {
     auth: string;
   };
-
-  data: {
-    email: string;
-  };
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const queryParams = new URL(request.url).searchParams;
   const session = await getSession(request.headers.get('Cookie'));
 
   if (session.has('userId')) {
-    return redirect('/account');
+    return redirect(queryParams.get('redirectTo') ?? '/account');
   }
 
   const data = { 
     errors: {
       auth: session.get('authError'),
-    },
-    data: {
-      email: session.get('email'),
     }
   };
 
@@ -45,7 +39,9 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export const action: ActionFunction = async ({ request }) => {
-  let redirectTo = '/login';
+  let redirectTo = request.url;
+  
+  const queryParams = new URL(request.url).searchParams;
 
   const session = await getSession(request.headers.get('Cookie'));
 
@@ -61,9 +57,8 @@ export const action: ActionFunction = async ({ request }) => {
     session.set('userId', data.userId);
     session.set('accessToken', data.accessToken);
 
-    redirectTo = '/account';
+    redirectTo = queryParams.get('redirectTo') ?? '/account';
   } else if (apiResponse.status === 401) {
-    session.flash('email', email);
     session.flash('authError', 'Credentials are incorrect');
   }
   
@@ -75,23 +70,32 @@ export const action: ActionFunction = async ({ request }) => {
 }
 
 export default function Login() {
+  const location = useLocation();
+
   const transition = useTransition();
 
-  const { data, errors } = useLoaderData<LoaderData>();
+  const data = useActionData();
+
+  const { errors } = useLoaderData<LoaderData>();
 
   useEffect(() => { 
-    if (errors.auth !== undefined) { 
+    if (transition.state === 'idle' && errors.auth !== undefined) { 
       toast.error(errors.auth);
     }
-  }, [errors.auth]);
+  }, [errors.auth, transition.state]);
 
   return (
     <main>
-      { transition.state === 'loading' && <TopLoaderComponent /> }
+      <TopLoaderComponent />
     
       <div className="container py-dimen-xxxl">
         
-        <Form className="auth-form" method="post" autoComplete="off">
+        <Form 
+          method="post" 
+          autoComplete="off"
+          className="auth-form" 
+          action={`${location.pathname}${location.search}`} 
+        >
 
           <AuthH1Component />
 
@@ -104,13 +108,14 @@ export default function Login() {
               label="Email address"
               name="email"
               type="email"
-              value={data.email}
+              value={data?.email}
             />
             
             <PasswordInputComponent 
               id="password-input"
               label="Password"
               name="password"
+              value={data?.password}
             />
 
             <div className="mb-dimen-sm">

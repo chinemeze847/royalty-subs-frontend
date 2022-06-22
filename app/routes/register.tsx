@@ -1,5 +1,5 @@
 import { json, type LoaderFunction, redirect, type ActionFunction } from '@remix-run/node';
-import { Form, Link, useLoaderData, useTransition } from '@remix-run/react';
+import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react';
 import CheckboxComponent from '~/components/form/checkbox.component';
 import InputComponent from '~/components/form/input.component';
 import PasswordInputComponent from '~/components/form/password-input.component';
@@ -19,13 +19,6 @@ type LoaderData = {
     phoneNumber: string;
     password: string;
   };
-
-  data: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string;
-  };
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
@@ -42,12 +35,6 @@ export const loader: LoaderFunction = async ({ request }) => {
       email: session.get('emailError'),
       phoneNumber: session.get('phoneNumberError'),
       password: session.get('passwordError'),
-    },
-    data: {
-      firstName: session.get('firstName'),
-      lastName: session.get('lastName'),
-      email: session.get('email'),
-      phoneNumber: session.get('phoneNumber'),
     }
   };
 
@@ -73,13 +60,7 @@ export const action: ActionFunction = async ({ request }) => {
   if (apiResponse.status === 201) {
     return redirect('/login');
   } else if (apiResponse.status === 400) {
-    session.flash('firstName', firstName);
-    session.flash('lastName', lastName);
-    session.flash('email', email);
-    session.flash('phoneNumber', phoneNumber);
-
     const errors = apiResponse.body.data as ValidationError[];
-
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
   }
   
@@ -93,11 +74,13 @@ export const action: ActionFunction = async ({ request }) => {
 export default function Register() {
   const transition = useTransition();
 
-  const { data, errors } = useLoaderData<LoaderData>();
+  const data = useActionData();
+
+  const { errors } = useLoaderData<LoaderData>();
   
   return (
     <main>
-      { transition.state === 'loading' && <TopLoaderComponent /> }
+      <TopLoaderComponent />
     
       <div className="container py-dimen-xxxl">
         
@@ -113,7 +96,7 @@ export default function Register() {
               id="first-name-input"
               label="First name"
               name="firstName"
-              value={data.firstName}
+              value={data?.firstName}
               error={errors.firstName}
             />
 
@@ -121,7 +104,7 @@ export default function Register() {
               id="last-name-input"
               label="Last name"
               name="lastName"
-              value={data.lastName}
+              value={data?.lastName}
               error={errors.lastName}
             />
             
@@ -130,7 +113,7 @@ export default function Register() {
               label="Email address"
               name="email"
               type="email"
-              value={data.email}
+              value={data?.email}
               error={errors.email}
             />
 
@@ -139,7 +122,7 @@ export default function Register() {
               label="Phone number"
               name="phoneNumber"
               type="tel"
-              value={data.phoneNumber}
+              value={data?.phoneNumber}
               error={errors.phoneNumber}
             />
             
@@ -147,6 +130,7 @@ export default function Register() {
               id="password-input"
               label="Password"
               name="password"
+              value={data?.password}
               error={errors.password}
             />
 
