@@ -191,10 +191,7 @@ export default function Index() {
                   <ProductPricingComponent 
                     key={item.id}
                     src={item.photo.href}
-                    alt="MTN logo" 
-                    bgColor="hover:bg-yellow-200"
-                    shadowColor="shadow-yellow-500" 
-                    unitBorderColor="border-yellow-500"
+                    alt={item.name}
                     units={item.productUnits}
                   />
                 ))
@@ -211,11 +208,8 @@ export default function Index() {
                 cableProduct.brands.map(item => (
                   <ProductPricingComponent 
                     key={item.id}
-                    src="dstv.png" 
-                    alt="DSTV logo" 
-                    bgColor="hover:bg-blue-200"
-                    shadowColor="shadow-blue-500" 
-                    unitBorderColor="border-blue-500"
+                    src={item.photo.href} 
+                    alt={item.name}
                     units={item.productUnits}
                   />
                 ))
