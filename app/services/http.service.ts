@@ -5,7 +5,7 @@ const HttpService = {
     const headers = new Headers();
 
     if (accessToken !== undefined) {
-      headers.append('Authorization', accessToken);
+      headers.append('Authorization', `Bearer ${accessToken}`);
     }
 
     return fetch(`${API_URL}${path}`, {

@@ -4,7 +4,7 @@ import HttpService from "~/services/http.service";
 import type ResponseDto from "../models/response-dto.model";
 
 const UserApiService = {
-  getPath(path = '') {
+  getPath(path: string | number = '') {
     return `users/${path}`;
   },
 
@@ -15,6 +15,20 @@ const UserApiService = {
     const body = await res.json();
     return { status: res.status, body };
   },
+
+  async readOne(id: number | string, accessToken: string): Promise<{ status: number; body: ResponseDto<User> }> {
+    const res = await HttpService.get(this.getPath(id), accessToken);
+    const body = await res.json();
+    return { status: res.status, body };
+  },
+
+  async readTransactionBalance(
+    id: number | string, accessToken: string
+  ): Promise<{ status: number; body: ResponseDto<{ transactionsBalance: number }> }> {
+    const res = await HttpService.get(this.getPath(`${id}/transactions-balance`), accessToken);
+    const body = await res.json();
+    return { status: res.status, body };
+  }
 };
 
 export default UserApiService;

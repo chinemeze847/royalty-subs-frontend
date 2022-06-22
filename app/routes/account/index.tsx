@@ -1,48 +1,47 @@
-import { Link } from "@remix-run/react";
-import type { IconType } from "react-icons";
-import { IoBulb, IoCall, IoCartOutline, IoCubeOutline, IoTv, IoWifi } from "react-icons/io5";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { IoCartOutline } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
 import DashboardCardComponent from "~/components/utils/dashboard-card.component";
 import WalletComponent from "~/components/utils/wallet.component";
+import type User from "~/models/user.model";
+import UserApiService from "~/services/user-api.service";
+import { getSession } from "~/session.server";
 
-const ProductItem = ({ to, Icon, text }: { to: string, Icon: IconType, text: string }) => {
-  return (
-    <li className="mb-dimen-sm">
-      <Link 
-        to={to} 
-        className="flex py-dimen-sm items-center gap-x-dimen-sm hover:bg-color-background"
-      >
-        <Icon className="text-2xl text-color-primary" />
-        <span className="">{ text }</span>
-      </Link>
-    </li>
-  );
+type LoaderData = { user: User, transactionsBalance: number };
+
+export const loader: LoaderFunction= async ({ request }) => {
+  const session = await getSession(request.headers.get('Cookie'));
+
+  const userId = session.get('userId');
+  const accessToken = session.get('accessToken');
+
+  const [userResponse, balanceResponse] = await Promise.all([
+    UserApiService.readOne(userId, accessToken),
+    UserApiService.readTransactionBalance(userId, accessToken),
+  ]);
+
+  return json<LoaderData>({ 
+    user: userResponse.body.data,
+    transactionsBalance: balanceResponse.body.data.transactionsBalance,
+  });
 }
 
-const PRODUCTS = [
-  { text: 'Buy Data', to: 'buy-data', Icon: IoWifi },
-  { text: 'Buy Airtime', to: 'buy-airtime', Icon: IoCall },
-  { text: 'Electricity Payment', to: 'electricity-payment', Icon: IoBulb },
-  { text: 'Cable Payment', to: 'cable-payment', Icon: IoTv },
-];
-
 export default function Dashboard() {
+  const { user, transactionsBalance } = useLoaderData<LoaderData>();
+
   return (
     <div className="container">
 
       <AccountH2Component text="Dashboard" />
 
-      <WalletComponent balance={2_000_000.00} name="Jasper Anelechukwu" fundable />
+      <WalletComponent 
+        fundable 
+        balance={transactionsBalance} 
+        name={`${user.firstName} ${user.lastName}`} 
+      />
 
-      <section className="py-dimen-lg lg:flex lg:gap-x-dimen-md">
-
-        <DashboardCardComponent 
-          list={PRODUCTS}
-          flexGrow={false}
-          title="Products"
-          empty={{ Icon: IoCubeOutline, text: 'There is no product' }}
-          renderItem={(item) => <ProductItem key={item.text} text={item.text} to={item.to} Icon={item.Icon} />}
-        />
+      <section className="py-dimen-lg">
 
         <DashboardCardComponent 
           list={[]}
