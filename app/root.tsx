@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
 } from "@remix-run/react";
 import styles from "./styles/tailwind.css";
+import toastStyle from 'react-toastify/dist/ReactToastify.css';
 
 export const meta: MetaFunction = () => ({
   charset: "utf-8",
@@ -17,6 +18,7 @@ export const meta: MetaFunction = () => ({
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
+  { rel: "stylesheet", href: toastStyle },
 ];
 
 export default function App() {

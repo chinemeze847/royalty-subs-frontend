@@ -14,7 +14,7 @@ const HttpService = {
     });
   },
 
-  postJson(path: string, form: any, accessToken?: string) {
+  postJson(path: string, form: { [key: string]: any }, accessToken?: string) {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
