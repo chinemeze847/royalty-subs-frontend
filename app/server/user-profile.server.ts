@@ -2,7 +2,7 @@ import { json, redirect } from "@remix-run/node";
 import type User from "~/models/user.model";
 import type ValidationError from "~/models/validation-error.model";
 import UserApiService from "~/services/user-api.service";
-import { commitSession, getSession } from "~/session.server";
+import { commitSession, getSession } from "~/server/session.server";
 
 export type LoaderData = {
   user: User;
@@ -41,7 +41,7 @@ export const userProfileLoader = async (request: Request) => {
   });
 }
 
-export const userProfileAction = async (request: Request, redirectTo: string) => {
+export const userProfileAction = async (request: Request, redirectTo: 'account' | 'admin') => {
   const session = await getSession(request.headers.get('Cookie'));
 
   const userId = session.get('userId');

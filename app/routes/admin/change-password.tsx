@@ -1,32 +1,14 @@
-import { Form } from "@remix-run/react";
-import PasswordInputComponent from "~/components/form/password-input.component";
-import SubmitButtonComponent from "~/components/form/submit-button.component";
-import AccountH2Component from "~/components/header/account-h2.component";
+import { type ActionFunction, type LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import PasswordUpdateFormComponent from "~/components/utils/password-update-form.component";
+import { userPasswordAction, userPasswordLoader } from "~/server/user-password.server";
+
+export const loader: LoaderFunction = ({ request }) => userPasswordLoader(request);
+
+export const action: ActionFunction = ({ request }) => userPasswordAction(request, 'account');
 
 export default function ChangePassword() {
   return (
-    <div className="container">
-
-      <AccountH2Component text="Change password" />
-
-      <Form className="account-form">
-
-        <PasswordInputComponent 
-          id="password-input"
-          label="Password"
-          name="password"
-        />
-
-        <PasswordInputComponent 
-          id="new-password-input"
-          label="New Password"
-          name="new_password"
-        />
-
-        <SubmitButtonComponent text="Change password" topSpace />
-
-      </Form>
-
-    </div>
+    <PasswordUpdateFormComponent data={useLoaderData()} />
   );
 }
