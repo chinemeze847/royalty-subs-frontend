@@ -144,6 +144,13 @@ export default function LayoutComponent(
               <NavItem key={item.text} text={item.text} to={item.to} Icon={item.Icon} onClick={closeNav} /> 
             ))
           }
+
+          <li>
+            <a href="x" className="flex gap-dimen-xs p-dimen-sm items-center">
+              <img alt="WhatsApp" src="/images/whatsapp.png" className="w-dimen-xxxl h-dimen-xxxl" />
+              <div>Contact support</div>
+            </a>
+          </li>
         </ul>
       </nav>
 

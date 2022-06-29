@@ -1,5 +1,5 @@
 import { redirect, type LoaderFunction } from "@remix-run/node";
-import { IoBulb, IoCall, IoCard, IoCube, IoGrid, IoPerson, IoTv, IoWifi } from "react-icons/io5";
+import { IoCard, IoCube, IoGrid, IoPerson } from "react-icons/io5";
 import type { AccountMenuItem, SideBarItem } from "~/components/utils/layout.component";
 import LayoutComponent from "~/components/utils/layout.component";
 import { getSession } from "~/session.server";
@@ -8,10 +8,6 @@ const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Dashboard', to: '', Icon: IoGrid },
   { text: 'Users', to: 'users', Icon: IoPerson },
   { text: 'Products', to: 'products', Icon: IoCube },
-  { text: 'Data', to: 'products/data', Icon: IoWifi },
-  { text: 'Airtime', to: 'products/airtime', Icon: IoCall },
-  { text: 'Electricity bill', to: 'products/electricity-bill', Icon: IoBulb },
-  { text: 'Cable subscription', to: 'products/cable-subcription', Icon: IoTv },
   { text: 'Transactions', to: 'transactions', Icon: IoCard },
 ];
 

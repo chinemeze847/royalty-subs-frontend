@@ -1,3 +1,4 @@
+import { PAGE_LIMIT } from "~/constants";
 import type User from "~/models/user.model";
 import type ValidationError from "~/models/validation-error.model";
 import HttpService from "~/services/http.service";
@@ -48,7 +49,16 @@ const UserApiService = {
     const res = await HttpService.get(this.getPath(`${id}/transactions-balance`), accessToken);
     const body = await res.json();
     return { status: res.status, body };
-  }
+  },
+
+  async read(before: number | null, accessToken: string): Promise<ResponseDto<User[]>> {
+    const beforeQuery = before === null ? '' : `&before=${before}`;
+    const res = await HttpService.get(
+      this.getPath(`?limit=${PAGE_LIMIT}${beforeQuery}`), 
+      accessToken
+    );
+    return res.json();
+  },
 };
 
 export default UserApiService;

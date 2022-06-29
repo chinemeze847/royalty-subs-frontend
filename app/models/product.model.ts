@@ -1,15 +1,23 @@
 import type ProductUnit from "./product-unit.model";
 
-export default interface Product {
-  id: number;
+export default class Product {
+  static readonly TYPE_DATA = 1;
 
-  name: string;
+  static readonly TYPE_AIRTIME = 2;
 
-  description: string;
+  static readonly TYPE_CABLE = 3;
 
-  available: boolean;
+  static readonly TYPE_ELECTRICITY = 4;
 
-  createdAt: string;
+  id!: number;
 
-  productUnits: ProductUnit[];
+  name!: string;
+
+  description!: string;
+
+  available!: boolean;
+
+  createdAt!: string;
+
+  productUnits!: ProductUnit[];
 }
