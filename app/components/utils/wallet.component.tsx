@@ -3,8 +3,8 @@ import { IoRefresh } from "react-icons/io5";
 import userMoneyFormat from "~/hooks/money-format.hook";
 
 export default function WalletComponent(
-  { name, balance, fundable = false }: 
-  { name: string; balance: number; fundable?: boolean }
+  { name, balance, balanceTitle = 'Wallet balance', fundable = false }: 
+  { name: string; balance: number; balanceTitle?: string; fundable?: boolean }
 ) {
 
   const money = userMoneyFormat();
@@ -16,11 +16,14 @@ export default function WalletComponent(
       <div className="lg:flex lg:justify-between">
         <div>
           <div className="text-lg flex gap-x-dimen-sm items-center">
-            <span>Wallet balance</span>
-            <button className="w-dimen-xl h-dimen-xl border-none bg-transparent rounded-full hover:bg-color-primary">
+            <span>{ balanceTitle }</span>
+            <Link 
+              to="" 
+              className="w-dimen-xl h-dimen-xl border-none bg-transparent rounded-full hover:bg-color-primary"
+            >
               <IoRefresh className="block mx-auto" />
               <span className="sr-only">Refresh wallet balance</span>
-            </button>
+            </Link>
           </div>
           <div className="font-bold text-2xl">NGN { money(balance) }</div>
         </div>

@@ -16,9 +16,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   const accessToken = session.get('accessToken');
 
-  const userResponse = await UserApiService.readOne(params.id as string, accessToken);
-
-  const balanceResponse = await UserApiService.readTransactionBalance(params.id as string, accessToken);
+  const [userResponse, balanceResponse] = await Promise.all([
+    UserApiService.readOne(params.id as string, accessToken),
+    UserApiService.readTransactionBalance(params.id as string, accessToken),
+  ]);
 
   return json<LoaderData>({ 
     user: userResponse.data, 
