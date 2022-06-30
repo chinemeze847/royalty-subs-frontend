@@ -11,55 +11,94 @@ const UserApiService = {
   },
 
   async create(
-    form: { firstName?: string; lastName?: string; email?: string; phoneNumber?: string; password?: string; }
-  ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
+    form: { 
+      firstName?: string; 
+      lastName?: string; 
+      email?: string; 
+      phoneNumber?: string; 
+      password?: string; 
+    }
+  ): Promise<ResponseDto<User | ValidationError[]>> {
     const res = await HttpService.postJson(this.getPath(), form);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
   async update(
     id: number | string,
     form: { firstName?: string; lastName?: string; email?: string; phoneNumber?: string; },
     accessToken: string
-  ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
+  ): Promise<ResponseDto<User | ValidationError[]>> {
     const res = await HttpService.putJson(this.getPath(id), form, accessToken);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
   async updatePassword(
     id: number | string,
     form: { password?: string; newPassword?: string; },
     accessToken: string
-  ): Promise<{ status: number; body: ResponseDto<User | ValidationError[]> }> {
+  ): Promise<ResponseDto<User | ValidationError[]>> {
     const res = await HttpService.putJson(this.getPath(`${id}/password`), form, accessToken);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
-  async readOne(id: number | string, accessToken: string): Promise<{ status: number; body: ResponseDto<User> }> {
+  async updateStatus(
+    id: number | string,
+    form: { status?: string; },
+    accessToken: string
+  ): Promise<ResponseDto<User | ValidationError[]>> {
+    const res = await HttpService.putJson(this.getPath(`${id}/status`), form, accessToken);
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
+  async updateAdmin(
+    id: number | string,
+    form: { admin?: boolean; },
+    accessToken: string
+  ): Promise<ResponseDto<User | ValidationError[]>> {
+    const res = await HttpService.putJson(this.getPath(`${id}/admin`), form, accessToken);
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
+  async readOne(id: number | string, accessToken: string): Promise<ResponseDto<User>> {
     const res = await HttpService.get(this.getPath(id), accessToken);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
   async readTransactionBalance(
     id: number | string, accessToken: string
-  ): Promise<{ status: number; body: ResponseDto<TransactionsBalance> }> {
+  ): Promise<ResponseDto<TransactionsBalance>> {
     const res = await HttpService.get(this.getPath(`${id}/transactions-balance`), accessToken);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
-  async read(before: string | null, after: string | null, accessToken: string): Promise<ResponseDto<User[]>> {
+  async read(
+    before: string | null, 
+    after: string | null, 
+    accessToken: string
+  ): Promise<ResponseDto<User[]>> {
     const afterQuery = after === null ? '' : `&after=${after}`;
     const beforeQuery = before === null ? '' : `&before=${before}`;
     const res = await HttpService.get(
       this.getPath(`?limit=${PAGE_LIMIT}${beforeQuery}${afterQuery}`), 
       accessToken
     );
-    return res.json();
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 };
 

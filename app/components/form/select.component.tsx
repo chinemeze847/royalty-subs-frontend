@@ -4,11 +4,11 @@ type Props = {
   id: string;
   label: string;
   name: string; 
-  value?: string;
+  value?: any;
   error?: string;
   required?: boolean;
   defaultText?: string;
-  options: { value: string | number; text: string }[]
+  options: { value: any; text: string }[]
 }
 
 export default forwardRef(function SelectCmponent(

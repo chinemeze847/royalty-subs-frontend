@@ -9,7 +9,7 @@ import AuthH1Component from '~/components/header/auth-h1.component';
 import AuthH2Component from '~/components/header/auth-h2.component';
 import TopLoaderComponent from '~/components/loader/top-loader.component';
 import AuthApiService from '~/services/auth-api.service';
-import { commitSession, getSession } from '~/session.server';
+import { commitSession, getSession } from '~/server/session.server';
 
 type LoaderData = {
   errors: {
@@ -51,8 +51,8 @@ export const action: ActionFunction = async ({ request }) => {
 
   const apiResponse = await AuthApiService.create({ email, password });
 
-  if (apiResponse.status === 200) {
-    const data = apiResponse.body.data;
+  if (apiResponse.statusCode === 200) {
+    const data = apiResponse.data;
 
     if (data.userIsAdmin) {
       session.set('userId', data.userId);
@@ -63,7 +63,7 @@ export const action: ActionFunction = async ({ request }) => {
     } else {
       session.flash('authError', 'Credentials are do not have admin permissions');
     }
-  } else if (apiResponse.status === 401) {
+  } else if (apiResponse.statusCode === 401) {
     session.flash('authError', 'Credentials are incorrect');
   }
   

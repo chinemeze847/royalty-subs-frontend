@@ -43,10 +43,10 @@ export const userPasswordAction = async (request: Request, redirectTo: 'account'
     userId, { password, newPassword }, accessToken
   );
 
-  if (apiResponse.status === 200) {
-    session.flash('success', apiResponse.body.message);
-  } else if (apiResponse.status === 400) {
-    const errors = apiResponse.body.data as ValidationError[];
+  if (apiResponse.statusCode === 200) {
+    session.flash('success', apiResponse.message);
+  } else if (apiResponse.statusCode === 400) {
+    const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
   }
   

@@ -24,7 +24,7 @@ export const userProfileLoader = async (request: Request) => {
   const apiResponse = await UserApiService.readOne(userId, accessToken);
 
   const data = { 
-    user: apiResponse.body.data,
+    user: apiResponse.data,
     success: session.get('success'),
     errors: {
       firstName: session.get('firstNameError'),
@@ -49,7 +49,7 @@ export const userProfileAction = async (request: Request, redirectTo: 'account' 
 
   const userResponse = await UserApiService.readOne(userId, accessToken);
 
-  const user = userResponse.body.data;
+  const user = userResponse.data;
 
   const form = await request.formData();
   const firstName = form.get('firstName')?.toString();
@@ -68,10 +68,10 @@ export const userProfileAction = async (request: Request, redirectTo: 'account' 
     accessToken
   );
 
-  if (apiResponse.status === 200) {
-    session.flash('success', apiResponse.body.message);
-  } else if (apiResponse.status === 400) {
-    const errors = apiResponse.body.data as ValidationError[];
+  if (apiResponse.statusCode === 200) {
+    session.flash('success', apiResponse.message);
+  } else if (apiResponse.statusCode === 400) {
+    const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
   }
   

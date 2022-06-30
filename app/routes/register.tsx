@@ -8,8 +8,8 @@ import AuthH1Component from '~/components/header/auth-h1.component';
 import AuthH2Component from '~/components/header/auth-h2.component';
 import TopLoaderComponent from '~/components/loader/top-loader.component';
 import type ValidationError from '~/models/validation-error.model';
+import { commitSession, getSession } from '~/server/session.server';
 import UserApiService from '~/services/user-api.service';
-import { commitSession, getSession } from '~/session.server';
 
 type LoaderData = {
   errors: {
@@ -55,12 +55,18 @@ export const action: ActionFunction = async ({ request }) => {
   const phoneNumber = form.get('phoneNumber')?.toString();
   const password = form.get('password')?.toString();
 
-  const apiResponse = await UserApiService.create({ firstName, lastName, email, phoneNumber, password });
+  const apiResponse = await UserApiService.create({ 
+    firstName, 
+    lastName, 
+    email, 
+    phoneNumber, 
+    password 
+  });
 
-  if (apiResponse.status === 201) {
+  if (apiResponse.statusCode === 201) {
     return redirect('/login');
-  } else if (apiResponse.status === 400) {
-    const errors = apiResponse.body.data as ValidationError[];
+  } else if (apiResponse.statusCode === 400) {
+    const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
   }
   

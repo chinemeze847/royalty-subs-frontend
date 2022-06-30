@@ -4,11 +4,12 @@ import { IoCartOutline } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
 import DashboardCardComponent from "~/components/utils/dashboard-card.component";
 import WalletComponent from "~/components/utils/wallet.component";
+import type TransactionsBalance from "~/models/transactions-balance.model";
 import type User from "~/models/user.model";
 import UserApiService from "~/services/user-api.service";
 import { getSession } from "~/session.server";
 
-type LoaderData = { user: User, transactionsBalance: number };
+type LoaderData = { user: User, balance: TransactionsBalance };
 
 export const loader: LoaderFunction= async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
@@ -22,13 +23,13 @@ export const loader: LoaderFunction= async ({ request }) => {
   ]);
 
   return json<LoaderData>({ 
-    user: userResponse.body.data,
-    transactionsBalance: balanceResponse.body.data.transactionsBalance,
+    user: userResponse.data,
+    balance: balanceResponse.data,
   });
 }
 
 export default function Dashboard() {
-  const { user, transactionsBalance } = useLoaderData<LoaderData>();
+  const { user, balance } = useLoaderData<LoaderData>();
 
   return (
     <div className="container">
@@ -37,7 +38,7 @@ export default function Dashboard() {
 
       <WalletComponent 
         fundable 
-        balance={transactionsBalance} 
+        balance={balance.transactionsBalance} 
         name={`${user.firstName} ${user.lastName}`} 
       />
 

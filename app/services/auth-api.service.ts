@@ -9,10 +9,11 @@ const AuthApiService = {
 
   async create(
     form: { email?: string; password?: string; }
-  ): Promise<{ status: number; body: ResponseDto<Auth> }> {
+  ): Promise<ResponseDto<Auth>> {
     const res = await HttpService.postJson(this.getPath(), form);
-    const body = await res.json();
-    return { status: res.status, body };
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 };
 
