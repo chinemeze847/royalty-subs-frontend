@@ -16,9 +16,13 @@ type LoaderData = {
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const before = url.searchParams.get("before");
+  const after = url.searchParams.get("after");
+
   const session = await getSession(request.headers.get('Cookie'));
 
-  const res = await UserApiService.read(null, session.get('accessToken'));
+  const res = await UserApiService.read(before, after, session.get('accessToken'));
 
   return json<LoaderData>({ 
     users: res.data, 
@@ -56,7 +60,7 @@ export default function Users() {
                   ))
                 }
               </tbody>
-              <PaginationItemComponent />
+              <PaginationItemComponent pagination={data.pagination} />
             </table>
           ) : (
             <EmptyListComponent Icon={IoPersonOutline} text="No user" /> 

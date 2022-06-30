@@ -9,7 +9,7 @@
   }
 
   .account-form {
-    @apply rounded-lg max-w-lg mx-auto lg:shadow lg:p-dimen-md;
+    @apply rounded-lg max-w-lg mx-auto my-dimen-lg lg:shadow lg:p-dimen-md;
   }
 
   .account-form-2 {
