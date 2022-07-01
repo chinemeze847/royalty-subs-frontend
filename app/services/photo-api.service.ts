@@ -8,8 +8,8 @@ const PhotoApiService = {
     return `photos/${path}`;
   },
 
-  async create(form: FormData): Promise<ResponseDto<Photo | ValidationError[]>> {
-    const res = await HttpService.post(this.getPath(), form);
+  async create(form: FormData, accessToken: string): Promise<ResponseDto<Photo | ValidationError[]>> {
+    const res = await HttpService.post(this.getPath(), form, accessToken);
     const data = await res.json();
     data.statusCode = res.status;
     return data;

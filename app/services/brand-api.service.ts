@@ -12,7 +12,7 @@ const BrandApiService = {
     form: { 
       name?: string; 
       apiCode?: string; 
-      productId?: number; 
+      photoId?: number; 
     },
     accessToken: string
   ): Promise<ResponseDto<Brand | ValidationError[]>> {
@@ -27,7 +27,7 @@ const BrandApiService = {
     form: { 
       name?: string; 
       apiCode?: string; 
-      productId?: number; 
+      photoId?: number; 
     },
     accessToken: string
   ): Promise<ResponseDto<Brand | ValidationError[]>> {
