@@ -11,8 +11,8 @@ import { getSession } from "~/server/session.server";
 import UserApiService from "~/services/user-api.service";
 
 type LoaderData = {
-  users: User[], 
-  pagination: PaginationDto
+  users: User[];
+  pagination: PaginationDto;
 }
 
 export const loader: LoaderFunction = async ({ request }) => {

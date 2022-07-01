@@ -10,14 +10,14 @@ const PageLink = (
       {
         disabled ? (
           <span 
-            className="inline-block bg-color-background rounded p-dimen-x"
+            className="inline-block bg-color-background rounded p-dimen-xs"
           >
             { text }
           </span>
         ) : (
           <Link 
             to={to} 
-            className="bg-color-primary-variant rounded p-dimen-xs hover:bg-color-primary"
+            className="inline-block bg-color-primary-variant rounded p-dimen-xs hover:bg-color-primary"
           >
             { text }
           </Link>
@@ -35,7 +35,7 @@ export default function PaginationItemComponent(
     <tfoot>
       <tr>
         <td colSpan={span}>
-          <ul className="flex gap-dimen-sm justify-center py-dimen-xl px-dimen-sm">
+          <ul className="flex gap-dimen-sm justify-center items-center py-dimen-lg px-dimen-sm">
             <PageLink 
               text="Previous" 
               to={`?after=${pagination.after}`} 
