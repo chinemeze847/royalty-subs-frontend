@@ -9,7 +9,7 @@ import type User from '~/models/user.model';
 import { getSession } from '~/server/session.server';
 import UserApiService from '~/services/user-api.service';
 
-type LoaderData = { user: User, balance: TransactionsBalance };
+type LoaderData = { user: User; balance: TransactionsBalance; };
 
 export const loader: LoaderFunction = async ({ request, params }) => {
   const session = await getSession(request.headers.get('Cookie'));

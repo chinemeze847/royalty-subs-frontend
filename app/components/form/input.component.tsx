@@ -4,7 +4,7 @@ type Props = {
   id: string;
   label: string;
   name: string; 
-  value?: string;
+  value?: any;
   type?: string;
   step?: string;
   required?: boolean;

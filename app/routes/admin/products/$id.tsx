@@ -1,8 +1,10 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { IoCubeOutline } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
 import ProductUnitItemComponent from "~/components/list/product-unit-item.component";
 import ProfileDLItemComponent from "~/components/list/profile-dl-item.component";
+import EmptyListComponent from "~/components/utils/empty-list.component";
 import useDateFormat from "~/hooks/date-format.hook";
 import type Product from "~/models/product.model";
 import ProductApiService from "~/services/product-api.service";
@@ -46,26 +48,32 @@ export default function ProductProfile () {
       <section>
         <h4 className="font-bold">Product units</h4>
         <div className="table-container">
-          <table className="min-w-full">
-            <thead>
-              <tr>
-                <th className="border p-dimen-xs text-left">Company</th>
-                <th className="border p-dimen-xs text-left">Name</th>
-                <th className="border p-dimen-xs text-left">Price</th>
-                <th className="border p-dimen-xs text-left">Duration</th>
-                <th className="border p-dimen-xs text-left">Available</th>
-                <th className="border p-dimen-xs text-left">Type</th>
-                <th className="border p-dimen-xs text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                data.product.productUnits.map(item => (
-                  <ProductUnitItemComponent key={item.id} productUnit={item} />
-                ))
-              }
-            </tbody>
-          </table>
+          {
+            data.product.productUnits.length > 0 ? (
+              <table className="min-w-full">
+                <thead>
+                  <tr>
+                    <th className="border p-dimen-xs text-left">Company</th>
+                    <th className="border p-dimen-xs text-left">Name</th>
+                    <th className="border p-dimen-xs text-left">Price</th>
+                    <th className="border p-dimen-xs text-left">Duration</th>
+                    <th className="border p-dimen-xs text-left">Available</th>
+                    <th className="border p-dimen-xs text-left">Type</th>
+                    <th className="border p-dimen-xs text-left">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {
+                    data.product.productUnits.map(item => (
+                      <ProductUnitItemComponent key={item.id} productUnit={item} />
+                    ))
+                  }
+                </tbody>
+              </table>
+            ) : (
+              <EmptyListComponent Icon={IoCubeOutline} text="No product unit" /> 
+            )
+          }
         </div>
       </section>
 

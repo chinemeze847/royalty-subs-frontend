@@ -14,6 +14,33 @@ const HttpService = {
     });
   },
 
+  mutate(
+    path: string, 
+    method: string, 
+    form: any, 
+    accessToken?: string
+  ) {
+    const headers = new Headers();
+
+    if (accessToken !== undefined) {
+      headers.append('Authorization', `Bearer ${accessToken}`);
+    }
+
+    return fetch(`${API_URL}${path}`, { 
+      method, 
+      headers,
+      body: form,
+    });
+  },
+
+  post(path: string, form: { [key: string]: any }, accessToken?: string) {
+    return this.mutate(path, 'POST', form, accessToken);
+  },
+
+  put(path: string, form: { [key: string]: any }, accessToken?: string) {
+    return this.mutate(path, 'PUT', form, accessToken);
+  },
+
   mutateJson(
     path: string, 
     method: string, 
