@@ -3,7 +3,7 @@ import useMoneyFormat from '~/hooks/money-format.hook';
 import type Transaction from '~/models/transaction.model';
 
 export default function TransactionItemComponent(
-  { transaction }: { transaction: Transaction}
+  { transaction, linkPrefix = '' }: { transaction: Transaction; linkPrefix?: string; }
 ) {
   const money = useMoneyFormat();
 
@@ -15,7 +15,7 @@ export default function TransactionItemComponent(
       <td className="border p-dimen-xs">{ transaction.status }</td>
       <td className="border p-dimen-xs">
         <Link 
-          to={String(transaction.id)} 
+          to={`${linkPrefix}${transaction.id}`} 
           className="table-button"
         >
           View

@@ -5,6 +5,7 @@ type Props = {
   id: string;
   label: string;
   name: string; 
+  error?: string;
   checked?: boolean;
   required?: boolean;
   disabled?: boolean;
@@ -12,7 +13,7 @@ type Props = {
 };
 
 export default forwardRef(function CheckboxComponent(
-  { id, label, name, labelLink, required = true, checked = false, disabled = false }: Props, 
+  { id, label, name, labelLink, error, required = true, checked = false, disabled = false }: Props, 
   ref: LegacyRef<HTMLInputElement>
 ) {
   return (
@@ -35,6 +36,7 @@ export default forwardRef(function CheckboxComponent(
           )
         }
       </label>
+      <div className="text-color-error">{ error }</div>
     </div>
   );
 });

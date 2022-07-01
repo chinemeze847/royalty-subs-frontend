@@ -1,44 +1,45 @@
-import { Link } from "@remix-run/react";
-import { IoCube } from "react-icons/io5";
+import { json, type LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import AccountH2Component from "~/components/header/account-h2.component";
+import ProductUnitItemComponent from "~/components/list/product-unit-item.component";
+import ProfileDLItemComponent from "~/components/list/profile-dl-item.component";
+import useDateFormat from "~/hooks/date-format.hook";
+import type Product from "~/models/product.model";
+import ProductApiService from "~/services/product-api.service";
 
-const PricingItem = () => {
-  return (
-    <tr className="border">
-      <td className="border p-dimen-xs">MTN</td>
-      <td className="border p-dimen-xs">100MB</td>
-      <td className="border p-dimen-xs">NGN 200.00</td>
-      <td className="border p-dimen-xs">7 days</td>
-    </tr>
-  );
-}
+type LoaderData = { product: Product; };
 
-export default function Product() {
+export const loader: LoaderFunction = async ({ params }) => {
+  const [response, unitsResponse] = await Promise.all([
+    ProductApiService.readOne(params.id as string),
+    ProductApiService.readProductUnits(params.id as string),
+  ]);
+
+  const product = response.data;
+
+  product.productUnits = unitsResponse.data;
+
+  return json<LoaderData>({ product });
+};
+
+export default function ProductProfile () {
+  const data = useLoaderData<LoaderData>();
+
+  const dateFormat = useDateFormat();
+
   return (
     <div className="container">
 
-      <AccountH2Component text="Product" />
+      <AccountH2Component text="Product" links={[{ text: 'Edit', to: 'edit' }]} />
 
       <section className="mb-dimen-lg">
 
-        <div className="flex gap-dimen-sm items-center mb-dimen-md flex-wrap">
-          <IoCube className="text-3xl" />
-          <h3 className="font-bold text-xl">Internet Data</h3>
-          <span className="text-sm text-color-on-primary bg-green-500 rounded-full px-dimen-sm py-dimen-xxs">Available</span>
-          <Link 
-            to="edit" 
-            className="text-color-primary font-bold border border-color-primary px-dimen-sm rounded-full hover:bg-color-primary-variant"
-          >
-            Edit
-          </Link>
-        </div>
-
-        <div className="w-fit shadow shadow-color-primary p-dimen-sm rounded-lg">
-          <div className="font-bold">Description</div>
-          <p>
-            Purchase and enjoy our very low rate data plans for your internet browsing data bundle.
-          </p>
-        </div>
+        <dl>
+          <ProfileDLItemComponent heading="Name" body={data.product.name} />
+          <ProfileDLItemComponent heading="Available" body={String(data.product.available)} />
+          <ProfileDLItemComponent heading="Date" body={dateFormat(data.product.createdAt)} />
+          <ProfileDLItemComponent heading="Description" body={data.product.description} />
+        </dl>
 
       </section>
 
@@ -48,20 +49,21 @@ export default function Product() {
           <table className="min-w-full">
             <thead>
               <tr>
-                <th className="border p-dimen-xs text-left">Network</th>
-                <th className="border p-dimen-xs text-left">Data value</th>
+                <th className="border p-dimen-xs text-left">Company</th>
+                <th className="border p-dimen-xs text-left">Name</th>
                 <th className="border p-dimen-xs text-left">Price</th>
                 <th className="border p-dimen-xs text-left">Duration</th>
+                <th className="border p-dimen-xs text-left">Available</th>
+                <th className="border p-dimen-xs text-left">Type</th>
+                <th className="border p-dimen-xs text-left">Action</th>
               </tr>
             </thead>
             <tbody>
-              <PricingItem />
-              <PricingItem />
-              <PricingItem />
-              <PricingItem />
-              <PricingItem />
-              <PricingItem />
-              <PricingItem />
+              {
+                data.product.productUnits.map(item => (
+                  <ProductUnitItemComponent key={item.id} productUnit={item} />
+                ))
+              }
             </tbody>
           </table>
         </div>

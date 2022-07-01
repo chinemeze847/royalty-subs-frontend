@@ -64,9 +64,9 @@ export default function Dashboard() {
 
         <DashboardCardComponent 
           list={users}
-          listTitles={['ID', 'Full name', 'Email', 'Phone number', 'Status', 'Action']}
           title="Recent users"
-          renderItem={(item) => <UserItemComponent key={item.id} user={item} />}
+          listTitles={['ID', 'Full name', 'Email', 'Phone number', 'Status', 'Action']}
+          renderItem={(item) => <UserItemComponent key={item.id} user={item} linkPrefix="users/" />}
           empty={{ Icon: IoPersonOutline, text: 'No user has registered' }}
         />
 
@@ -74,7 +74,7 @@ export default function Dashboard() {
           list={transactions}
           listTitles={['Reference', 'Amount', 'Type', 'Status', 'Action']}
           title="Recent transactions"
-          renderItem={(item) => <TransactionItemComponent key={item.id} transaction={item} />}
+          renderItem={(item) => <TransactionItemComponent key={item.id} transaction={item} linkPrefix="transactions/" />}
           empty={{ Icon: IoCartOutline, text: 'No transaction has been performed' }}
         />
 
