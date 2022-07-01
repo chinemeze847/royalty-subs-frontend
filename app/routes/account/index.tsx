@@ -46,6 +46,7 @@ export default function Dashboard() {
 
         <DashboardCardComponent 
           list={[]}
+          listTitles={[]}
           title="Recent transactions"
           renderItem={() => <div></div>}
           empty={{ Icon: IoCartOutline, text: 'You have performed no transactions' }}
