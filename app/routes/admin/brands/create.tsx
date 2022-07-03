@@ -107,7 +107,7 @@ export default function CreateBrand() {
             label="Brand API code"
             type="number"
             value={data?.apiCode}
-            error={errors.name}
+            error={errors.apiCode}
           />
 
           <SubmitButtonComponent text="Add" topSpace />

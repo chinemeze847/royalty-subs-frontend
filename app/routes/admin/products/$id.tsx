@@ -1,5 +1,5 @@
 import { json, type LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { IoCubeOutline } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
 import ProductUnitItemComponent from "~/components/list/product-unit-item.component";
@@ -46,7 +46,15 @@ export default function ProductProfile () {
       </section>
 
       <section>
-        <h4 className="font-bold">Product units</h4>
+        <div className="flex gap-dimen-sm">
+          <h4 className="font-bold text-lg flex-grow">Product units</h4>
+          <Link 
+            to="product-unit" 
+            className="bg-color-primary px-dimen-sm py-dimen-xxs rounded-lg text-color-on-primary"
+          >
+            Add product unit
+          </Link>
+        </div>
         <div className="table-container">
           {
             data.product.productUnits.length > 0 ? (
