@@ -1,46 +1,30 @@
-import { Link } from "@remix-run/react";
+import { json, type LoaderFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import TransactionsTableComponent, { type LoaderData } from '~/components/utils/transactions-table.component';
+import { getSession } from '~/server/session.server';
+import UserApiService from '~/services/user-api.service';
 
-const TransactionItem = () => {
-  return (
-    <tr className="border">
-      <td className="border p-dimen-xs">RYL_83JJDS883</td>
-      <td className="border p-dimen-xs">NGN 200.00</td>
-      <td className="border p-dimen-xs">Deposit</td>
-      <td className="border p-dimen-xs">Approved</td>
-      <td className="border p-dimen-xs">
-        <Link 
-          to="RYL_83JJDS883" 
-          className="table-button"
-        >
-          View
-        </Link>
-      </td>
-    </tr>
-  );
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+  const before = url.searchParams.get("before");
+  const after = url.searchParams.get("after");
+
+  const session = await getSession(request.headers.get('Cookie'));
+
+  const userId = session.get('userId');
+  const accessToken = session.get('accessToken');
+
+  const res = await UserApiService.readTransactions(userId, before, after, accessToken);
+
+  return json<LoaderData>({ 
+    transactions: res.data, 
+    pagination: res.metaData?.pagination as any,
+  });
 }
 
 export default function TransactionsIndex() {
+  const data = useLoaderData<LoaderData>();
   return (
-    <section className="table-container">
-      
-      <table className="min-w-full">
-        <thead>
-          <tr>
-            <th className="border p-dimen-xs text-left">Reference</th>
-            <th className="border p-dimen-xs text-left">Amount</th>
-            <th className="border p-dimen-xs text-left">Type</th>
-            <th className="border p-dimen-xs text-left">Status</th>
-            <th className="border p-dimen-xs text-left">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-          <TransactionItem />
-        </tbody>
-      </table>
-
-    </section>
+    <TransactionsTableComponent data={data} />
   );
 }

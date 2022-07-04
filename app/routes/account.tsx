@@ -1,16 +1,16 @@
 import { type LoaderFunction, redirect } from "@remix-run/node";
-import { IoBulb, IoCall, IoCard, IoGrid, IoPricetags, IoTv, IoWifi } from "react-icons/io5";
+import { IoBulb, IoCall, IoCard, IoGrid, IoTv, IoWifi } from "react-icons/io5";
 import type { AccountMenuItem, SideBarItem } from "~/components/utils/layout.component";
 import LayoutComponent from "~/components/utils/layout.component";
+import Product from "~/models/product.model";
 import { getSession } from "~/server/session.server";
 
 const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Dashboard', to: '', Icon: IoGrid },
-  { text: 'Buy Data', to: 'buy-data', Icon: IoWifi },
-  { text: 'Buy Airtime', to: 'buy-airtime', Icon: IoCall },
-  { text: 'Electricity Payment', to: 'electricity-payment', Icon: IoBulb },
-  { text: 'Cable Payment', to: 'cable-payment', Icon: IoTv },
-  { text: 'Pricing', to: 'pricing', Icon: IoPricetags },
+  { text: 'Buy Data', to: `products/${Product.TYPE_DATA}`, Icon: IoWifi },
+  { text: 'Buy Airtime', to: `products/${Product.TYPE_AIRTIME}`, Icon: IoCall },
+  { text: 'Cable Payment', to: `products/${Product.TYPE_CABLE}`, Icon: IoTv },
+  { text: 'Electricity Payment', to: `products/${Product.TYPE_ELECTRICITY}`, Icon: IoBulb },
   { text: 'Transactions', to: 'transactions', Icon: IoCard },
 ];
 

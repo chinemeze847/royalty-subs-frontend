@@ -1,25 +1,28 @@
+import { json, type LoaderFunction } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import TransactionDLComponent from '~/components/utils/transaction-dl.component';
+import type Transaction from '~/models/transaction.model';
+import { getSession } from '~/server/session.server';
+import TransactionApiService from '~/services/transaction-api.service';
 
-const Detail = ({ heading, body }: { heading: string, body: string }) => {
-  return (
-    <div className="flex gap-x-dimen-sm mb-dimen-md shadow p-dimen-sm rounded-lg">
-      <dt className="font-bold">{ heading }:</dt>
-      <dd>{ body }</dd>
-    </div>
-  );
+type LoaderData = { transaction: Transaction; };
+
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const session = await getSession(request.headers.get('Cookie'));
+
+  const accessToken = session.get('accessToken');
+
+  const apiResponse = await TransactionApiService.readOne(params.id as string, accessToken);
+  
+  return json<LoaderData>({ 
+    transaction: apiResponse.data
+  });
 }
 
-export default function Transaction() {
+export default function TransactionProfile() {
+  const { transaction } = useLoaderData<LoaderData>();
+
   return (
-    <section>
-
-      <dl>
-        <Detail heading="Reference" body="RYL_83JJDS883" />
-        <Detail heading="Amount" body="NGN 200.00" />
-        <Detail heading="Type" body="Deposit" />
-        <Detail heading="Status" body="Approved" />
-        <Detail heading="Date" body="12th June, 2022" />
-      </dl>
-
-    </section>
+    <TransactionDLComponent transaction={transaction} />
   );
 }
