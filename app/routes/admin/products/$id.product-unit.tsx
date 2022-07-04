@@ -37,6 +37,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     ProductApiService.readOne(params.id as string),
   ]);
 
+  if (productResponse.statusCode !== 200) {
+    throw new Response('Error', { status: productResponse.statusCode });
+  }
+
   const data = { 
     brands: brandResponse.data,
     product: productResponse.data,

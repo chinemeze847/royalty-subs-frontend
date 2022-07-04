@@ -1,6 +1,7 @@
 import { json, type LoaderFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { IoPersonOutline } from "react-icons/io5";
+import { Form, useLoaderData } from "@remix-run/react";
+import { IoPersonOutline, IoSearch } from "react-icons/io5";
+import InputComponent from "~/components/form/input.component";
 import AccountH2Component from "~/components/header/account-h2.component";
 import PaginationItemComponent from "~/components/list/pagination-item.component";
 import UserItemComponent from "~/components/list/user-item.component";
@@ -37,6 +38,23 @@ export default function Users() {
     <div className="container">
 
       <AccountH2Component text="Users" />
+
+      <Form action="search" className="flex items-center gap-dimen-sm">
+        <InputComponent 
+          label="" 
+          name="email" 
+          type="search"
+          id="user-search-input" 
+          placeholder="Search for user by email" 
+        />
+        <button 
+          type="submit"
+          className="p-dimen-sm bg-color-primary mb-dimen-sm text-color-on-primary rounded-lg hover:bg-color-primary-variant"
+        >
+          <IoSearch className="text-2xl" />
+          <span className="sr-only">Search</span>
+        </button>
+      </Form>
 
       <section className="table-container">
       

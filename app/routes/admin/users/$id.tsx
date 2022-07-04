@@ -1,4 +1,4 @@
-import { json, type LoaderFunction } from '@remix-run/node';
+import { json, Response, type LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import AccountH2Component from '~/components/header/account-h2.component';
 import ProfileDLItemComponent from '~/components/list/profile-dl-item.component';
@@ -20,6 +20,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     UserApiService.readOne(params.id as string, accessToken),
     UserApiService.readTransactionBalance(params.id as string, accessToken),
   ]);
+
+  if (userResponse.statusCode !== 200) {
+    throw new Response('Error', { status: userResponse.statusCode });
+  } else if (balanceResponse.statusCode !== 200) {
+    throw new Response('Error', { status: balanceResponse.statusCode });
+  }
 
   return json<LoaderData>({ 
     user: userResponse.data, 

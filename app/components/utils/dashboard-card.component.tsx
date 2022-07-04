@@ -25,26 +25,32 @@ export default function DashboardCardComponent<T>(
       `}
     >
       <div className="font-bold mb-dimen-sm">{ title }</div>
-      {
-        list.length > 0 ? (
-          <table className="min-w-full">
-            <thead>
-                <tr>
-                  {
-                    listTitles.map(item => (
-                      <th key={item} className="border p-dimen-xs text-left">{ item }</th>
-                    ))
-                  }
-                </tr>
-              </thead>
-              <tbody>
-                { list.map(renderItem) }
-              </tbody>
-          </table>
-        ) : (
-          <EmptyListComponent Icon={empty.Icon} text={empty.text} /> 
-        )
-      }
+
+      <div className="overflow-x-auto">
+        
+        {
+          list.length > 0 ? (
+            <table className="min-w-full">
+              <thead>
+                  <tr>
+                    {
+                      listTitles.map(item => (
+                        <th key={item} className="border p-dimen-xs text-left">{ item }</th>
+                      ))
+                    }
+                  </tr>
+                </thead>
+                <tbody>
+                  { list.map(renderItem) }
+                </tbody>
+            </table>
+          ) : (
+            <EmptyListComponent Icon={empty.Icon} text={empty.text} /> 
+          )
+        }
+        
+      </div>
+      
     </div>
   );
 }

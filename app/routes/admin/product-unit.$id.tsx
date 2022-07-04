@@ -1,4 +1,4 @@
-import { type ActionFunction, json, redirect, type LoaderFunction } from "@remix-run/node";
+import { type ActionFunction, json, redirect, type LoaderFunction, Response } from "@remix-run/node";
 import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
@@ -37,6 +37,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     BrandApiService.read(session.get('accessToken')),
     ProductUnitApiService.readOne(params.id as string),
   ]);
+
+  if (productUnitResponse.statusCode !== 200) {
+    throw new Response('Error', { status: productUnitResponse.statusCode });
+  }
 
   const data = { 
     success: session.get('success'),

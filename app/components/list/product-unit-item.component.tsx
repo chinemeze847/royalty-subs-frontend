@@ -3,7 +3,10 @@ import useMoneyFormat from '~/hooks/money-format.hook';
 import type ProductUnit from '~/models/product-unit.model';
 
 export default function ProductUnitItemComponent(
-  { productUnit }: { productUnit: ProductUnit}
+  { 
+    productUnit, 
+    actionButton = { to: `/admin/product-unit/${productUnit.id}`, text: 'View' } 
+  }: { productUnit: ProductUnit; actionButton?: { to: string; text: string; }; }
 ) {
   const moneyFormat = useMoneyFormat();
 
@@ -16,7 +19,7 @@ export default function ProductUnitItemComponent(
       <td className="border p-dimen-xs">{ String(productUnit.available) }</td>
       <td className="border p-dimen-xs">{ productUnit.type ?? 'None' }</td>
       <td className="border p-dimen-xs">
-        <Link to={`/admin/product-unit/${productUnit.id}`} className="table-button">View</Link>
+        <Link to={actionButton.to} className="table-button">{ actionButton.text }</Link>
       </td>
     </tr>
   );

@@ -17,6 +17,12 @@ export const loader: LoaderFunction = async ({ params }) => {
     ProductApiService.readProductUnits(params.id as string),
   ]);
 
+  if (response.statusCode !== 200) {
+    throw new Response('Error', { status: response.statusCode });
+  } else if (unitsResponse.statusCode !== 200) {
+    throw new Response('Error', { status: unitsResponse.statusCode });
+  }
+
   const product = response.data;
 
   product.productUnits = unitsResponse.data;

@@ -9,8 +9,8 @@ const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Dashboard', to: '', Icon: IoGrid },
   { text: 'Buy Data', to: `products/${Product.TYPE_DATA}`, Icon: IoWifi },
   { text: 'Buy Airtime', to: `products/${Product.TYPE_AIRTIME}`, Icon: IoCall },
-  { text: 'Cable Payment', to: `products/${Product.TYPE_CABLE}`, Icon: IoTv },
-  { text: 'Electricity Payment', to: `products/${Product.TYPE_ELECTRICITY}`, Icon: IoBulb },
+  { text: 'Cable subscription', to: `products/${Product.TYPE_CABLE}`, Icon: IoTv },
+  { text: 'Electricity bill', to: `products/${Product.TYPE_ELECTRICITY}`, Icon: IoBulb },
   { text: 'Transactions', to: 'transactions', Icon: IoCard },
 ];
 

@@ -1,4 +1,4 @@
-import { type ActionFunction, json, type LoaderFunction, redirect } from '@remix-run/node';
+import { type ActionFunction, json, type LoaderFunction, redirect, Response } from '@remix-run/node';
 import { Form, useLoaderData, useTransition } from '@remix-run/react';
 import { useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
@@ -26,6 +26,10 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const session = await getSession(request.headers.get('Cookie'));
 
   const response = await ProductApiService.readOne(params.id as string);
+
+  if (response.statusCode !== 200) {
+    throw new Response('Error', { status: response.statusCode });
+  }
 
   const data = { 
     product: response.data, 
