@@ -26,6 +26,32 @@ const ProductUnitApiService = {
     data.statusCode = res.status;
     return data;
   },
+
+  async update(
+    id: string | number,
+    form: { 
+      name?: string; 
+      apiCode?: number; 
+      price?: number; 
+      duration?: number; 
+      available?: boolean; 
+      type?: string;  
+      brandId?: number; 
+    },
+    accessToken: string
+  ): Promise<ResponseDto<ProductUnit | ValidationError[]>> {
+    const res = await HttpService.putJson(this.getPath(id), form, accessToken);
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
+  async readOne(id: number | string): Promise<ResponseDto<ProductUnit>> {
+    const res = await HttpService.get(this.getPath(id));
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
 }
 
 export default ProductUnitApiService;

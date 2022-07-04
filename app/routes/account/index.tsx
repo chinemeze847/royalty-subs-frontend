@@ -7,7 +7,7 @@ import WalletComponent from "~/components/utils/wallet.component";
 import type TransactionsBalance from "~/models/transactions-balance.model";
 import type User from "~/models/user.model";
 import UserApiService from "~/services/user-api.service";
-import { getSession } from "~/session.server";
+import { getSession } from "~/server/session.server";
 
 type LoaderData = { user: User, balance: TransactionsBalance };
 

@@ -15,8 +15,8 @@ import ProductApiService from '~/services/product-api.service';
 import ProductUnitApiService from '~/services/product-unit-api.service';
 
 type LoaderData = {
-  brands: Brand[],
-  product: Product,
+  brands: Brand[];
+  product: Product;
   errors: {
     name: string;
     apiCode: string;
@@ -78,7 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const apiResponse = await ProductUnitApiService.create({ 
     name, 
-    type,
+    type: type || undefined,
     apiCode: Number(apiCode), 
     price: Number(price),
     duration: Number(duration),
@@ -89,7 +89,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   if (apiResponse.statusCode === 201) {
     const productUnit = apiResponse.data as ProductUnit;
-    redirectTo = `/admin/products/product-unit/${productUnit.id}`;
+    redirectTo = `/admin/product-unit/${productUnit.id}`;
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
