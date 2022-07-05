@@ -11,9 +11,9 @@ const NavItem = (
   return (
     <li className="mb-dimen-sm">
       <NavLink 
-        end
         to={to} 
         onClick={onClick}
+        end={to.length === 0 ? true : false}
         className={({ isActive }) => `
           flex 
           p-dimen-sm 

@@ -11,15 +11,15 @@ export default function FundWallet() {
 
       <AccountH2Component text="Fund wallet" />
 
-      <div className="font-bold mb-dimen-md bg-color-primary text-color-on-primary p-dimen-xs rounded-lg">
+      <div className="font-bold mb-dimen-md bg-color-primary-variant p-dimen-xs rounded-lg">
         Note: Minimium deposit is NGN { Transaction.MINIMIUM_DEPOSIT_AMOUNT }
       </div>
 
-      <section className="mb-dimen-xxl lg:flex lg:gap-x-dimen-lg lg:justify-center lg:items-center lg:flex-wrap">
+      <section className="mb-20 lg:flex lg:gap-x-dimen-lg lg:justify-center lg:items-center lg:flex-wrap">
 
         <h3 className="w-full font-bold text-2xl">Paystack</h3>
 
-        <Form className="account-form-2 flex-grow" action="/account/fund-with-paystack">
+        <Form className="account-form-2 flex-grow" action="paystack">
 
           <InputComponent 
             id="amount-input" 

@@ -5,17 +5,22 @@ import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AccountH2Component from '~/components/header/account-h2.component';
 import ProfileDLItemComponent from '~/components/list/profile-dl-item.component';
 import useMoneyFormat from '~/hooks/money-format.hook';
-import type PaystackFee from '~/models/paystack-fee.model';
 import Transaction from '~/models/transaction.model';
+import type PaystackFee from '~/models/paystack-fee.model';
+import type ValidationError from '~/models/validation-error.model';
 import { commitSession, getSession } from '~/server/session.server';
 import TransactionApiService from '~/services/transaction-api.service';
 
 type LoaderData = {
   amount: number;
   paystackFee: PaystackFee;
+  errors: {
+    amount: string;
+  }
 };
 
 export const loader: LoaderFunction = async ({ request }) => {
+  const session = await getSession(request.headers.get('Cookie'));
 
   const url = new URL(request.url);
 
@@ -36,17 +41,53 @@ export const loader: LoaderFunction = async ({ request }) => {
   const data = { 
     amount: Number(amount),
     paystackFee: paystackFeeResponse.data,
+    errors: {
+      amount: session.get('amountError'),
+    }
   };
 
-  return json<LoaderData>(data);
+  return json<LoaderData>(data, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  });
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
   const session = await getSession(request.headers.get('Cookie'));
 
+  const accessToken = session.get('accessToken');
+
   const form = await request.formData();
 
-  let redirectTo = `${new URL(request.url).pathname}?amount=${form.get('amount')}`;
+  const amount = form.get('amount')?.toString();
+
+  const depositResponse = await TransactionApiService.deposit({ amount: Number(amount) }, accessToken);
+
+  const url = new URL(request.url);
+
+  let redirectTo = `${url.pathname}?amount=${amount}`;
+
+  if (depositResponse.statusCode === 201) {
+    const transaction = depositResponse.data as Transaction;
+
+    const payUrlResponse = await TransactionApiService.initializePaystack({
+      email: transaction.user.email,
+      reference: transaction.reference,
+      amount: transaction.total * 100,
+      callback_url: `${request.url}-callback`,
+    });
+
+    if (payUrlResponse.statusCode === 200) {
+      redirectTo = payUrlResponse.data.authorization_url;
+    } else {
+      throw new Response('Error', { status: payUrlResponse.statusCode });
+    }
+    
+  } else if (depositResponse.statusCode === 400) {
+    const errors = depositResponse.data as ValidationError[];
+    errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  }
 
   return redirect(redirectTo, {
     headers: {
@@ -58,7 +99,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 export default function FundWithPaystack() {
   const moneyFormat = useMoneyFormat();
   
-  const { paystackFee, amount } = useLoaderData<LoaderData>();
+  const { paystackFee, amount, errors } = useLoaderData<LoaderData>();
 
   const fee = amount <= paystackFee.threshold 
     ? paystackFee.min 
@@ -79,7 +120,7 @@ export default function FundWithPaystack() {
 
         <Form className="account-form" method="post">
 
-          <InputComponent id="" label="" name="amount" type="hidden" value={amount} />
+          <InputComponent id="" label="" name="amount" type="hidden" value={amount} error={errors.amount} />
 
           <SubmitButtonComponent text="Pay Now" topSpace />
           
