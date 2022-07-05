@@ -87,14 +87,12 @@ const UserApiService = {
   },
 
   async read(
-    before: string | null, 
-    after: string | null, 
+    page: string | null, 
     accessToken: string
   ): Promise<ResponseDto<User[]>> {
-    const afterQuery = after === null ? '' : `&after=${after}`;
-    const beforeQuery = before === null ? '' : `&before=${before}`;
+    const pageQuery = page === null ? '' : `&page=${page}`;
     const res = await HttpService.get(
-      this.getPath(`?limit=${PAGE_LIMIT}${beforeQuery}${afterQuery}`), 
+      this.getPath(`?limit=${PAGE_LIMIT}${pageQuery}`), 
       accessToken
     );
     const data = await res.json();
@@ -104,14 +102,12 @@ const UserApiService = {
 
   async readTransactions(
     id: string | number,
-    before: string | null, 
-    after: string | null, 
+    page: string | null, 
     accessToken: string
   ): Promise<ResponseDto<Transaction[]>> {
-    const afterQuery = after === null ? '' : `&after=${after}`;
-    const beforeQuery = before === null ? '' : `&before=${before}`;
+    const pageQuery = page === null ? '' : `&page=${page}`;
     const res = await HttpService.get(
-      this.getPath(`${id}/transactions?limit=${PAGE_LIMIT}${beforeQuery}${afterQuery}`), 
+      this.getPath(`${id}/transactions?limit=${PAGE_LIMIT}${pageQuery}`), 
       accessToken
     );
     const data = await res.json();

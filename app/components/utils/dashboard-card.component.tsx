@@ -24,7 +24,7 @@ export default function DashboardCardComponent<T>(
         ${flexGrow ? 'lg:flex-grow' : ''}
       `}
     >
-      <div className="font-bold mb-dimen-sm">{ title }</div>
+      <h3 className="font-bold mb-dimen-sm">{ title }</h3>
 
       <div className="overflow-x-auto">
         

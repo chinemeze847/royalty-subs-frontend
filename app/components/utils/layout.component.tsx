@@ -146,7 +146,11 @@ export default function LayoutComponent(
           }
 
           <li>
-            <a href="x" className="flex gap-dimen-xs p-dimen-sm items-center">
+            <a 
+              target="blank" 
+              href="https://wa.me/message/57KSP2JO6PG3K1" 
+              className="flex gap-dimen-xs p-dimen-sm items-center"
+            >
               <img alt="WhatsApp" src="/images/whatsapp.png" className="w-dimen-xxxl h-dimen-xxxl" />
               <div>Contact support</div>
             </a>

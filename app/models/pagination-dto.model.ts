@@ -1,7 +1,9 @@
 export default interface PaginationDto {
-  total: number,
-  count: number,
-  before: number | null,
-  after: number | null,
-  limit: number,
+  previousPage: number | null;
+  nextPage: number | null;
+  pageLimit: number;
+  currentPage: number;
+  numberOfPages: number;
+  currentPageCount: number;
+  allPagesCount: number;
 }

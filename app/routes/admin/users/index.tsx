@@ -18,12 +18,11 @@ type LoaderData = {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
-  const before = url.searchParams.get("before");
-  const after = url.searchParams.get("after");
+  const page = url.searchParams.get("page");
 
   const session = await getSession(request.headers.get('Cookie'));
 
-  const res = await UserApiService.read(before, after, session.get('accessToken'));
+  const res = await UserApiService.read(page, session.get('accessToken'));
 
   return json<LoaderData>({ 
     users: res.data, 

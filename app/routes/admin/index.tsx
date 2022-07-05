@@ -34,8 +34,8 @@ export const loader: LoaderFunction = async ({ request }) => {
   ] = await Promise.all([
     UserApiService.readOne(userId, accessToken),
     TransactionApiService.readTentenAccountBalance(accessToken),
-    UserApiService.read(null, null, accessToken),
-    TransactionApiService.read(null, null, accessToken),
+    UserApiService.read(null, accessToken),
+    TransactionApiService.read(null, accessToken),
   ]);
 
   return json<LoaderData>({ 

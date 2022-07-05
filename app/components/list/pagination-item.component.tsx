@@ -38,14 +38,14 @@ export default function PaginationItemComponent(
           <ul className="flex gap-dimen-sm justify-center items-center py-dimen-lg px-dimen-sm">
             <PageLink 
               text="Previous" 
-              to={`?after=${pagination.after}`} 
-              disabled={pagination.after === null} 
+              to={`?page=${pagination.previousPage}`} 
+              disabled={pagination.previousPage === null} 
             />
 
             <PageLink 
               text="Next" 
-              to={`?before=${pagination.before}`} 
-              disabled={pagination.before === null} 
+              to={`?page=${pagination.nextPage}`} 
+              disabled={pagination.nextPage === null} 
             />
           </ul>
         </td>
