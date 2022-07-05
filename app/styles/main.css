@@ -17,7 +17,7 @@
   }
 
   .account-form-2-right {
-    @apply rounded-lg max-w-lg mx-auto py-dimen-xxxl lg:w-80 lg:shadow lg:px-dimen-md lg:mx-0;
+    @apply rounded-lg max-w-lg mx-auto py-dimen-lg lg:w-80 lg:shadow lg:px-dimen-md lg:mx-0;
   }
 
   .table-container {

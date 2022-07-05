@@ -47,6 +47,8 @@ export default class Transaction {
 
   static readonly DEPOSIT_METHOD_PAYSTACK = 'paystack';
 
+  static readonly MINIMIUM_DEPOSIT_AMOUNT = 500.00;
+
   static getTypes() {
     return [
       Transaction.TYPE_DEPOSIT,

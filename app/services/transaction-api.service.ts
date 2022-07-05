@@ -1,4 +1,5 @@
 import { PAGE_LIMIT } from '~/constants';
+import type PaystackFee from '~/models/paystack-fee.model';
 import type ResponseDto from '~/models/response-dto.model';
 import type Transaction from '~/models/transaction.model';
 import type TransactionsBalance from '~/models/transactions-balance.model';
@@ -8,6 +9,20 @@ import HttpService from '~/services/http.service';
 const TransactionApiService = {
   getPath(path: string | number = '') {
     return `transactions/${path}`;
+  },
+
+  async deposit(
+    form: { amount?: number }, 
+    accessToken: string
+  ): Promise<ResponseDto<Transaction | ValidationError[]>> {
+    const res = await HttpService.postJson(
+      this.getPath('deposit'),
+      form,
+      accessToken
+    );
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
   },
 
   async adminDeposit(
@@ -112,6 +127,13 @@ const TransactionApiService = {
     data.statusCode = res.status;
     return data;
   },
+
+  async readPaystackFee(): Promise<ResponseDto<PaystackFee>> {
+    const res = await HttpService.get(this.getPath('paystack-fee'));
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  }
 };
 
 export default TransactionApiService;

@@ -7,6 +7,7 @@ type Props = {
   value?: any;
   type?: string;
   step?: string;
+  min?: number;
   placeholder?: string;
   required?: boolean;
   disabled?: boolean;
@@ -14,7 +15,19 @@ type Props = {
 };
 
 export default forwardRef(function InputCmponent(
-  { id, label, name, required = true, step, error, placeholder, value = '', type = 'text', disabled = false }: Props, 
+  { 
+    id, 
+    label, 
+    name, 
+    step, 
+    error, 
+    min, 
+    placeholder, 
+    value = '', 
+    type = 'text', 
+    required = true, 
+    disabled = false 
+  }: Props, 
   ref: LegacyRef<HTMLInputElement>
 ) {
   return (
@@ -22,6 +35,7 @@ export default forwardRef(function InputCmponent(
       <label htmlFor={id} className="font-bold">{ label } { !required && '(optional)' }</label>
       <input 
         id={id}
+        min={min}
         ref={ref}
         type={type} 
         name={name} 
