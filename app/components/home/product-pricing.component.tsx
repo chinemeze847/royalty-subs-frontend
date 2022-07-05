@@ -6,7 +6,7 @@ const ProductPricingItem = ({ unit: { price, name, duration } }: { unit: Product
       <div className="py-dimen-sm flex justify-between font-bold border-b border-color-primary">
         <span>{ name }</span>
         <span>NGN { price }</span>
-        <span>{ duration } days</span>
+        { duration && <span>{ duration } days</span> }
       </div>
     </li>
   );

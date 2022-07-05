@@ -16,9 +16,11 @@ import type Product from "../models/product.model";
 import type Brand from "../models/brand.model";
 
 type LoaderData = {
-  product: Product;
-  brands: Brand[];
-}[];
+  brandsAndProducts: {
+    product: Product;
+    brands: Brand[];
+  }[];
+};
 
 export const loader: LoaderFunction = async () => {
   const data = await ProductApiService.read();
@@ -43,20 +45,15 @@ export const loader: LoaderFunction = async () => {
     return { product, brands };
   });
 
-  return json(data2);
+  return json<LoaderData>({ brandsAndProducts: data2 });
 };
 
 export default function Index() {
-
-  const data = useLoaderData<LoaderData>();
-
-  const dataProduct = data.find((item) => item.product.id === 1);
-
-  const cableProduct = data.find((item) => item.product.id === 3);
-
   const transition = useTransition();
 
   const [showNav, setShowNav] = useState(false);
+  
+  const { brandsAndProducts } = useLoaderData<LoaderData>();
 
   return (
     <>
@@ -182,41 +179,27 @@ export default function Index() {
             </ul>
           </section>
           
-          <section id="pricing" className="py-dimen-xxxl">
-            <Heading3Component text="Data Pricing" />
-            <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-4">
-              {
-                dataProduct !== undefined &&
-                dataProduct.brands.map(item => (
-                  <ProductPricingComponent 
-                    key={item.id}
-                    src={item.photo.href}
-                    alt={item.name}
-                    units={item.productUnits}
-                  />
-                ))
-              }
-            </ul>
-          </section>
-          
-          <section className="py-dimen-xxxl">
-            <Heading3Component text="Cable subscription Pricing" />
-            <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
+          {
+            brandsAndProducts.map(item => (
+              <section className="py-dimen-xxxl" key={item.product.id}>
+                <Heading3Component text={`${item.product.name} Pricing`} />
+                <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
 
-              {
-                cableProduct !== undefined &&
-                cableProduct.brands.map(item => (
-                  <ProductPricingComponent 
-                    key={item.id}
-                    src={item.photo.href} 
-                    alt={item.name}
-                    units={item.productUnits}
-                  />
-                ))
-              }
+                  {
+                    item.brands.map(item => (
+                      <ProductPricingComponent 
+                        key={item.id}
+                        src={item.photo.href} 
+                        alt={item.name}
+                        units={item.productUnits}
+                      />
+                    ))
+                  }
 
-            </ul>
-          </section>
+                </ul>
+              </section>
+            ))
+          }
 
         </div>
       </main>
