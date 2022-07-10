@@ -24,7 +24,7 @@ export default forwardRef(function SelectCmponent(
         name={name} 
         required={required}
         defaultValue={value}
-        className="block w-full p-dimen-sm border border-color-primary rounded-lg outline-none bg-color-surface" 
+        className="block w-full p-dimen-sm border border-color-primary rounded-lg outline-none bg-color-surface disabled:bg-color-background" 
       >
         <option value="">{ defaultText }</option>
         {

@@ -28,7 +28,7 @@ export default forwardRef(function PasswordInputCmponent(
           required={required}
           defaultValue={value}
           type={show ? 'text' : 'password'} 
-          className="w-full p-dimen-sm border border-color-primary rounded-lg outline-none pr-10" 
+          className="w-full p-dimen-sm border border-color-primary rounded-lg outline-none pr-10 disabled:bg-color-background" 
         />
         <button type="button" onClick={() => setShow(!show)} className="-ml-dimen-xxxl ">
           { show ? <IoEyeOff className="text-xl" /> : <IoEye className="text-xl" /> }

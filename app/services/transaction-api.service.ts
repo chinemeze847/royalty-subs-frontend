@@ -1,5 +1,4 @@
 import { PAGE_LIMIT } from '~/constants';
-import { PAYSTACK_SECRET_KEY } from '~/constants.server';
 import type PaystackAuthUrl from '~/models/paystack-auth-url.model';
 import type PaystackFee from '~/models/paystack-fee.model';
 import type ResponseDto from '~/models/response-dto.model';
@@ -19,7 +18,7 @@ const TransactionApiService = {
     const res = await fetch('https://api.paystack.co/transaction/initialize', { 
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
+        Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(form),
