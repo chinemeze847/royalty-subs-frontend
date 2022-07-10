@@ -1,11 +1,14 @@
+import useMoneyFormat from "~/hooks/money-format.hook";
 import type ProductUnit from "../../models/product-unit.model";
 
 const ProductPricingItem = ({ unit: { price, name, duration } }: { unit: ProductUnit }) => {
+  const moneyFormat = useMoneyFormat();
+
   return (
     <li>
       <div className="py-dimen-sm flex justify-between font-bold border-b border-color-primary">
         <span>{ name }</span>
-        <span>NGN { price }</span>
+        <span>NGN { moneyFormat(price) }</span>
         { duration && <span>{ duration } days</span> }
       </div>
     </li>
