@@ -1,6 +1,7 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { Form, useLoaderData } from "@remix-run/react";
 import { IoPersonOutline, IoSearch } from "react-icons/io5";
+import InputSideButtonComponent from "~/components/form/input-side-button.component";
 import InputComponent from "~/components/form/input.component";
 import AccountH2Component from "~/components/header/account-h2.component";
 import PaginationItemComponent from "~/components/list/pagination-item.component";
@@ -46,13 +47,7 @@ export default function Users() {
           id="user-search-input" 
           placeholder="Search for user by email" 
         />
-        <button 
-          type="submit"
-          className="p-dimen-sm bg-color-primary mb-dimen-sm text-color-on-primary rounded-lg hover:bg-color-primary-variant"
-        >
-          <IoSearch className="text-2xl" />
-          <span className="sr-only">Search</span>
-        </button>
+        <InputSideButtonComponent Icon={IoSearch} text="Search" type="submit" />
       </Form>
 
       <section className="table-container">

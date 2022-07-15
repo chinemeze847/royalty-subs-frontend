@@ -100,6 +100,21 @@ const UserApiService = {
     return data;
   },
 
+  async readReferrals(
+    id: string | number,
+    page: string | null, 
+    accessToken: string
+  ): Promise<ResponseDto<User[]>> {
+    const pageQuery = page === null ? '' : `&page=${page}`;
+    const res = await HttpService.get(
+      this.getPath(`${id}/referrals?limit=${PAGE_LIMIT}${pageQuery}`), 
+      accessToken
+    );
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
   async readTransactions(
     id: string | number,
     page: string | null, 
