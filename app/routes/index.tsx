@@ -14,6 +14,7 @@ import ProductPricingComponent from "../components/home/product-pricing.componen
 import ProductApiService from "../services/product-api.service";
 import type Product from "../models/product.model";
 import type Brand from "../models/brand.model";
+import { commitSession, getSession } from "~/server/session.server";
 
 type LoaderData = {
   brandsAndProducts: {
@@ -22,14 +23,22 @@ type LoaderData = {
   }[];
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  const url = new URL(request.url);
+
+  const session = await getSession(request.headers.get('Cookie'));
+
+  if (url.searchParams.has('ref')) {
+    session.set('referralId', url.searchParams.get('ref'));
+  }
+
   const data = await ProductApiService.read();
 
   const units = await Promise.all(
     data.data.map((item) => ProductApiService.readProductUnits(item.id))
   );
 
-  const data2 = data.data.map((product, index) => {
+  const brandsAndProducts = data.data.map((product, index) => {
     const productUnits = units[index].data;
     const brands: Brand[] = [];
 
@@ -45,7 +54,11 @@ export const loader: LoaderFunction = async () => {
     return { product, brands };
   });
 
-  return json<LoaderData>({ brandsAndProducts: data2 });
+  return json<LoaderData>({ brandsAndProducts }, {
+    headers: {
+      'Set-Cookie': await commitSession(session),
+    },
+  });
 };
 
 export default function Index() {

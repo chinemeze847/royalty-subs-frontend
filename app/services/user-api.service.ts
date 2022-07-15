@@ -18,6 +18,7 @@ const UserApiService = {
       email?: string; 
       phoneNumber?: string; 
       password?: string; 
+      referralId?: number;
     }
   ): Promise<ResponseDto<User | ValidationError[]>> {
     const res = await HttpService.postJson(this.getPath(), form);

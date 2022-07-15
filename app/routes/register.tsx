@@ -60,17 +60,21 @@ export const action: ActionFunction = async ({ request }) => {
     lastName, 
     email, 
     phoneNumber, 
-    password 
+    password,
+    referralId: session.has('referralId') ? Number(session.get('referralId')) : undefined,
   });
 
+  let redirectTo = '/register';
+
   if (apiResponse.statusCode === 201) {
-    return redirect('/login');
+    redirectTo = '/login';
+    session.unset('referralId');
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
   }
   
-  return redirect('/register', {
+  return redirect(redirectTo, {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
