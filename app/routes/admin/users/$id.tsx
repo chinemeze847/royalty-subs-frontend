@@ -60,6 +60,14 @@ export default function UserProfile() {
           <ProfileDLItemComponent heading="Admin Role" body={user.adminRole || 'none'} />
           <ProfileDLItemComponent heading="Status" body={user.status} />
           <ProfileDLItemComponent heading="Join on" body={dateFormat(user.createdAt)} />
+          {
+            user.referral !== null && (
+              <ProfileDLItemComponent 
+                heading="Referred by" 
+                body={`${user.referral.firstName} ${user.referral.lastName} (${user.referral.phoneNumber})`} 
+              />
+            )
+          }
         </dl>
 
       </section>
