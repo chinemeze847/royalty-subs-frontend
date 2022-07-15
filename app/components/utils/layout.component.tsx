@@ -80,8 +80,9 @@ export default function LayoutComponent(
             <span className="sr-only">Menu</span>
           </button>
 
-          <h1 className="text-color-primary font-bold text-3xl sr-only lg:not-sr-only">
-            <Link to="/">Royaltysubs</Link>
+          <h1 className="text-color-primary font-bold text-3xl">
+            <Link to="/" className="inline-block ml-dimen-xs px-2.5 py-0.5 shadow shadow-color-primary rounded-full lg:hidden">R</Link>
+            <Link to="/" className="inline-block sr-only lg:not-sr-only">Royaltysubs</Link>
           </h1>
 
           <div className="relative flex-grow text-right">

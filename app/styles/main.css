@@ -4,6 +4,15 @@
 
 @layer components {
 
+  @font-face {
+    font-family: 'header-font';
+    src: local('righteous'), url(/fonts/Righteous-Regular.ttf) format("truetype");
+  }
+
+  h1 {
+    font-family: 'header-font';
+  }
+
   .auth-form {
     @apply p-dimen-md rounded-lg shadow shadow-color-primary lg:w-96 lg:mx-auto;
   }
