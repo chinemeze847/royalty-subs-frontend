@@ -1,34 +1,15 @@
-import { json, type LoaderFunction } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { type LoaderFunction } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { IoCubeOutline } from "react-icons/io5";
 import AccountH2Component from "~/components/header/account-h2.component";
 import ProductUnitItemComponent from "~/components/list/product-unit-item.component";
 import ProfileDLItemComponent from "~/components/list/profile-dl-item.component";
 import EmptyListComponent from "~/components/utils/empty-list.component";
+import TabComponent from "~/components/utils/tab.component";
 import useDateFormat from "~/hooks/date-format.hook";
-import type Product from "~/models/product.model";
-import ProductApiService from "~/services/product-api.service";
+import { type LoaderData, productProfileLoader } from "~/server/product-profile.server";
 
-type LoaderData = { product: Product; };
-
-export const loader: LoaderFunction = async ({ params }) => {
-  const [response, unitsResponse] = await Promise.all([
-    ProductApiService.readOne(params.id as string),
-    ProductApiService.readProductUnits(params.id as string),
-  ]);
-
-  if (response.statusCode !== 200) {
-    throw new Response('Error', { status: response.statusCode });
-  } else if (unitsResponse.statusCode !== 200) {
-    throw new Response('Error', { status: unitsResponse.statusCode });
-  }
-
-  const product = response.data;
-
-  product.productUnits = unitsResponse.data;
-
-  return json<LoaderData>({ product });
-};
+export const loader: LoaderFunction = ({ request, params }) => productProfileLoader(request, params);
 
 export default function ProductProfile () {
   const data = useLoaderData<LoaderData>();
@@ -38,7 +19,13 @@ export default function ProductProfile () {
   return (
     <div className="container">
 
-      <AccountH2Component text="Product" links={[{ text: 'Edit', to: 'edit' }]} />
+      <AccountH2Component 
+        text="Product" 
+        links={[
+          { text: 'Edit', to: 'edit' },
+          { text: 'Add product unit', to: 'product-unit' },
+        ]} 
+      />
 
       <section className="mb-dimen-lg">
 
@@ -52,15 +39,11 @@ export default function ProductProfile () {
       </section>
 
       <section>
-        <div className="flex gap-dimen-sm">
-          <h4 className="font-bold text-lg flex-grow">Product units</h4>
-          <Link 
-            to="product-unit" 
-            className="bg-color-primary px-dimen-sm py-dimen-xxs rounded-lg text-color-on-primary"
-          >
-            Add product unit
-          </Link>
-        </div>
+        <TabComponent 
+          items={data.brands} 
+          activeItem={data.activeBrand} 
+        />
+
         <div className="table-container">
           {
             data.product.productUnits.length > 0 ? (
@@ -78,9 +61,11 @@ export default function ProductProfile () {
                 </thead>
                 <tbody>
                   {
-                    data.product.productUnits.map(item => (
-                      <ProductUnitItemComponent key={item.id} productUnit={item} />
-                    ))
+                    data.product.productUnits
+                      .filter(item => item.brand.id === data.activeBrand)
+                      .map(item => (
+                        <ProductUnitItemComponent key={item.id} productUnit={item} />
+                      ))
                   }
                 </tbody>
               </table>

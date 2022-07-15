@@ -204,7 +204,7 @@ export default function ProductUnitEdit() {
             error={errors.available}
           />
 
-          <SubmitButtonComponent text="Add" topSpace />
+          <SubmitButtonComponent text="Edit" topSpace />
         </fieldset>
         
       </Form>

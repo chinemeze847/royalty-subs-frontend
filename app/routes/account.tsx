@@ -1,5 +1,5 @@
 import { type LoaderFunction, redirect } from "@remix-run/node";
-import { IoBulb, IoCall, IoCard, IoGrid, IoTv, IoWallet, IoWifi } from "react-icons/io5";
+import { IoBulb, IoCall, IoCard, IoGrid, IoPeople, IoTv, IoWallet, IoWifi } from "react-icons/io5";
 import type { AccountMenuItem, SideBarItem } from "~/components/utils/layout.component";
 import LayoutComponent from "~/components/utils/layout.component";
 import Product from "~/models/product.model";
@@ -12,6 +12,7 @@ const SIDE_BAR_ITEMS: SideBarItem[] = [
   { text: 'Buy Airtime', to: `products/${Product.TYPE_AIRTIME}`, Icon: IoCall },
   { text: 'Cable subscription', to: `products/${Product.TYPE_CABLE}`, Icon: IoTv },
   { text: 'Electricity bill', to: `products/${Product.TYPE_ELECTRICITY}`, Icon: IoBulb },
+  { text: 'Referrals', to: 'referrals', Icon: IoPeople },
   { text: 'Transactions', to: 'transactions', Icon: IoCard },
 ];
 

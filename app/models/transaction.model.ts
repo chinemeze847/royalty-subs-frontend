@@ -9,6 +9,10 @@ export default class Transaction {
 
   user!: User;
 
+  referralId!: User | null;
+
+  referral!: User | null;
+
   productUnitId!: number | null;
 
   productUnit!: ProductUnit | null;
@@ -34,6 +38,8 @@ export default class Transaction {
   static readonly TYPE_DEPOSIT = 'deposit';
 
   static readonly TYPE_PAYMENT = 'payment';
+
+  static readonly TYPE_BONUS = 'bonus';
 
   static readonly STATUS_CREATED = 'created';
 

@@ -4,7 +4,7 @@ export default function AccountH2Component(
   { text, links }: { text: string; links?: { text: string; to: string; }[] }
 ) {
   return (
-    <div className="flex gap-dimen-sm mb-dimen-md">
+    <div className="flex gap-dimen-sm mb-dimen-md flex-wrap">
       <h2 className="text-4xl font-bold flex-grow">{ text }</h2>
       <ul className="flex gap-dimen-sm">
         {

@@ -1,6 +1,10 @@
 export default class User {
   id!: number;
 
+  referralId!: User | null;
+
+  referral!: User | null;
+
   firstName!: string;
 
   lastName!: string;
