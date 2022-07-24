@@ -3,7 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import InputSideButtonComponent from '~/components/form/input-side-button.component';
 import InputComponent from '~/components/form/input.component';
 
-export default function ReferralLinkIComponent({ link }: { link: string; }) {
+export default function ReferralLinkInputComponent({ link }: { link: string; }) {
 
   const copyLink = () => {
     if (navigator.clipboard) {

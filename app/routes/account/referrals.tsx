@@ -1,7 +1,7 @@
 import { json, type LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { IoPersonOutline } from 'react-icons/io5';
-import ReferralLinkIComponent from '~/components/form/referral-link-input.component';
+import ReferralLinkInputComponent from '~/components/form/referral-link-input.component';
 import AccountH2Component from '~/components/header/account-h2.component';
 import PaginationItemComponent from '~/components/list/pagination-item.component';
 import ReferralItemComponent from '~/components/list/referral-item.component';
@@ -61,7 +61,7 @@ export default function Referrals() {
         <h3 className="font-bold mb-dimen-xs">
           Join our referral program by referring people to Royaltysubs and earn a bonus of 1% of their first funding.
         </h3>
-        <ReferralLinkIComponent link={data.referralLink} />
+        <ReferralLinkInputComponent link={data.referralLink} />
         {
           data.referrer !== null && (
             <div className="flex gap-dimen-xs bg-color-background rounded-lg p-dimen-xs">
