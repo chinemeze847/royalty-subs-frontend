@@ -1,10 +1,8 @@
-const PROD = process.env.NODE_ENV === 'production';
-
 const netlify = {};
 
-if (PROD) {
+if (process.env.NETLIFY === true) {
   netlify.serverBuildTarget = "netlify";
-  netlify.server = "./server.js";
+  netlify.server = "./netlify-server.js";
 }
 
 /**
