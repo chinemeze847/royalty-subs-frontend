@@ -16,6 +16,7 @@ type LoaderData = {
   product: Product; 
   success: string;
   errors: {
+    form: string;
     name: string;
     description: string;
     available: string;
@@ -35,6 +36,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     product: response.data, 
     success: session.get('success'), 
     errors: {
+      form: session.get('formError'),
       name: session.get('nameError'),
       description: session.get('descriptionError'),
       available: session.get('availableError'),
@@ -85,6 +87,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
 
   return redirect(new URL(request.url).pathname, {
@@ -102,8 +106,10 @@ export default function ProductEdit() {
   useEffect(() => { 
     if (transition.state === 'idle' && success !== undefined) { 
       toast.success(success);
+    } else if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
     }
-  }, [success, transition.state]);
+  }, [success, errors.form, transition.state]);
 
   return (
     <div className="container">

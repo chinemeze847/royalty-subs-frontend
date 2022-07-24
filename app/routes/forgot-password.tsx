@@ -1,5 +1,7 @@
 import { type ActionFunction, json, redirect, type LoaderFunction } from "@remix-run/node";
 import { Form, useActionData, useLoaderData, useTransition } from "@remix-run/react";
+import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import InputComponent from "~/components/form/input.component";
 import SubmitButtonComponent from "~/components/form/submit-button.component";
 import AuthH1Component from "~/components/header/auth-h1.component";
@@ -11,6 +13,7 @@ import AuthApiService from "~/services/auth-api.service";
 
 type LoaderData = {
   errors: {
+    form: string;
     email: string;
   };
 };
@@ -24,6 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const data = { 
     errors: {
+      form: session.get('formError'),
       email: session.get('emailError'),
     }
   };
@@ -50,6 +54,8 @@ export const action: ActionFunction = async ({ request }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(redirectTo, {
@@ -66,8 +72,15 @@ export default function ForgotPassword() {
 
   const { errors } = useLoaderData<LoaderData>();
 
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
+
   return (
     <main>
+      
       <TopLoaderComponent />
 
       <div className="container py-dimen-xxxl">
@@ -97,6 +110,8 @@ export default function ForgotPassword() {
 
       </div>
       
+      <ToastContainer />
+
     </main>
   );
 }

@@ -16,11 +16,14 @@ import { commitSession, getSession } from '~/server/session.server';
 import ProductUnitApiService from '~/services/product-unit-api.service';
 import TransactionApiService from '~/services/transaction-api.service';
 import UserApiService from '~/services/user-api.service';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 
 type LoaderData = {
   balance: TransactionsBalance;
   productUnit: ProductUnit;
   errors: {
+    form: string;
     productUnitId: string;
     recipientNumber: string;
   };
@@ -66,6 +69,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     productUnit,
     balance: balanceResponse.data,
     errors: {
+      form: session.get('formError'),
       productUnitId: session.get('productUnitIdError'),
       recipientNumber: session.get(recipientNumberErrorkey),
     }
@@ -128,6 +132,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
 
   return redirect(redirectTo, {
@@ -145,6 +151,12 @@ export default function ProductUnitProfile() {
   const data = useActionData();
 
   const { productUnit, balance, errors } = useLoaderData<LoaderData>();
+
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -188,6 +200,8 @@ export default function ProductUnitProfile() {
         }
 
       </Form>
+
+      <ToastContainer />
 
     </div>
   );

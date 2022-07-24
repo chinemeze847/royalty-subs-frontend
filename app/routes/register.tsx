@@ -1,5 +1,7 @@
 import { json, type LoaderFunction, redirect, type ActionFunction } from '@remix-run/node';
 import { Form, Link, useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import CheckboxComponent from '~/components/form/checkbox.component';
 import InputComponent from '~/components/form/input.component';
 import PasswordInputComponent from '~/components/form/password-input.component';
@@ -13,6 +15,7 @@ import UserApiService from '~/services/user-api.service';
 
 type LoaderData = {
   errors: {
+    form: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -30,6 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const data = { 
     errors: {
+      form: session.get('formError'),
       firstName: session.get('firstNameError'),
       lastName: session.get('lastNameError'),
       email: session.get('emailError'),
@@ -72,6 +76,8 @@ export const action: ActionFunction = async ({ request }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(redirectTo, {
@@ -88,6 +94,12 @@ export default function Register() {
 
   const { errors } = useLoaderData<LoaderData>();
   
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
+
   return (
     <main>
       <TopLoaderComponent />
@@ -163,6 +175,8 @@ export default function Register() {
         </Form>
 
       </div>
+
+      <ToastContainer />
     </main>
   );
 }

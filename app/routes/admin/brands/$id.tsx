@@ -17,6 +17,7 @@ type LoaderData = {
   brand: Brand; 
   success: string;
   errors: {
+    form: string;
     name: string;
     apiCode: string;
     photo: string;
@@ -38,6 +39,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     brand: brandResponse.data, 
     success: session.get('success'),
     errors: {
+      form: session.get('formError'),
       name: session.get('nameError'),
       apiCode: session.get('apiCodeError'),
       photo: session.get('photoError'),
@@ -89,6 +91,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     } else if (apiResponse.statusCode === 400) {
       const errors = apiResponse.data as ValidationError[];
       errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+    } else {
+      session.flash('formError', 'Oops! An error occured.');
     }
   }
 
@@ -107,8 +111,10 @@ export default function BrandProfile() {
   useEffect(() => { 
     if (transition.state === 'idle' && success !== undefined) { 
       toast.success(success);
+    } else if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
     }
-  }, [success, transition.state]);
+  }, [success, errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -137,7 +143,7 @@ export default function BrandProfile() {
           <InputComponent 
             id="api-code-input" 
             name="apiCode" 
-            label="Brand API code"
+            label="Brand API code (From Tentendata)"
             value={brand.apiCode}
             type="number"
             error={errors.name}

@@ -1,5 +1,7 @@
 import { type ActionFunction, json, redirect, Response, type LoaderFunction } from '@remix-run/node';
-import { Form, useLoaderData } from '@remix-run/react';
+import { Form, useLoaderData, useTransition } from '@remix-run/react';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import InputComponent from '~/components/form/input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AccountH2Component from '~/components/header/account-h2.component';
@@ -15,6 +17,7 @@ type LoaderData = {
   amount: number;
   paystackFee: PaystackFee;
   errors: {
+    form: string;
     amount: string;
   }
 };
@@ -42,6 +45,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     amount: Number(amount),
     paystackFee: paystackFeeResponse.data,
     errors: {
+      form: session.get('formError'),
       amount: session.get('amountError'),
     }
   };
@@ -81,12 +85,14 @@ export const action: ActionFunction = async ({ request, params }) => {
     if (payUrlResponse.statusCode === 200) {
       redirectTo = payUrlResponse.data.authorization_url;
     } else {
-      throw new Response('Error', { status: payUrlResponse.statusCode });
+      session.flash('formError', 'Oops! An error occured.');
     }
     
   } else if (depositResponse.statusCode === 400) {
     const errors = depositResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
 
   return redirect(redirectTo, {
@@ -97,6 +103,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function FundWithPaystack() {
+  const transition = useTransition();
+
   const moneyFormat = useMoneyFormat();
   
   const { paystackFee, amount, errors } = useLoaderData<LoaderData>();
@@ -104,6 +112,12 @@ export default function FundWithPaystack() {
   const fee = amount <= paystackFee.threshold 
     ? paystackFee.min 
     : paystackFee.max;
+
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -120,13 +134,17 @@ export default function FundWithPaystack() {
 
         <Form className="account-form" method="post">
 
-          <InputComponent id="" label="" name="amount" type="hidden" value={amount} error={errors.amount} />
+          <fieldset disabled={transition.state === 'loading'}>
+            <InputComponent id="" label="" name="amount" type="hidden" value={amount} error={errors.amount} />
 
-          <SubmitButtonComponent text="Pay Now" topSpace />
+            <SubmitButtonComponent text="Pay Now" topSpace />
+          </fieldset>
           
         </Form>
 
       </section>
+
+      <ToastContainer />
 
     </div>
   );

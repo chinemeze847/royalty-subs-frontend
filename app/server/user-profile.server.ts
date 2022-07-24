@@ -8,6 +8,7 @@ export type LoaderData = {
   user: User;
   success: string;
   errors: {
+    form: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -27,6 +28,7 @@ export const userProfileLoader = async (request: Request) => {
     user: apiResponse.data,
     success: session.get('success'),
     errors: {
+      form: session.get('formError'),
       firstName: session.get('firstNameError'),
       lastName: session.get('lastNameError'),
       email: session.get('emailError'),
@@ -73,6 +75,8 @@ export const userProfileAction = async (request: Request, redirectTo: 'account' 
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(`/${redirectTo}/profile`, {

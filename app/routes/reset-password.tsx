@@ -1,6 +1,7 @@
 import { json, type LoaderFunction, redirect, type ActionFunction } from '@remix-run/node';
 import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
-import React from 'react'
+import React, { useEffect } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
 import InputComponent from '~/components/form/input.component';
 import PasswordInputComponent from '~/components/form/password-input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
@@ -13,6 +14,7 @@ import AuthApiService from '~/services/auth-api.service';
 
 type LoaderData = {
   errors: {
+    form: string;
     passwordResetToken: string;
     password: string;
   };
@@ -27,6 +29,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const data = { 
     errors: {
+      form: session.get('formError'),
       password: session.get('passwordError'),
       passwordResetToken: session.get('passwordResetTokenError'),
     }
@@ -55,6 +58,8 @@ export const action: ActionFunction = async ({ request }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(redirectTo, {
@@ -71,6 +76,12 @@ export default function ResetPassword() {
 
   const { errors } = useLoaderData<LoaderData>();
 
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
+
   return (
     <main>
       <TopLoaderComponent />
@@ -84,7 +95,8 @@ export default function ResetPassword() {
           <AuthH2Component text="Reset password" />
 
           <div className="mb-dimen-md text-gray text-sm">
-            A password reset token has been sent to your email, enter the token and a new password to complete resetting your password.
+            A password reset token has been sent to your email, 
+            enter the token and a new password to complete resetting your password.
           </div>
           
           <fieldset disabled={transition.state === 'loading'}>
@@ -113,6 +125,7 @@ export default function ResetPassword() {
 
       </div>
 
+      <ToastContainer />
     </main>
   );
 }

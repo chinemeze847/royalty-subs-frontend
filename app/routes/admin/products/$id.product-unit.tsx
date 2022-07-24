@@ -1,5 +1,7 @@
 import { type ActionFunction, json, type LoaderFunction, redirect } from '@remix-run/node';
 import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import CheckboxComponent from '~/components/form/checkbox.component';
 import InputComponent from '~/components/form/input.component';
 import SelectComponent from '~/components/form/select.component';
@@ -18,9 +20,11 @@ type LoaderData = {
   brands: Brand[];
   product: Product;
   errors: {
+    form: string;
     name: string;
     apiCode: string;
     price: string;
+    purchasingPrice: string;
     duration: string;
     type: string;
     brandId: string;
@@ -45,9 +49,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     brands: brandResponse.data,
     product: productResponse.data,
     errors: {
+      form: session.get('formError'),
       name: session.get('nameError'),
       apiCode: session.get('apiCodeError'),
       price: session.get('priceError'),
+      purchasingPrice: session.get('purchasingPriceError'),
       duration: session.get('durationError'),
       type: session.get('typeError'),
       brandId: session.get('brandIdError'),
@@ -72,6 +78,7 @@ export const action: ActionFunction = async ({ request }) => {
   const name = form.get('name')?.toString();
   const apiCode = form.get('apiCode')?.toString();
   const price = form.get('price')?.toString();
+  const purchasingPrice = form.get('purchasingPrice')?.toString();
   const duration = form.get('duration')?.toString();
   const type = form.get('type')?.toString();
   const available = form.get('available')?.toString();
@@ -85,6 +92,7 @@ export const action: ActionFunction = async ({ request }) => {
     type: type || undefined,
     apiCode: Number(apiCode), 
     price: Number(price),
+    purchasingPrice: Number(purchasingPrice),
     duration: Number(duration),
     available: available === 'on',
     productId: Number(productId),
@@ -97,6 +105,8 @@ export const action: ActionFunction = async ({ request }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
  
   return redirect(redirectTo, {
@@ -112,6 +122,12 @@ export default function AddProductUnit() {
   const data = useActionData();
 
   const { errors, brands, product } = useLoaderData<LoaderData>();
+
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -140,6 +156,16 @@ export default function AddProductUnit() {
           />
 
           <InputComponent 
+            id="purchasing-price-input" 
+            name="purchasingPrice" 
+            label="Purchasing price (Amount to pay to Tentendata)"
+            type="number"
+            step="0.01"
+            value={data?.purchasingPrice}
+            error={errors.purchasingPrice}
+          />
+
+          <InputComponent 
             id="duration-input" 
             name="duration" 
             label="Duration (days)"
@@ -151,7 +177,7 @@ export default function AddProductUnit() {
           <InputComponent 
             id="api-code-input" 
             name="apiCode" 
-            label="API code"
+            label="API code (From Tentendata)"
             type="number"
             value={data?.apiCode}
             error={errors.apiCode}
@@ -199,6 +225,8 @@ export default function AddProductUnit() {
         </fieldset>
         
       </Form>
+
+      <ToastContainer />
 
     </div>
   );

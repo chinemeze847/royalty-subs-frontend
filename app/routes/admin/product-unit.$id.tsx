@@ -19,9 +19,11 @@ type LoaderData = {
   brands: Brand[];
   productUnit: ProductUnit;
   errors: {
+    form: string;
     name: string;
     apiCode: string;
     price: string;
+    purchasingPrice: string;
     duration: string;
     type: string;
     brandId: string;
@@ -47,9 +49,11 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     brands: brandResponse.data,
     productUnit: productUnitResponse.data,
     errors: {
+      form: session.get('formError'),
       name: session.get('nameError'),
       apiCode: session.get('apiCodeError'),
       price: session.get('priceError'),
+      purchasingPrice: session.get('purchasingPriceError'),
       duration: session.get('durationError'),
       type: session.get('typeError'),
       brandId: session.get('brandIdError'),
@@ -78,6 +82,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   const name = form.get('name')?.toString();
   const apiCode = form.get('apiCode')?.toString();
   const price = form.get('price')?.toString();
+  const purchasingPrice = form.get('purchasingPrice')?.toString();
   const duration = form.get('duration')?.toString();
   const type = form.get('type')?.toString();
   const available = form.get('available')?.toString();
@@ -90,6 +95,7 @@ export const action: ActionFunction = async ({ request, params }) => {
       type: productUnit.type !== type ? type : undefined,
       apiCode: productUnit.apiCode !== Number(apiCode) ? Number(apiCode) : undefined, 
       price: productUnit.price !== Number(price) ? Number(price) : undefined,
+      purchasingPrice: productUnit.purchasingPrice !== Number(purchasingPrice) ? Number(purchasingPrice) : undefined,
       duration: productUnit.duration !== Number(duration) ? Number(duration) : undefined,
       available: productUnit.available !== (available === 'on') ? available === 'on' : undefined,
       brandId: productUnit.brandId !== Number(brandId) ? Number(brandId) : undefined,
@@ -102,6 +108,8 @@ export const action: ActionFunction = async ({ request, params }) => {
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
  
   return redirect(new URL(request.url).pathname, {
@@ -119,8 +127,10 @@ export default function ProductUnitEdit() {
   useEffect(() => { 
     if (transition.state === 'idle' && success !== undefined) { 
       toast.success(success);
+    } else if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
     }
-  }, [success, transition.state]);
+  }, [success, errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -149,6 +159,16 @@ export default function ProductUnitEdit() {
           />
 
           <InputComponent 
+            id="purchasing-price-input" 
+            name="purchasingPrice" 
+            label="Purchasing price (Amount to pay to Tentendata)"
+            type="number"
+            step="0.01"
+            value={productUnit.purchasingPrice}
+            error={errors.purchasingPrice}
+          />
+
+          <InputComponent 
             id="duration-input" 
             name="duration" 
             label="Duration (days)"
@@ -160,7 +180,7 @@ export default function ProductUnitEdit() {
           <InputComponent 
             id="api-code-input" 
             name="apiCode" 
-            label="API code"
+            label="API code (From Tentendata)"
             type="number"
             value={productUnit.apiCode}
             error={errors.apiCode}

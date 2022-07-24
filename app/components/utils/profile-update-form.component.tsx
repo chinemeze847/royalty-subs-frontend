@@ -14,8 +14,10 @@ export default function ProfileUpdateFormComponent(
   useEffect(() => { 
     if (transition.state === 'idle' && success !== undefined) { 
       toast.success(success);
+    } else if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
     }
-  }, [success, transition.state]);
+  }, [success, errors.form, transition.state]);
 
   return (
     <div className="container">

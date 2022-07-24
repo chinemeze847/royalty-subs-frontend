@@ -17,6 +17,7 @@ import type Brand from "../models/brand.model";
 import { commitSession, getSession } from "~/server/session.server";
 
 type LoaderData = {
+  isLoggedIn: boolean;
   brandsAndProducts: {
     product: Product;
     brands: Brand[];
@@ -54,7 +55,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { product, brands };
   });
 
-  return json<LoaderData>({ brandsAndProducts }, {
+  return json<LoaderData>({ brandsAndProducts, isLoggedIn: session.has('userId') }, {
     headers: {
       'Set-Cookie': await commitSession(session),
     },
@@ -66,7 +67,7 @@ export default function Index() {
 
   const [showNav, setShowNav] = useState(false);
   
-  const { brandsAndProducts } = useLoaderData<LoaderData>();
+  const { brandsAndProducts, isLoggedIn } = useLoaderData<LoaderData>();
 
   return (
     <>
@@ -109,10 +110,16 @@ export default function Index() {
               <HomeHeaderNavItemComponent to="#about" text="About us" />
               <HomeHeaderNavItemComponent to="#products" text="Our products" />
               <HomeHeaderNavItemComponent to="#pricing" text="Pricing" />
-              <HomeHeaderNavItemComponent to="login" text="Log in" />
-              <HomeHeaderNavItemComponent to="register" text="Register" />
-              <HomeHeaderNavItemComponent to="account" text="Account" />
-              <HomeHeaderNavItemComponent to="admin" text="Admin" />
+              {
+                isLoggedIn ? (
+                  <HomeHeaderNavItemComponent to="account" text="Account" />
+                ) : (
+                  <>
+                    <HomeHeaderNavItemComponent to="login" text="Log in" />
+                    <HomeHeaderNavItemComponent to="register" text="Register" />
+                  </>
+                )
+              }
             </ul>
           </nav>
         </div>
@@ -192,27 +199,29 @@ export default function Index() {
             </ul>
           </section>
           
-          {
-            brandsAndProducts.map(item => (
-              <section className="py-dimen-xxxl" key={item.product.id}>
-                <Heading3Component text={`${item.product.name} Pricing`} />
-                <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
+          <div id="pricing">
+            {
+              brandsAndProducts.map(item => (
+                <section className="py-dimen-xxxl" key={item.product.id}>
+                  <Heading3Component text={`${item.product.name} Pricing`} />
+                  <ul className="grid gap-dimen-md md:grid-cols-2 xl:grid-cols-3">
 
-                  {
-                    item.brands.map(item => (
-                      <ProductPricingComponent 
-                        key={item.id}
-                        src={item.photo.href} 
-                        alt={item.name}
-                        units={item.productUnits}
-                      />
-                    ))
-                  }
+                    {
+                      item.brands.map(item => (
+                        <ProductPricingComponent 
+                          key={item.id}
+                          src={item.photo.href} 
+                          alt={item.name}
+                          units={item.productUnits}
+                        />
+                      ))
+                    }
 
-                </ul>
-              </section>
-            ))
-          }
+                  </ul>
+                </section>
+              ))
+            }
+          </div>
 
         </div>
       </main>
@@ -234,9 +243,20 @@ export default function Index() {
           <div>
             <h5 className="font-bold uppercase">Contact us</h5>
             <ul>
-              <ContactUsItemComponent Icon={IoCall} heading="Phone number" body="08109260088" />
-              <ContactUsItemComponent Icon={IoMail} heading="Email address" body="iykesamuel0@gmail.com" />
-              <ContactUsItemComponent Icon={IoLocation} heading="Address" body="#56 Ojokwu street, Olodi Apapa, Lagos" />
+              <ContactUsItemComponent Icon={IoCall} heading="Phone number">
+                <a href="tel:+2348109260088">+2348109260088</a>
+              </ContactUsItemComponent>
+              <ContactUsItemComponent Icon={IoCall} heading="WhatsApp">
+                <a target="blank" href="https://wa.me/message/57KSP2JO6PG3K1">Chat with us</a>
+              </ContactUsItemComponent>
+              <ContactUsItemComponent Icon={IoMail} heading="Email address">
+                <a href="mailto:support@royaltysubs.com">support@royaltysubs.com</a>
+                <span> | </span>
+                <a href="mailto:iykesamuel0@gmail.com">iykesamuel0@gmail.com</a>
+              </ContactUsItemComponent>
+              <ContactUsItemComponent Icon={IoLocation} heading="Address">
+                #56 Ojokwu street, Olodi Apapa, Lagos
+              </ContactUsItemComponent>
             </ul>
           </div>
         </div>

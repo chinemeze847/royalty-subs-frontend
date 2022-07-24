@@ -6,6 +6,7 @@ import UserApiService from "~/services/user-api.service";
 export type LoaderData = {
   success: string;
   errors: {
+    form: string;
     password: string;
     newPassword: string;
   };
@@ -17,6 +18,7 @@ export const userPasswordLoader = async (request: Request) => {
   const data = { 
     success: session.get('success'),
     errors: {
+      form: session.get('formError'),
       password: session.get('passwordError'),
       newPassword: session.get('newPasswordError'),
     }
@@ -48,6 +50,8 @@ export const userPasswordAction = async (request: Request, redirectTo: 'account'
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  }  else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(`/${redirectTo}/change-password`, {

@@ -1,5 +1,7 @@
 import { type ActionFunction, json, redirect, type LoaderFunction } from '@remix-run/node';
 import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
 import FileInputComponent from '~/components/form/file-input.component';
 import InputComponent from '~/components/form/input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
@@ -13,6 +15,7 @@ import PhotoApiService from '~/services/photo-api.service';
 
 type LoaderData = {
   errors: {
+    form: string;
     name: string;
     apiCode: string;
     photo: string;
@@ -24,6 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const data = { 
     errors: {
+      form: session.get('formError'),
       name: session.get('nameError'),
       apiCode: session.get('apiCodeError'),
       photo: session.get('photoError'),
@@ -67,6 +71,8 @@ export const action: ActionFunction = async ({ request }) => {
   } else if (photoResponse.statusCode === 400) {
     const errors = photoResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+  } else {
+    session.flash('formError', 'Oops! An error occured.');
   }
   
   return redirect(redirectTo, {
@@ -82,6 +88,12 @@ export default function CreateBrand() {
   const data = useActionData();
 
   const { errors } = useLoaderData<LoaderData>();
+
+  useEffect(() => { 
+    if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
+    }
+  }, [errors.form, transition.state]);
 
   return (
     <div className="container">
@@ -104,7 +116,7 @@ export default function CreateBrand() {
           <InputComponent 
             id="api-code-input" 
             name="apiCode" 
-            label="Brand API code"
+            label="Brand API code (From Tentendata)"
             type="number"
             value={data?.apiCode}
             error={errors.apiCode}
@@ -114,6 +126,8 @@ export default function CreateBrand() {
         </fieldset>
         
       </Form>
+
+      <ToastContainer />
 
     </div>
   );

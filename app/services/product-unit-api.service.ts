@@ -13,6 +13,7 @@ const ProductUnitApiService = {
       name?: string; 
       apiCode?: number; 
       price?: number; 
+      purchasingPrice?: number;
       duration?: number; 
       available?: boolean; 
       type?: string; 
@@ -33,6 +34,7 @@ const ProductUnitApiService = {
       name?: string; 
       apiCode?: number; 
       price?: number; 
+      purchasingPrice?: number;
       duration?: number; 
       available?: boolean; 
       type?: string;  

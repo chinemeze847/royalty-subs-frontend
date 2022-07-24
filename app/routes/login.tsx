@@ -60,6 +60,8 @@ export const action: ActionFunction = async ({ request }) => {
     redirectTo = queryParams.get('redirectTo') ?? '/account';
   } else if (apiResponse.statusCode === 401) {
     session.flash('authError', 'Credentials are incorrect');
+  } else {
+    session.flash('authError', 'Oops! An error occured.');
   }
   
   return redirect(redirectTo, {

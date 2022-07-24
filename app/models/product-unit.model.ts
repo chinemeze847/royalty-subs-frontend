@@ -15,6 +15,8 @@ export default interface ProductUnit {
   name: string;
 
   price: number;
+  
+  purchasingPrice: number;
 
   duration: number;
 

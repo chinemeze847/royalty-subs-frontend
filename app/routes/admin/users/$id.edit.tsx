@@ -17,6 +17,7 @@ type LoaderData = {
   user: User,
   success: string;
   errors: {
+    form: string;
     status: string;
     admin: string;
     amount: string;
@@ -38,6 +39,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     user: apiResponse.data, 
     success: session.get('success'), 
     errors: {
+      form: session.get('formError'),
       status: session.get('statusError'),
       admin: session.get('adminError'),
       amount: session.get('amountError'),
@@ -88,6 +90,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     } else if (apiResponse.statusCode === 400) {
       const errors = apiResponse.data as ValidationError[];
       errors.forEach(item => session.flash(`${item.name}Error`, item.message));
+    } else {
+      session.flash('formError', 'Oops! An error occured.');
     }
   }
 
@@ -106,8 +110,10 @@ export default function UserProfileEdit() {
   useEffect(() => { 
     if (transition.state === 'idle' && success !== undefined) { 
       toast.success(success);
+    } else if (transition.state === 'idle' && errors.form !== undefined) { 
+      toast.error(errors.form);
     }
-  }, [success, transition.state]);
+  }, [success, errors.form, transition.state]);
 
   return (
     <div className="container">
