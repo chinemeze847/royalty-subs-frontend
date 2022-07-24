@@ -1,6 +1,6 @@
 const netlify = {};
 
-if (process.env.NETLIFY === true) {
+if (process.env.NETLIFY !== undefined) {
   netlify.serverBuildTarget = "netlify";
   netlify.server = "./netlify-server.js";
 }
