@@ -35,7 +35,7 @@ export default function Terms() {
 
             <TermItem
               head="Wallet funding fee" 
-              body="Manual funding above 10,000 will attract a chance of 100." 
+              body="Manual funding above NGN 10,000.00 will attract a charge of NGN 100.00." 
             />
             
             <TermItem

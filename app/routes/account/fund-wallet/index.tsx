@@ -43,21 +43,32 @@ export default function FundWallet() {
 
       <section>
 
-        <h3 className="w-full font-bold text-2xl">Manual bank funding</h3>
+        <h3 className="w-full font-bold text-2xl mb-dimen-md">Manual funding</h3>
 
-        <div className="mx-auto rounded-lg shadow p-dimen-md my-dimen-lg">
+        <div className="font-bold text-color-primary">
+          Transfer money to the any of these bank accounts and send your proof of payment to our WhatsApp support. 
+          <br/>
+          Note: Manual funding above NGN 10,000.00 will attract a charge of NGN 100.00.
+        </div>
 
-          <dl>
+        <div className="mx-auto rounded-lg shadow p-dimen-md my-dimen-lg lg:flex lg:gap-x-dimen-md lg:items-center">
+
+          <dl className="flex-grow">
             <ProfileDLItemComponent heading="Bank name" body="Guaranteed Trust Bank" />
             <ProfileDLItemComponent heading="Account name" body="Samuel Onuegbu I" />
             <ProfileDLItemComponent heading="Account number" body="0171752110" />
             <ProfileDLItemComponent heading="Account type" body="Savings" />
           </dl>
 
-          <div className="font-bold text-color-primary">
-            Transfer money to the above bank account and send your proof of payment to our WhatsApp support.
-          </div>
-          
+          <div className="font-bold my-dimen-lg text-center bg-color-background rounded-lg p-dimen-sm">OR</div>
+
+          <dl className="flex-grow">
+            <ProfileDLItemComponent heading="Bank name" body="Access (Diamond) Bank" />
+            <ProfileDLItemComponent heading="Account name" body="Samuel Onuegbu I" />
+            <ProfileDLItemComponent heading="Account number" body="0044719501" />
+            <ProfileDLItemComponent heading="Account type" body="Savings" />
+          </dl>
+
         </div>
 
       </section>
