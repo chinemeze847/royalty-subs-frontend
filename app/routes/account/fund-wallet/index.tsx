@@ -48,9 +48,9 @@ export default function FundWallet() {
         <div className="mx-auto rounded-lg shadow p-dimen-md my-dimen-lg">
 
           <dl>
-            <ProfileDLItemComponent heading="Bank name" body="GTBank" />
-            <ProfileDLItemComponent heading="Account name" body="Jasper Anelechukwu" />
-            <ProfileDLItemComponent heading="Account number" body="0263068929" />
+            <ProfileDLItemComponent heading="Bank name" body="Guaranteed Trust Bank" />
+            <ProfileDLItemComponent heading="Account name" body="Samuel Onuegbu I" />
+            <ProfileDLItemComponent heading="Account number" body="0171752110" />
             <ProfileDLItemComponent heading="Account type" body="Savings" />
           </dl>
 
