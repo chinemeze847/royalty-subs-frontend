@@ -1,4 +1,4 @@
-import { Form } from '@remix-run/react';
+import { Form, useTransition } from '@remix-run/react';
 import InputComponent from '~/components/form/input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AccountH2Component from '~/components/header/account-h2.component';
@@ -6,6 +6,8 @@ import ProfileDLItemComponent from '~/components/list/profile-dl-item.component'
 import Transaction from '~/models/transaction.model';
 
 export default function FundWallet() {
+  const transition = useTransition();
+
   return (
     <div className="container">
 
@@ -21,17 +23,21 @@ export default function FundWallet() {
 
         <Form className="account-form-2 flex-grow" action="paystack">
 
-          <InputComponent 
-            id="amount-input" 
-            name="amount" 
-            label="Amount" 
-            type="number" 
-            step="0.01"
-            placeholder="0.00" 
-            min={Transaction.MINIMIUM_DEPOSIT_AMOUNT}
-          />
+          <fieldset disabled={transition.state !== 'idle'}>
+            
+            <InputComponent 
+              id="amount-input" 
+              name="amount" 
+              label="Amount" 
+              type="number" 
+              step="0.01"
+              placeholder="0.00" 
+              min={Transaction.MINIMIUM_DEPOSIT_AMOUNT}
+            />
 
-          <SubmitButtonComponent text="Continue" topSpace />
+            <SubmitButtonComponent text="Continue" topSpace />
+            
+          </fieldset>
           
         </Form>
 

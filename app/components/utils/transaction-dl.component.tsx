@@ -54,6 +54,7 @@ export default function TransactionDLComponent(
               <ProfileDLItemComponent 
                 heading="Product" 
                 body={`
+                  ${transaction.productUnit.product.name} -
                   ${transaction.productUnit.brand.name}
                   ${transaction.productUnit.name}
                   (${transaction.productUnit.duration} days)

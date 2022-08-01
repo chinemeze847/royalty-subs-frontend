@@ -99,7 +99,7 @@ export default function ResetPassword() {
             enter the token and a new password to complete resetting your password.
           </div>
           
-          <fieldset disabled={transition.state === 'loading'}>
+          <fieldset disabled={transition.state !== 'idle'}>
 
             <InputComponent 
               id="reset-token-input"

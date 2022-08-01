@@ -122,7 +122,7 @@ export default function UserProfileEdit() {
 
       <Form className="account-form" method="post" autoComplete="off">
      
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
 
           <SelectComponent 
             id="status-input"
@@ -141,7 +141,7 @@ export default function UserProfileEdit() {
 
       <Form className="account-form" method="post" autoComplete="off">
      
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
 
           <SelectComponent 
             id="admin-input"
@@ -163,7 +163,7 @@ export default function UserProfileEdit() {
 
       <Form className="account-form" method="post" autoComplete="off">
      
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
 
           <InputComponent 
             id="deposit-input"

@@ -112,7 +112,7 @@ export default function Register() {
 
           <AuthH2Component text="Register" />
 
-          <fieldset disabled={transition.state === 'loading'}>
+          <fieldset disabled={transition.state !== 'idle'}>
       
             <InputComponent 
               id="first-name-input"

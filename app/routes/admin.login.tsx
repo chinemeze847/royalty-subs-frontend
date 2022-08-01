@@ -106,7 +106,7 @@ export default function AdminLogin() {
 
           <AuthH2Component text="Admin Log in" />
           
-          <fieldset disabled={transition.state === 'loading'}>
+          <fieldset disabled={transition.state !== 'idle'}>
 
             <InputComponent 
               id="email-address-input"

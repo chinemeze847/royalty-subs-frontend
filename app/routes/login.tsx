@@ -103,7 +103,7 @@ export default function Login() {
 
           <AuthH2Component text="Log in" />
           
-          <fieldset disabled={transition.state === 'loading'}>
+          <fieldset disabled={transition.state !== 'idle'}>
 
             <InputComponent 
               id="email-address-input"

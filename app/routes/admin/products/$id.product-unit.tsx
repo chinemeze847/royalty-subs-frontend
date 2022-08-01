@@ -136,7 +136,7 @@ export default function AddProductUnit() {
 
       <Form className="account-form" method="post" autoComplete="off">
 
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
           <InputComponent 
             id="name-input" 
             name="name" 

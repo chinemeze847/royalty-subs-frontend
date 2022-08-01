@@ -134,8 +134,15 @@ export default function FundWithPaystack() {
 
         <Form className="account-form" method="post">
 
-          <fieldset disabled={transition.state === 'loading'}>
-            <InputComponent id="" label="" name="amount" type="hidden" value={amount} error={errors.amount} />
+          <fieldset disabled={transition.state !== 'idle'}>
+            <InputComponent 
+              id="" 
+              label="" 
+              name="amount" 
+              type="hidden" 
+              value={amount} 
+              error={errors.amount} 
+            />
 
             <SubmitButtonComponent text="Pay Now" topSpace />
           </fieldset>

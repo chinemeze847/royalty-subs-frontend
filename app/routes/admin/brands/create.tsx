@@ -102,9 +102,9 @@ export default function CreateBrand() {
 
       <Form className="account-form" method="post" autoComplete="off" encType="multipart/form-data">
 
-        <FileInputComponent alt="add brand" src="/images/index-1.jpg" />
+        <fieldset disabled={transition.state !== 'idle'}>
+          <FileInputComponent alt="add brand" src="/images/index-1.jpg" />
 
-        <fieldset disabled={transition.state === 'loading'}>
           <InputComponent 
             id="name-input" 
             name="name" 

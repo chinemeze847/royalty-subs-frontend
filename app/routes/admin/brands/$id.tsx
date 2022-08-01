@@ -123,15 +123,19 @@ export default function BrandProfile() {
 
       <Form className="account-form" method="post" autoComplete="off" encType="multipart/form-data">
 
-        <FileInputComponent alt={brand.name} src={brand.photo.href} error={errors.photo} />
+        <fieldset disabled={transition.state !== 'idle'}>
+          
+          <FileInputComponent alt={brand.name} src={brand.photo.href} error={errors.photo} />
 
-        <SubmitButtonComponent text="Upload photo" topSpace />
+          <SubmitButtonComponent text="Upload photo" topSpace />
+          
+        </fieldset>
 
       </Form>
 
       <Form className="account-form" method="post" autoComplete="off">
 
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
           <InputComponent 
             id="name-input" 
             name="name" 

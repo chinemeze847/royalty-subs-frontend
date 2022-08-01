@@ -26,7 +26,7 @@ export default function PasswordUpdateFormComponent(
 
       <Form className="account-form" method="post" autoComplete="off">
 
-        <fieldset disabled={transition.state === 'loading'}>
+        <fieldset disabled={transition.state !== 'idle'}>
 
           <PasswordInputComponent 
             id="password-input"

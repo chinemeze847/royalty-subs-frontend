@@ -1,5 +1,5 @@
 import { json, type LoaderFunction } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, useTransition } from "@remix-run/react";
 import { IoPersonOutline, IoSearch } from "react-icons/io5";
 import InputSideButtonComponent from "~/components/form/input-side-button.component";
 import InputComponent from "~/components/form/input.component";
@@ -32,6 +32,8 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function Users() {
+  const transition = useTransition();
+
   const data = useLoaderData<LoaderData>();
 
   return (
@@ -40,14 +42,19 @@ export default function Users() {
       <AccountH2Component text="Users" />
 
       <Form action="search" className="flex items-center gap-dimen-sm">
-        <InputComponent 
-          label="" 
-          name="email" 
-          type="search"
-          id="user-search-input" 
-          placeholder="Search for user by email" 
-        />
-        <InputSideButtonComponent Icon={IoSearch} text="Search" type="submit" />
+        <fieldset disabled={transition.state !== 'idle'}>
+
+          <InputComponent 
+            label="" 
+            name="email" 
+            type="search"
+            id="user-search-input" 
+            placeholder="Search for user by email" 
+          />
+
+          <InputSideButtonComponent Icon={IoSearch} text="Search" type="submit" />
+
+        </fieldset>
       </Form>
 
       <section className="table-container">

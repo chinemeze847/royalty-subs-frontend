@@ -185,7 +185,7 @@ export default function ProductUnitProfile() {
             <EmptyListComponent Icon={IoCardOutline} text="You have an insufficient wallet balance" /> 
           ) : (
             (productUnit.available && productUnit.product.available) ? (
-              <fieldset disabled={transition.state === 'loading'}>
+              <fieldset disabled={transition.state !== 'idle'}>
                 <BuyProductInputComponent 
                   productId={productUnit.product.id} 
                   error={errors.recipientNumber || errors.productUnitId} 

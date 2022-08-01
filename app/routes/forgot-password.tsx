@@ -91,7 +91,7 @@ export default function ForgotPassword() {
 
           <AuthH2Component text="Forgot password" />
           
-          <fieldset disabled={transition.state === 'loading'}>
+          <fieldset disabled={transition.state !== 'idle'}>
 
             <InputComponent 
               id="email-address-input"
