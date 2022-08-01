@@ -1,22 +1,20 @@
 import { json, type LoaderFunction } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
-import { IoPersonOutline } from 'react-icons/io5';
 import ReferralLinkInputComponent from '~/components/form/referral-link-input.component';
 import AccountH2Component from '~/components/header/account-h2.component';
-import PaginationItemComponent from '~/components/list/pagination-item.component';
-import ReferralItemComponent from '~/components/list/referral-item.component';
-import EmptyListComponent from '~/components/utils/empty-list.component';
+import 
+  ReferralsTableComponent, 
+  { type LoaderData as ReferralsLoaderData } 
+from '~/components/utils/referrals-table.component';
 import type PaginationDto from '~/models/pagination-dto.model';
 import type User from '~/models/user.model';
 import { getSession } from '~/server/session.server';
 import UserApiService from '~/services/user-api.service';
 
 type LoaderData = {
-  users: User[];
   referralLink: string;
   referrer: User | null;
-  pagination: PaginationDto;
-}
+} & ReferralsLoaderData;
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
@@ -72,33 +70,8 @@ export default function Referrals() {
         }
       </div>
 
-      <section className="table-container">
+      <ReferralsTableComponent data={data} />
       
-        {
-          data.users.length > 0 ? (
-            <table className="min-w-full">
-              <thead>
-                <tr>
-                  <th className="border p-dimen-xs text-left">Full name</th>
-                  <th className="border p-dimen-xs text-left">Phone number</th>
-                  <th className="border p-dimen-xs text-left">Joined on</th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  data.users.map(item => (
-                    <ReferralItemComponent key={item.id} user={item} />
-                  ))
-                }
-              </tbody>
-              <PaginationItemComponent pagination={data.pagination} />
-            </table>
-          ) : (
-            <EmptyListComponent Icon={IoPersonOutline} text="No referrals" /> 
-          )
-        }
-
-      </section>
     </div>
   );
 }

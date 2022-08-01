@@ -33,6 +33,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   });
 }
 
+const TopMenu = [
+  { text: 'Edit', to: 'edit' },
+  { text: 'Transactions', to: 'transactions' },
+  { text: 'Referrals', to: 'referrals' },
+];
+
 export default function UserProfile() {
   const { user, balance } = useLoaderData<LoaderData>();
 
@@ -43,7 +49,7 @@ export default function UserProfile() {
   return (
     <div className="container">
 
-      <AccountH2Component text="User" links={[{ text: 'Edit', to: 'edit' }]} />
+      <AccountH2Component text="User" links={TopMenu} />
 
       <section>
 

@@ -41,8 +41,8 @@ export default function Users() {
 
       <AccountH2Component text="Users" />
 
-      <Form action="search" className="flex items-center gap-dimen-sm">
-        <fieldset disabled={transition.state !== 'idle'}>
+      <Form action="search">
+        <fieldset className="flex items-center gap-dimen-sm" disabled={transition.state !== 'idle'}>
 
           <InputComponent 
             label="" 
