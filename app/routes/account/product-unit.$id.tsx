@@ -1,6 +1,7 @@
 import { type ActionFunction, json, redirect, type LoaderFunction, Response } from '@remix-run/node';
-import { Form, useActionData, useLoaderData, useTransition } from '@remix-run/react';
+import { Form, useActionData, useLoaderData, useSubmit, useTransition } from '@remix-run/react';
 import { IoCardOutline, IoCubeOutline } from 'react-icons/io5';
+import Modal from 'react-modal';
 import BuyProductInputComponent from '~/components/form/buy-product-input.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AccountH2Component from '~/components/header/account-h2.component';
@@ -16,8 +17,9 @@ import { commitSession, getSession } from '~/server/session.server';
 import ProductUnitApiService from '~/services/product-unit-api.service';
 import TransactionApiService from '~/services/transaction-api.service';
 import UserApiService from '~/services/user-api.service';
-import { useEffect } from 'react';
+import { type FormEvent, useEffect, useState, useRef } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
+import OptionButtonComponent from '~/components/form/option-button.component';
 
 type LoaderData = {
   balance: TransactionsBalance;
@@ -144,6 +146,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function ProductUnitProfile() {
+  const submit = useSubmit();
+
   const transition = useTransition();
 
   const moneyFormat = useMoneyFormat();
@@ -152,18 +156,54 @@ export default function ProductUnitProfile() {
 
   const { productUnit, balance, errors } = useLoaderData<LoaderData>();
 
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   useEffect(() => { 
     if (transition.state === 'idle' && errors.form !== undefined) { 
       toast.error(errors.form);
     }
   }, [errors.form, transition.state]);
 
+  const handleForm = (event: FormEvent) => {
+    event.preventDefault();
+    setModalIsOpen(true);
+  }
+
+  const submitBuyForm = () => {
+    setModalIsOpen(false);
+    submit(formRef.current);
+  }
+
   return (
     <div className="container">
 
+      <Modal
+        ariaHideApp={false}
+        isOpen={modalIsOpen}
+        contentElement={(props, children) => <div className="flex justify-center items-center h-full">{ children }</div>}
+      >
+        <div 
+          className="bg-color-surface shadow shadow-color-primary rounded-lg p-dimen-lg"
+        >
+          <div className="font-bold mb-dimen-sm">Are you sure you want to buy this product?</div>
+          <div className="flex gap-dimen-sm">
+            <OptionButtonComponent type="button" text="No" action={() => setModalIsOpen(false)} />
+            <OptionButtonComponent type="button" text="Yes" action={submitBuyForm} />
+          </div>
+        </div>
+      </Modal>
+
       <AccountH2Component text="Buy product" />
 
-      <Form className="account-form" method="post" autoComplete="off">
+      <Form 
+        ref={formRef} 
+        method="post" 
+        autoComplete="off" 
+        onSubmit={handleForm}
+        className="account-form"
+      >
 
         <img 
           alt={productUnit.brand.name} 

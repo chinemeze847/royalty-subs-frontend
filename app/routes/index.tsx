@@ -1,5 +1,5 @@
 import { json, type LoaderFunction } from "@remix-run/node";
-import { useLoaderData, useTransition } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
 import { IoCall, IoClose, IoLocation, IoMail, IoMenu } from "react-icons/io5";
 import HomeHeaderNavItemComponent from "../components/header/home-header-nav-item.component";
@@ -63,15 +63,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 };
 
 export default function Index() {
-  const transition = useTransition();
-
   const [showNav, setShowNav] = useState(false);
   
   const { brandsAndProducts, isLoggedIn } = useLoaderData<LoaderData>();
 
   return (
     <>
-      { transition.state === 'loading' && <TopLoaderComponent /> }
+      <TopLoaderComponent />
       
       <header className="py-dimen-md border-b fixed w-full left-0 top-0 bg-color-surface z-10">
         <div className="container flex items-center gap-x-dimen-md">
