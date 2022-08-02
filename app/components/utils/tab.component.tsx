@@ -1,12 +1,14 @@
 import { Link } from "@remix-run/react";
 
-type TabItem = { id: number; name: string; };
+type TabItem = { id: number | string; name: string; };
 
-const TabLinkComponent = ({ item, isActive }: { item: TabItem; isActive: boolean; }) => {
+const TabLinkComponent = (
+  { item, isActive, filter }: { item: TabItem; isActive: boolean; filter: string }
+) => {
   return (
     <li>
       <Link 
-        to={`?brand=${item.id}`}
+        to={`?${filter}=${item.id}`}
         className={`
           block 
           py-dimen-xs 
@@ -27,12 +29,19 @@ const TabLinkComponent = ({ item, isActive }: { item: TabItem; isActive: boolean
   );
 }
 
-export default function TabComponent({ items, activeItem }: { items: TabItem[]; activeItem: number; }) {
+export default function TabComponent(
+  { items, activeItem, filter }: { items: TabItem[]; activeItem: number | string; filter: string }
+) {
   return (
     <ul className="flex gap-dimen-sm overflow-x-auto">
       {
         items.map((item) => (
-          <TabLinkComponent key={item.id} item={item} isActive={activeItem === item.id} />
+          <TabLinkComponent 
+            key={item.id} 
+            item={item} 
+            filter={filter} 
+            isActive={activeItem === item.id} 
+          />
         ))
       }
     </ul>

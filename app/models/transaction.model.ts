@@ -59,6 +59,7 @@ export default class Transaction {
     return [
       Transaction.TYPE_DEPOSIT,
       Transaction.TYPE_PAYMENT,
+      Transaction.TYPE_BONUS,
     ];
   }
 

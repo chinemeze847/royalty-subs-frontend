@@ -119,11 +119,13 @@ const UserApiService = {
   async readTransactions(
     id: string | number,
     page: string | null, 
+    type: string | null,
     accessToken: string
   ): Promise<ResponseDto<Transaction[]>> {
     const pageQuery = page === null ? '' : `&page=${page}`;
+    const typeQuery = type === null ? '' : `&type=${type}`;
     const res = await HttpService.get(
-      this.getPath(`${id}/transactions?limit=${PAGE_LIMIT}${pageQuery}`), 
+      this.getPath(`${id}/transactions?limit=${PAGE_LIMIT}${pageQuery}${typeQuery}`), 
       accessToken
     );
     const data = await res.json();

@@ -40,6 +40,7 @@ export default function ProductProfile () {
 
       <section>
         <TabComponent 
+          filter="brand"
           items={data.brands} 
           activeItem={data.activeBrand} 
         />

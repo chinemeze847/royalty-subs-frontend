@@ -7,10 +7,11 @@ import TransactionApiService from '~/services/transaction-api.service';
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page");
+  const type = url.searchParams.get("type");
 
   const session = await getSession(request.headers.get('Cookie'));
 
-  const res = await TransactionApiService.read(page, session.get('accessToken'));
+  const res = await TransactionApiService.read(page, type, session.get('accessToken'));
 
   return json<LoaderData>({ 
     transactions: res.data, 

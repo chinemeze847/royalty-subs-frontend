@@ -17,6 +17,7 @@ type LoaderData = { user: User; balance: TransactionsBalance; } & TransactionLoa
 export const loader: LoaderFunction = async ({ request, params }) => {
   const url = new URL(request.url);
   const page = url.searchParams.get("page");
+  const type = url.searchParams.get("type");
 
   const userId = params.id as string;
 
@@ -27,7 +28,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const [userResponse, balanceResponse, transactionsResponse] = await Promise.all([
     UserApiService.readOne(userId, accessToken),
     UserApiService.readTransactionBalance(userId, accessToken),
-    UserApiService.readTransactions(userId, page, accessToken),
+    UserApiService.readTransactions(userId, page, type, accessToken),
   ]);
 
   if (userResponse.statusCode !== 200) {
