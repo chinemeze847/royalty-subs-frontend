@@ -110,8 +110,8 @@ export default function FundWithPaystack() {
   const { paystackFee, amount, errors } = useLoaderData<LoaderData>();
 
   const fee = amount <= paystackFee.threshold 
-    ? paystackFee.min 
-    : paystackFee.max;
+    ? (amount * paystackFee.min) / 100
+    : (amount * paystackFee.max) / 100;
 
   useEffect(() => { 
     if (transition.state === 'idle' && errors.form !== undefined) { 

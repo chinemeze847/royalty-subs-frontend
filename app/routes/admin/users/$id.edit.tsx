@@ -6,8 +6,8 @@ import InputComponent from '~/components/form/input.component';
 import SelectComponent from '~/components/form/select.component';
 import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AccountH2Component from '~/components/header/account-h2.component';
-import type ResponseDto from '~/models/response-dto.model';
 import User from '~/models/user.model';
+import type ResponseDto from '~/models/response-dto.model';
 import type ValidationError from '~/models/validation-error.model';
 import { commitSession, getSession } from '~/server/session.server';
 import TransactionApiService from '~/services/transaction-api.service';
@@ -167,7 +167,7 @@ export default function UserProfileEdit() {
 
           <InputComponent 
             id="deposit-input"
-            label="Deposit"
+            label="Deposit (NGN)"
             name="amount"
             type="number"
             step="0.01"
