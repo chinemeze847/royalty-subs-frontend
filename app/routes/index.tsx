@@ -1,7 +1,7 @@
 import { json, type LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { useState } from "react";
-import { IoCall, IoClose, IoLocation, IoMail, IoMenu } from "react-icons/io5";
+import { IoCall, IoClose, IoLocation, IoLogoWhatsapp, IoMail, IoMenu } from "react-icons/io5";
 import HomeHeaderNavItemComponent from "../components/header/home-header-nav-item.component";
 import TopLoaderComponent from "../components/loader/top-loader.component";
 import FooterNavItemComponent from "../components/footer/footer-nav-item.component";
@@ -244,14 +244,17 @@ export default function Index() {
               <ContactUsItemComponent Icon={IoCall} heading="Phone number">
                 <a href="tel:+2348109260088">+2348109260088</a>
               </ContactUsItemComponent>
-              <ContactUsItemComponent Icon={IoCall} heading="WhatsApp">
+
+              <ContactUsItemComponent Icon={IoLogoWhatsapp} heading="WhatsApp">
                 <a target="blank" href="https://wa.me/message/57KSP2JO6PG3K1">Chat with us</a>
               </ContactUsItemComponent>
+
               <ContactUsItemComponent Icon={IoMail} heading="Email address">
                 <a href="mailto:support@royaltysubs.com">support@royaltysubs.com</a>
                 <span> | </span>
                 <a href="mailto:iykesamuel0@gmail.com">iykesamuel0@gmail.com</a>
               </ContactUsItemComponent>
+
               <ContactUsItemComponent Icon={IoLocation} heading="Address">
                 #56 Ojokwu street, Olodi Apapa, Lagos
               </ContactUsItemComponent>
