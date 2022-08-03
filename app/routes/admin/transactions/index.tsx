@@ -13,6 +13,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const res = await TransactionApiService.read(page, type, session.get('accessToken'));
 
+  if (res.statusCode !== 200) {
+    throw new Response('Error', { status: res.statusCode });
+  }
+
   return json<LoaderData>({ 
     transactions: res.data, 
     pagination: res.metaData?.pagination as any,

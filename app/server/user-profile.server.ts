@@ -24,6 +24,10 @@ export const userProfileLoader = async (request: Request) => {
 
   const apiResponse = await UserApiService.readOne(userId, accessToken);
 
+  if (apiResponse.statusCode !== 200) {
+    throw new Response('Error', { status: apiResponse.statusCode });
+  }
+
   const data = { 
     user: apiResponse.data,
     success: session.get('success'),

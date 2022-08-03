@@ -18,9 +18,7 @@ export const loader: LoaderFunction = async ({ request, params }) => {
     throw new Response('Error', { status: apiResponse.statusCode });
   }
   
-  return json<LoaderData>({ 
-    transaction: apiResponse.data
-  });
+  return json<LoaderData>({ transaction: apiResponse.data });
 }
 
 export default function TransactionProfile() {

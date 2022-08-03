@@ -17,6 +17,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const res = await BrandApiService.read(session.get('accessToken'));
 
+  if (res.statusCode !== 200) {
+    throw new Response('Error', { status: res.statusCode });
+  }
+
   return json<LoaderData>({ brands: res.data });
 }
 

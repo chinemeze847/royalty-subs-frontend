@@ -25,6 +25,10 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const res = await UserApiService.read(page, session.get('accessToken'));
 
+  if (res.statusCode !== 200) {
+    throw new Response('Error', { status: res.statusCode });
+  }
+
   return json<LoaderData>({ 
     users: res.data, 
     pagination: res.metaData?.pagination as PaginationDto 

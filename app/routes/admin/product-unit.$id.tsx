@@ -42,6 +42,8 @@ export const loader: LoaderFunction = async ({ request, params }) => {
 
   if (productUnitResponse.statusCode !== 200) {
     throw new Response('Error', { status: productUnitResponse.statusCode });
+  } else if (brandResponse.statusCode !== 200) {
+    throw new Response('Error', { status: brandResponse.statusCode });
   }
 
   const data = { 

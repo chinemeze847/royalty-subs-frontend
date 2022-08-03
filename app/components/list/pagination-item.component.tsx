@@ -1,14 +1,18 @@
-import { Link } from "@remix-run/react";
+import { Link, useSearchParams } from "@remix-run/react";
 import type PaginationDto from "~/models/pagination-dto.model";
 
 const PageLink = (
-  { text, to, disabled }: 
-  { text: 'Next' | 'Previous'; to: string; disabled: boolean }
+  { text, to }: { text: 'Next' | 'Previous'; to: number | null; }
 ) => {
+
+  const [urlParams] = useSearchParams();
+
+  urlParams.set('page', to as any);
+
   return (
     <li>
       {
-        disabled ? (
+        to === null ? (
           <span 
             className="inline-block bg-color-background rounded p-dimen-xs"
           >
@@ -16,7 +20,7 @@ const PageLink = (
           </span>
         ) : (
           <Link 
-            to={to} 
+            to={`?${urlParams.toString()}`} 
             className="inline-block bg-color-primary-variant rounded p-dimen-xs hover:bg-color-primary"
           >
             { text }
@@ -38,14 +42,12 @@ export default function PaginationItemComponent(
           <ul className="flex gap-dimen-sm justify-center items-center py-dimen-lg px-dimen-sm">
             <PageLink 
               text="Previous" 
-              to={`?page=${pagination.previousPage}`} 
-              disabled={pagination.previousPage === null} 
+              to={pagination.previousPage} 
             />
 
             <PageLink 
               text="Next" 
-              to={`?page=${pagination.nextPage}`} 
-              disabled={pagination.nextPage === null} 
+              to={pagination.nextPage} 
             />
           </ul>
         </td>

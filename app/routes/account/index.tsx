@@ -35,9 +35,19 @@ export const loader: LoaderFunction= async ({ request }) => {
   ] = await Promise.all([
     UserApiService.readOne(userId, accessToken),
     UserApiService.readTransactionBalance(userId, accessToken),
-    UserApiService.readTransactions(userId, null, accessToken),
+    UserApiService.readTransactions(userId, null, null, accessToken),
     ProductApiService.read(),
   ]);
+
+  if (userResponse.statusCode !== 200) {
+    throw new Response('Error', { status: userResponse.statusCode });
+  } else if (balanceResponse.statusCode !== 200) {
+    throw new Response('Error', { status: balanceResponse.statusCode });
+  } else if (transactionsResponse.statusCode !== 200) {
+    throw new Response('Error', { status: transactionsResponse.statusCode });
+  } else if (productsResponse.statusCode !== 200) {
+    throw new Response('Error', { status: productsResponse.statusCode });
+  }
 
   return json<LoaderData>({ 
     user: userResponse.data,

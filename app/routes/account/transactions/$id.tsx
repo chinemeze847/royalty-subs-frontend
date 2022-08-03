@@ -13,10 +13,12 @@ export const loader: LoaderFunction = async ({ request, params }) => {
   const accessToken = session.get('accessToken');
 
   const apiResponse = await TransactionApiService.readOne(params.id as string, accessToken);
+
+  if (apiResponse.statusCode !== 200) {
+    throw new Response('Error', { status: apiResponse.statusCode });
+  }
   
-  return json<LoaderData>({ 
-    transaction: apiResponse.data
-  });
+  return json<LoaderData>({ transaction: apiResponse.data });
 }
 
 export default function TransactionProfile() {

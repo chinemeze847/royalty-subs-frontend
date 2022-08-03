@@ -50,6 +50,7 @@ function ErrorBox({ message }: { message: string; }) {
 
     <div className="text-center shadow shadow-color-error rounded-lg p-dimen-sm my-dimen-lg">
       <IoWarning className="mx-auto text-7xl text-color-error" />
+      <div className="font-bold my-dimen-sm text-xl">Oops! An error occured</div>
       <div className="font-bold my-dimen-sm text-2xl">{message}</div>
     </div>
    </>

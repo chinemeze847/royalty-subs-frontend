@@ -11,6 +11,10 @@ type LoaderData = {
 export const loader: LoaderFunction = async () => {
   const response = await ProductApiService.read();
 
+  if (response.statusCode !== 200) {
+    throw new Response('Error', { status: response.statusCode });
+  }
+
   return json<LoaderData>({ products: response.data });
 };
 
