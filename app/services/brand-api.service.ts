@@ -1,7 +1,7 @@
 import type Brand from "~/models/brand.model";
+import type ResponseDto from "~/models/response-dto.model";
 import type ValidationError from "~/models/validation-error.model";
 import HttpService from "~/services/http.service";
-import type ResponseDto from "../models/response-dto.model";
 
 const BrandApiService = {
   getPath(path: string | number = '') {

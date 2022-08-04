@@ -1,4 +1,3 @@
-import { PAGE_LIMIT } from '~/constants';
 import type PaystackAuthUrl from '~/models/paystack-auth-url.model';
 import type PaystackFee from '~/models/paystack-fee.model';
 import type ResponseDto from '~/models/response-dto.model';
@@ -152,7 +151,7 @@ const TransactionApiService = {
     const pageQuery = page === null ? '' : `&page=${page}`;
     const typeQuery = type === null ? '' : `&type=${type}`;
     const res = await HttpService.get(
-      this.getPath(`?limit=${PAGE_LIMIT}${pageQuery}${typeQuery}`), 
+      this.getPath(`?limit=${HttpService.PAGE_LIMIT}${pageQuery}${typeQuery}`), 
       accessToken
     );
     const data = await res.json();

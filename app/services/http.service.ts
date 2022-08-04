@@ -1,6 +1,6 @@
-import { API_URL } from "~/constants";
-
 const HttpService = {
+  PAGE_LIMIT: 10,
+
   get(path: string, accessToken?: string) {
     const headers = new Headers();
 
@@ -8,7 +8,7 @@ const HttpService = {
       headers.append('Authorization', `Bearer ${accessToken}`);
     }
 
-    return fetch(`${API_URL}${path}`, {
+    return fetch(`${process.env.API_URL}${path}`, {
       headers,
       method: 'GET',
     });
@@ -26,7 +26,7 @@ const HttpService = {
       headers.append('Authorization', `Bearer ${accessToken}`);
     }
 
-    return fetch(`${API_URL}${path}`, { 
+    return fetch(`${process.env.API_URL}${path}`, { 
       method, 
       headers,
       body: form,
@@ -54,7 +54,7 @@ const HttpService = {
       headers.append('Authorization', `Bearer ${accessToken}`);
     }
 
-    return fetch(`${API_URL}${path}`, { 
+    return fetch(`${process.env.API_URL}${path}`, { 
       method, 
       headers,
       body: JSON.stringify(form),

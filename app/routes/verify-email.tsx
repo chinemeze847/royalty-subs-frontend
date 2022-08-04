@@ -116,7 +116,12 @@ export default function VerifyEmail() {
 
             <AuthH1Component />
 
-            <AuthH2Component text="Verify email" />
+            <AuthH2Component text="Email verification" />
+
+            <div className="mb-dimen-md text-gray text-sm">
+              An email verification token has been sent to your email, 
+              enter the token to verify your email.
+            </div>
             
             <fieldset disabled={transition.state !== 'idle'}>
 
@@ -138,13 +143,15 @@ export default function VerifyEmail() {
             className="text-center my-dimen-md"
             action={`${location.pathname}${location.search}`} 
           >
-            <button 
-              name="resend"
-              type="submit"
-              className="font-bold bg-color-background rounded-lg p-dimen-xs"
-            >
-              Resend verification token
-            </button>
+            <fieldset disabled={transition.state !== 'idle'}>
+              <button 
+                name="resend"
+                type="submit"
+                className="font-bold bg-color-background rounded-lg p-dimen-xs hover:bg-color-primary-variant disabled:bg-gray-400"
+              >
+                Resend verification token
+              </button>
+            </fieldset>
           </Form>
         </div>
       </div>

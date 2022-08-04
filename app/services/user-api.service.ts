@@ -1,4 +1,3 @@
-import { PAGE_LIMIT } from "~/constants";
 import type Transaction from "~/models/transaction.model";
 import type TransactionsBalance from "~/models/transactions-balance.model";
 import type User from "~/models/user.model";
@@ -112,7 +111,7 @@ const UserApiService = {
   ): Promise<ResponseDto<User[]>> {
     const pageQuery = page === null ? '' : `&page=${page}`;
     const res = await HttpService.get(
-      this.getPath(`?limit=${PAGE_LIMIT}${pageQuery}`), 
+      this.getPath(`?limit=${HttpService.PAGE_LIMIT}${pageQuery}`), 
       accessToken
     );
     const data = await res.json();
@@ -127,7 +126,7 @@ const UserApiService = {
   ): Promise<ResponseDto<User[]>> {
     const pageQuery = page === null ? '' : `&page=${page}`;
     const res = await HttpService.get(
-      this.getPath(`${id}/referrals?limit=${PAGE_LIMIT}${pageQuery}`), 
+      this.getPath(`${id}/referrals?limit=${HttpService.PAGE_LIMIT}${pageQuery}`), 
       accessToken
     );
     const data = await res.json();
@@ -144,7 +143,7 @@ const UserApiService = {
     const pageQuery = page === null ? '' : `&page=${page}`;
     const typeQuery = type === null ? '' : `&type=${type}`;
     const res = await HttpService.get(
-      this.getPath(`${id}/transactions?limit=${PAGE_LIMIT}${pageQuery}${typeQuery}`), 
+      this.getPath(`${id}/transactions?limit=${HttpService.PAGE_LIMIT}${pageQuery}${typeQuery}`), 
       accessToken
     );
     const data = await res.json();
