@@ -15,6 +15,7 @@ type LoaderData = {
   success: string;
   errors: {
     form: string;
+    token: string;
   };
 };
 
@@ -29,6 +30,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     success: session.get('success'),
     errors: {
       form: session.get('formError'),
+      token: session.get('emailVerificationTokenError'),
     },
   };
 
@@ -122,6 +124,7 @@ export default function VerifyEmail() {
                 id="email-verification-token-input"
                 label="Verification token"
                 name="emailVerificationToken"
+                error={errors.token}
               />
               
               <SubmitButtonComponent text="Verify" />
