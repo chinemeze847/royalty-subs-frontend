@@ -18,7 +18,9 @@ const TRANSACTION_TYPES = [
   ...Transaction.getTypes().map(item => ({ id: item, name: item }))
 ];
 
-export const TransactionsTableComponent = ({ data }: { data: LoaderData }) => {
+export const TransactionsTableComponent = (
+  { data, linkPrefix = '' }: { data: LoaderData; linkPrefix?: string; }
+) => {
   const [urlParams] = useSearchParams();
 
   return (
@@ -46,7 +48,11 @@ export const TransactionsTableComponent = ({ data }: { data: LoaderData }) => {
               <tbody>
                 {
                   data.transactions.map(item => (
-                    <TransactionItemComponent key={item.id} transaction={item} />
+                    <TransactionItemComponent 
+                      key={item.id} 
+                      transaction={item} 
+                      linkPrefix={linkPrefix} 
+                    />
                   ))
                 }
               </tbody>
@@ -61,7 +67,6 @@ export const TransactionsTableComponent = ({ data }: { data: LoaderData }) => {
     </section>
   );
 }
-
 
 export default function TransactionsTableContainerComponent({ data }: { data: LoaderData }) {
   return (

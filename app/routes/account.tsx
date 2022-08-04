@@ -27,7 +27,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   
   const session = await getSession(request.headers.get('Cookie'));
 
-  if (!session.has('userId')) {
+  if (!session.has('accessToken')) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
     throw redirect(`/login?${searchParams}`);
   }

@@ -9,6 +9,7 @@ import SubmitButtonComponent from '~/components/form/submit-button.component';
 import AuthH1Component from '~/components/header/auth-h1.component';
 import AuthH2Component from '~/components/header/auth-h2.component';
 import TopLoaderComponent from '~/components/loader/top-loader.component';
+import type User from '~/models/user.model';
 import type ValidationError from '~/models/validation-error.model';
 import { commitSession, getSession } from '~/server/session.server';
 import UserApiService from '~/services/user-api.service';
@@ -27,7 +28,7 @@ type LoaderData = {
 export const loader: LoaderFunction = async ({ request }) => {
   const session = await getSession(request.headers.get('Cookie'));
 
-  if (session.has('userId')) {
+  if (session.has('accessToken')) {
     return redirect('/account');
   }
 
@@ -71,8 +72,9 @@ export const action: ActionFunction = async ({ request }) => {
   let redirectTo = '/register';
 
   if (apiResponse.statusCode === 201) {
-    redirectTo = '/login';
+    redirectTo = '/verify-email';
     session.unset('referralId');
+    session.set('userId', (apiResponse.data as User).id);
   } else if (apiResponse.statusCode === 400) {
     const errors = apiResponse.data as ValidationError[];
     errors.forEach(item => session.flash(`${item.name}Error`, item.message));

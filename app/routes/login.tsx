@@ -10,6 +10,8 @@ import AuthH2Component from '~/components/header/auth-h2.component';
 import TopLoaderComponent from '~/components/loader/top-loader.component';
 import AuthApiService from '~/services/auth-api.service';
 import { commitSession, getSession } from '~/server/session.server';
+import type AuthPermissionError from '~/models/auth-permission-error.model';
+import type Auth from '~/models/auth.model';
 
 type LoaderData = {
   errors: {
@@ -21,7 +23,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   const queryParams = new URL(request.url).searchParams;
   const session = await getSession(request.headers.get('Cookie'));
 
-  if (session.has('userId')) {
+  if (session.has('accessToken')) {
     return redirect(queryParams.get('redirectTo') ?? '/account');
   }
 
@@ -52,7 +54,7 @@ export const action: ActionFunction = async ({ request }) => {
   const apiResponse = await AuthApiService.create({ email, password });
 
   if (apiResponse.statusCode === 200) {
-    const data = apiResponse.data;
+    const data = apiResponse.data as Auth;
 
     session.set('userId', data.userId);
     session.set('accessToken', data.accessToken);
@@ -60,6 +62,15 @@ export const action: ActionFunction = async ({ request }) => {
     redirectTo = queryParams.get('redirectTo') ?? '/account';
   } else if (apiResponse.statusCode === 401) {
     session.flash('authError', 'Credentials are incorrect');
+  } else if (apiResponse.statusCode === 403) {
+    const errorData = apiResponse.data as AuthPermissionError;
+
+    if (errorData.errorCode === 'ACCOUNT_EMAIL_UNVERIFIED') {
+      session.set('userId', errorData.userId);
+      redirectTo = `/verify-email?${queryParams.toString()}`;
+    } else if (errorData.errorCode === 'ACCOUNT_DEACTIVATED') {
+      session.flash('authError', 'Sorry, your account has been deactivated. Please contact support.');
+    }
   } else {
     session.flash('authError', 'Oops! An error occured.');
   }

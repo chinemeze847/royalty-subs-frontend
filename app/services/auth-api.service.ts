@@ -1,3 +1,4 @@
+import type AuthPermissionError from '~/models/auth-permission-error.model';
 import type Auth from '~/models/auth.model';
 import type ResponseDto from '~/models/response-dto.model';
 import type ValidationError from '~/models/validation-error.model';
@@ -10,7 +11,7 @@ const AuthApiService = {
 
   async create(
     form: { email?: string; password?: string; }
-  ): Promise<ResponseDto<Auth>> {
+  ): Promise<ResponseDto<Auth | AuthPermissionError>> {
     const res = await HttpService.postJson(this.getPath(), form);
     const data = await res.json();
     data.statusCode = res.status;

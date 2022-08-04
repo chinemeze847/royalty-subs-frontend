@@ -23,7 +23,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   
   const session = await getSession(request.headers.get('Cookie'));
 
-  if (!session.has('userId') || !session.has('userIsAdmin')) {
+  if (!session.has('accessToken') || !session.has('userIsAdmin')) {
     const searchParams = new URLSearchParams([["redirectTo", redirectTo]]);
     throw redirect(`/admin/login?${searchParams}`);
   }

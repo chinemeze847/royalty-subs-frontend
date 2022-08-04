@@ -71,6 +71,25 @@ const UserApiService = {
     return data;
   },
 
+  async updateEmailVerificationToken(
+    id: number | string,
+  ): Promise<ResponseDto<User>> {
+    const res = await HttpService.putJson(this.getPath(`${id}/email-verification-token`), {});
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
+  async updateEmailVerified(
+    id: number | string,
+    form: { emailVerificationToken: string; }
+  ): Promise<ResponseDto<User | ValidationError[]>> {
+    const res = await HttpService.putJson(this.getPath(`${id}/email-verified`), form);
+    const data = await res.json();
+    data.statusCode = res.status;
+    return data;
+  },
+
   async readOne(id: number | string, accessToken: string): Promise<ResponseDto<User>> {
     const res = await HttpService.get(this.getPath(id), accessToken);
     const data = await res.json();

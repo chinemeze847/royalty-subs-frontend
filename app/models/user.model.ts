@@ -21,6 +21,10 @@ export default class User {
 
   adminRole!: string | null;
 
+  emailVerified!: boolean;
+
+  emailVerificationToken!: string;
+
   createdAt!: string;
 
   static readonly STATUS_ACTIVATED = 'activated';

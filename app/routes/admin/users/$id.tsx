@@ -65,6 +65,7 @@ export default function UserProfile() {
           <ProfileDLItemComponent heading="Admin" body={String(user.admin)} />
           <ProfileDLItemComponent heading="Admin Role" body={user.adminRole || 'none'} />
           <ProfileDLItemComponent heading="Status" body={user.status} />
+          <ProfileDLItemComponent heading="Email verified" body={String(user.emailVerified)} />
           <ProfileDLItemComponent heading="Join on" body={dateFormat(user.createdAt)} />
           {
             user.referral !== null && (

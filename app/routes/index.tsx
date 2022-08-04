@@ -55,7 +55,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     return { product, brands };
   });
 
-  return json<LoaderData>({ brandsAndProducts, isLoggedIn: session.has('userId') }, {
+  return json<LoaderData>({ brandsAndProducts, isLoggedIn: session.has('accessToken') }, {
     headers: {
       'Set-Cookie': await commitSession(session),
     },

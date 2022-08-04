@@ -69,7 +69,7 @@ export default function UserTransactions() {
       </dl>
 
     </section>
-    <TransactionsTableComponent data={transactions} />
+    <TransactionsTableComponent data={transactions} linkPrefix="/admin/transactions/" />
   </div>
   );
 }
